@@ -11,7 +11,7 @@
         }
 
         public function adminLogin($Username, $Password){
-            $query = "SELECT *  FROM admin WHERE Ad_Username = :username AND  Ad_Password = :password";
+            $query = "SELECT *  FROM admin WHERE Ad_Username = :username AND  Ad_Password = :Password";
             $sql =  $this->conn->prepare($query);
             $sql->execute(array(":username" => $Username, ":password" => $Password));
 
