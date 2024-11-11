@@ -135,7 +135,8 @@
     }
 
     .btn-success {
-        
+        justify-content: space-between;
+        align-items: center;
         width: 240px;
         border-radius: 25px;
         border: none;
@@ -185,12 +186,7 @@
                                     <label class="label">Total Days</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="content">
-                                        <?php 
-                                            $totalDays = $booking['Booking_TotalDay']; 
-                                            echo number_format($totalDays) . ($totalDays == 1 ? ' day' : ' days');
-                                        ?>
-                                    </label>
+                                    <label class="content"><?php echo $booking['Booking_TotalDay'] ?></label>
                                 </div>
                             </div>
 
@@ -251,8 +247,8 @@
                         </div>
 
                         <div class="d-flex justify-content-center mt-4">
-                            <a href="index.php?action=customer_bookinglist">
-                                <button type="button" class="btn btn-success">Booking List</button>
+                            <a href="index.php?action=influencer_article">
+                                <button type="button" class="btn btn-success">List Bookings</button>
                             </a>
                         </div>
                     </div>

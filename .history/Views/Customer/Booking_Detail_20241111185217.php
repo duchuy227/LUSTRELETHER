@@ -190,7 +190,7 @@
                                             $totalDays = $booking['Booking_TotalDay']; 
                                             echo number_format($totalDays) . ($totalDays == 1 ? ' day' : ' days');
                                         ?>
-                                    </label>
+                                        </label>
                                 </div>
                             </div>
 

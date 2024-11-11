@@ -188,9 +188,8 @@
                                     <label class="content">
                                         <?php 
                                             $totalDays = $booking['Booking_TotalDay']; 
-                                            echo number_format($totalDays) . ($totalDays == 1 ? ' day' : ' days');
-                                        ?>
-                                    </label>
+        echo number_format($totalDays) . ($totalDays == 1 ? ' day' : ' days');
+        ?></label>
                                 </div>
                             </div>
 

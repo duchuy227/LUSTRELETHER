@@ -185,12 +185,7 @@
                                     <label class="label">Total Days</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="content">
-                                        <?php 
-                                            $totalDays = $booking['Booking_TotalDay']; 
-                                            echo number_format($totalDays) . ($totalDays == 1 ? ' day' : ' days');
-                                        ?>
-                                    </label>
+                                    <label class="content"><?php echo number_format$booking['Booking_TotalDay'] ?></label>
                                 </div>
                             </div>
 

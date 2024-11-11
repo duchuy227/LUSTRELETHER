@@ -122,26 +122,6 @@
         margin-top: 30px;
     }
     
-    .label {
-        font-size: 18px;
-        color: #333;
-        font-weight: 500;
-    }
-
-    .content {
-        font-size: 16px;
-        color: #333;
-        font-weight: 300;
-    }
-
-    .btn-success {
-        
-        width: 240px;
-        border-radius: 25px;
-        border: none;
-        font-size: 18px;
-        height: 40px;
-    }
         
 </style>
 <body>
@@ -154,106 +134,50 @@
                 <div class="profile-container">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="row mt-3">
+                            <div class="row">
                                 <div class="col-md-6">
-                                    <label class="label">Date Time</label>
+                                    <label>Date Time</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="content"><?php echo $booking['Booking_CreateTime'] ?></label>
-                                </div>
-                            </div>
-                            <div class="row mt-5">    
-                                <div class="col-md-6">
-                                    <label class="label">Start Date</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="content"><?php echo $booking['Booking_StartDate'] ?></label>
+                                    <label><?php echo $booking['Booking_CreateTime'] ?></label>
                                 </div>
                             </div>
-
-                            <div class="row mt-5">    
+                            <div class="row">    
                                 <div class="col-md-6">
-                                    <label class="label">End Date</label>
+                                    <label>Start Date</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="content"><?php echo $booking['Booking_EndDate'] ?></label>
+                                    <label><?php echo $booking['Booking_StartDate'] ?></label>
                                 </div>
                             </div>
 
-                            <div class="row mt-5">    
+                            <div class="row">    
                                 <div class="col-md-6">
-                                    <label class="label">Total Days</label>
+                                    <label>End Date</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="content">
-                                        <?php 
-                                            $totalDays = $booking['Booking_TotalDay']; 
-                                            echo number_format($totalDays) . ($totalDays == 1 ? ' day' : ' days');
-                                        ?>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="row mt-5">    
-                                <div class="col-md-6">
-                                    <label class="label">Expense</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="content"><?php echo $booking['Booking_Expense'] ?></label>
+                                    <label><?php echo $booking['Booking_EndDate'] ?></label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="row mt-3">
-                                <div class="col-md-6" style="width: 40%">
-                                    <label class="label">Service</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Service</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="content"><?php echo $booking['Booking_Content'] ?></label>
+                                    <label><?php echo $booking['Booking_Content'] ?></label>
                                 </div>
                             </div>
 
-                            <div class="row mt-5">
-                                <div class="col-md-6" style="width: 40%">
-                                    <label class="label">Influencer</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Service</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="content"><?php echo $booking['Influ_Nickname'] ?></label>
+                                    <label><?php echo $booking['Booking_Content'] ?></label>
                                 </div>
                             </div>
-
-                            <div class="row mt-5">
-                                <div class="col-md-6" style="width: 40%">
-                                    <label class="label">Topic</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="content"><?php echo $booking['Topic_Name'] ?></label>
-                                </div>
-                            </div>
-
-                            <div class="row mt-5">
-                                <div class="col-md-6" style="width: 40%">
-                                    <label class="label">Status</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="content"><?php echo $booking['Booking_Status'] ?></label>
-                                </div>
-                            </div>
-
-                            <div class="row mt-5">
-                                <div class="col-md-6" style="width: 40%">
-                                    <label class="label">Note</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="content"><?php echo $booking['Booking_Note'] ?></label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-center mt-4">
-                            <a href="index.php?action=customer_bookinglist">
-                                <button type="button" class="btn btn-success">Booking List</button>
-                            </a>
                         </div>
                     </div>
                 </div>
