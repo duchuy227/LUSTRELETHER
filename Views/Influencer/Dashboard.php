@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="icon" href="././views/Img/u2.png" type="image/x-icon">
+    <link rel="icon" href="././views/Img/u2.jpg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -116,7 +116,34 @@
         <?php include 'left.php' ?>
 
         <div class="right">
-            <?php include 'top.php' ?>
+        <div class="top">
+                <div class="searchBx">
+                    <h2>Dashboard</h2>
+                </div>
+                <div class="user">
+                    <h2><?php echo $influInfo['Influ_Username'] ?></h2>
+                    <h2><?php echo $influInfo['InfluType_Name'] ?></h2>
+                    <div class="userImg">
+                        <img style="border-radius: 50%" src="<?php echo $influInfo['Influ_Image'] ?>" alt="user">
+                    </div>
+                    <a href="index.php?action=InfluLogout">
+                        <img style="opacity: 50%; margin-right: 20px; margin-top:5px" src="./././Image/u27.png" alt="" width="35" height="35">
+                    </a>
+                    <!-- <div class="arrow">
+                        <span class="material-symbols-outlined">
+                            expand_more
+                        </span>
+                    </div> -->
+                    <div class="toggle">
+                        <span class="material-symbols-outlined">
+                            menu
+                        </span>
+                        <span class="material-symbols-outlined">
+                            close
+                        </span>
+                    </div>
+                </div>
+            </div>
             <main>
                 <div class="projectCard">
                     <div class="projectTop">
@@ -196,14 +223,14 @@
                         </div>
                     </div>
                     <div class="email-item">
-                        <img src="./././Image/u31.png" width="66" height="66">
+                        <img src="./././Image/u59_div.png" width="66" height="66">
                         <div class="email-content">
-                            <span class="name">Bẻo Đáo</span>
+                            <span class="name">Viet Huy</span>
                             <p class="message">Are you free?</p>
                         </div>
                     </div>
                     <div class="email-item">
-                        <img src="./././Image/beo.png" width="66" height="66">
+                        <img src="./././Image/u57_div.jpg" width="66" height="66">
                         <div class="email-content">
                             <span class="name">Bẻo Bẻo</span>
                             <p class="message">Rep my email</p>

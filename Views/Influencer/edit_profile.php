@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="icon" href="././views/Img/u2.png" type="image/x-icon">
+    <link rel="icon" href="././views/Img/u2.jpg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
     <link rel="stylesheet" href="./views/Influencer/style.css?v=1.0">
@@ -67,7 +67,8 @@
     }
         
     .social-network-row label {
-        flex: 0 0 100px; /* Độ rộng cố định cho label */            margin-right: 50px;
+        flex: 0 0 100px; /* Độ rộng cố định cho label */            
+        margin-right: 50px;
     }
     .social-network-row .form-control {
         flex-grow: 1;

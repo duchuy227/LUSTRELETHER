@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="././views/Img/u2.png" type="image/x-icon">
+    <link rel="icon" href="././views/Img/u2.jpg" type="image/x-icon">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <title>Influencer Login</title>
@@ -253,9 +253,9 @@
                     <div class="input-group">
                         <select name="influType">
                             <option value="" hidden>Influencer</option>
-                            <option value="3">KOC</option>
-                            <option value="2">KOL</option>
-                            <option value="1">MC</option>
+                            <option value="7">KOC</option>
+                            <option value="9">KOL</option>
+                            <option value="5">MC</option>
                         </select>
                     </div>
                     <div class="remember-me">

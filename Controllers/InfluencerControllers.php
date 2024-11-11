@@ -5,8 +5,6 @@
     require_once "Models/InfluencerModels.php";
     require_once "Models/AdminModels.php";
     require_once "Controllers/AdminControllers.php";
-    include 'PHPMailer/src/PHPMailer.php';
-    include 'PHPMailer/src/SMTP.php';
     
     class InfluencerControllers {
         private  $is_login;
@@ -322,6 +320,8 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['influ_id'])) {
                 $influencerModel = new InfluencerModels();
                 $influInfo = $influencerModel -> getInfluencerProfile($_SESSION['influ_id']);
+
+                $booking = $influencerModel -> getAllBookingInflu($_SESSION['influ_id']);
 
                 include  'views/Influencer/Booking.php';
             }

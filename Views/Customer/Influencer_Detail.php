@@ -291,12 +291,12 @@
                             <span>1 days</span>
                         </div>
                         <div class="event">
-                            <img style="border-radius: 50%; margin: auto" src="././views/Img/cus6.jpg" width="50" height="50">
+                            <img style="border-radius: 50%; margin: auto" src="././views/Img/a1.jpg" width="50" height="50">
                             <span>Event 1</span>
                             <span>1 days</span>
                         </div>
                         <div class="event">
-                            <img style="border-radius: 50%; margin: auto" src="././views/Img/dog.jpg" width="50" height="50">
+                            <img style="border-radius: 50%; margin: auto" src="././views/Img/u73_div.png" width="50" height="50">
                             <span>Event 1</span>
                             <span>1 days</span>
                         </div>

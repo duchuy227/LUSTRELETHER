@@ -342,8 +342,8 @@
 
         public function checkBookingConflict($startDate, $endDate, $influencerId, $booking_id = null) {
             // Chuyển đổi ngày sang định dạng Y-m-d H:i:s để kiểm tra
-            $startDateFormatted = DateTime::createFromFormat('Y-m-d H:i:s', $startDate);
-            $endDateFormatted = DateTime::createFromFormat('Y-m-d H:i:s', $endDate);
+            $startDateFormatted = DateTime::createFromFormat('j M Y', $startDate);
+            $endDateFormatted = DateTime::createFromFormat('j M Y', $endDate);
         
             // Kiểm tra nếu $startDateFormatted hoặc $endDateFormatted không hợp lệ
             if (!$startDateFormatted || !$endDateFormatted) {
@@ -351,16 +351,16 @@
             }
         
             // Format lại ngày để sử dụng trong câu truy vấn SQL
-            $startDateFormatted = $startDateFormatted->format('Y-m-d H:i:s');
-            $endDateFormatted = $endDateFormatted->format('Y-m-d H:i:s');
+            $startDateFormatted = $startDateFormatted->format('Y-m-d');
+            $endDateFormatted = $endDateFormatted->format('Y-m-d');
         
             // Truy vấn CSDL để kiểm tra xem có booking nào trùng trong khoảng thời gian này
             $query = 'SELECT * FROM Booking WHERE Influ_ID = :influ_id AND (
-                        (Booking_StartDate BETWEEN :start_date AND :end_date) OR 
-                        (Booking_EndDate BETWEEN :start_date AND :end_date) OR 
-                        (:start_date BETWEEN Booking_StartDate AND Booking_EndDate) OR 
-                        (:end_date BETWEEN Booking_StartDate AND Booking_EndDate)
-                      )';
+                (Booking_StartDate BETWEEN :start_date AND :end_date) OR 
+                (Booking_EndDate BETWEEN :start_date AND :end_date) OR 
+                (:start_date BETWEEN Booking_StartDate AND Booking_EndDate) OR 
+                (:end_date BETWEEN Booking_StartDate AND Booking_EndDate)
+              )';
             
             // Nếu có booking_id (khi chỉnh sửa), loại bỏ booking hiện tại của khách hàng
             if ($booking_id) {

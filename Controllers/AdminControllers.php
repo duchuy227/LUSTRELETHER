@@ -3,9 +3,6 @@
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
     require_once "Models/AdminModels.php";
-    include 'PHPMailer/src/Exception.php';
-    include 'PHPMailer/src/PHPMailer.php';
-    include 'PHPMailer/src/SMTP.php';
 
     class AdminControllers {
         private  $is_login;
