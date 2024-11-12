@@ -576,11 +576,7 @@
                     $signature = $_GET['signature'];
 
                     $inv_id = isset($_SESSION['inv_id']) ? $_SESSION['inv_id'] : null;
-                    $saveMomo = $customerModel ->saveMomoPayment($partnerCode, $orderId, $requestId, $amount, $orderInfo, $orderType, $transId, $payType, $signature, $inv_id);
-
-                    if($saveMomo !== null) {
-                        $customerModel->UpdateInvoiceMomoID($saveMomo, $inv_id);
-                    }
+                    $saveMomo = $customerModel ->save
                 }
 
                 include 'Views/Customer/MomoSuccess.php';

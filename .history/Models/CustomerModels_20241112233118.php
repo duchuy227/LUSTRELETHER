@@ -547,10 +547,10 @@
             return $this->conn->lastInsertId();
         }
 
-        public function UpdateInvoiceMomoID($momo_id, $inv_id) {
-            $query = "UPDATE Invoice SET MT_ID = :mt_id, Inv_Status = 'Paid' WHERE Inv_ID = :inv_id";
+        public function UpdateInvoiceVnpayID($vnpay_id, $inv_id) {
+            $query = "UPDATE Invoice SET VNPay_ID = :vnpay_id, Inv_Status = 'Paid' WHERE Inv_ID = :inv_id";
             $sql = $this->conn->prepare($query);
-            $sql->execute([':mt_id' => $momo_id, ':inv_id' => $inv_id]);
+            $sql->execute([':vnpay_id' => $vnpay_id, ':inv_id' => $inv_id]);
         }
 
     }

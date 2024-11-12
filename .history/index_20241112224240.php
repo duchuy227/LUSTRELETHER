@@ -524,10 +524,6 @@
             $customerControllers->momo_payment($_GET['id']);
             break;
 
-        case 'customer_momosuccess':
-            require_once "Controllers/CustomerControllers.php";
-            $CustomerControllers =  new CustomerControllers();
-            $CustomerControllers -> customer_momosuccess();
-            break;
+        
     }
 ?>

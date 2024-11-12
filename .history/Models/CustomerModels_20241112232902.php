@@ -544,13 +544,7 @@
                 ':signature' => $signature,
                 ':inv_id' => $inv_id
             ));
-            return $this->conn->lastInsertId();
-        }
 
-        public function UpdateInvoiceMomoID($momo_id, $inv_id) {
-            $query = "UPDATE Invoice SET MT_ID = :mt_id, Inv_Status = 'Paid' WHERE Inv_ID = :inv_id";
-            $sql = $this->conn->prepare($query);
-            $sql->execute([':mt_id' => $momo_id, ':inv_id' => $inv_id]);
         }
 
     }

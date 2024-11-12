@@ -511,7 +511,7 @@
                 $accessKey = 'klm05TvNBzhg7h7j';
                 $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
                 $orderInfo = "Thanh toán qua MoMo";
-                $amount = intval($invoiceInfo['Inv_VATamount']);
+                $amount = "10000";
                 $orderId = rand(00,9999);
                 $redirectUrl = "http://localhost/LUSTRELETHER/index.php?action=customer_momosuccess";
                 $ipnUrl = "http://localhost/LUSTRELETHER/index.php?action=customer_momosuccess";
@@ -522,17 +522,17 @@
                     $partnerCode = $partnerCode;
                     $accessKey = $accessKey;
                     $serectkey = $secretKey;
-                    $orderId = $orderId; // Mã đơn hàng
-                    $orderInfo = $orderInfo;
+                    $orderId = $_POST["orderId"]; // Mã đơn hàng
+                    $orderInfo = $_POST["orderInfo"];
 
-                    $amount = $amount;
-                    $ipnUrl = $ipnUrl;
-                    $redirectUrl = $redirectUrl;
-                    $extraData = $extraData;
+                    $amount = $_POST["amount"];
+                    $ipnUrl = $_POST["ipnUrl"];
+                    $redirectUrl = $_POST["redirectUrl"];
+                    $extraData = $_POST["extraData"];
 
                     $requestId = time() . "";
                     $requestType = "payWithATM";
-                    // $extraData = ($_POST["extraData"] ? $_POST["extraData"] : "");
+                    $extraData = ($_POST["extraData"] ? $_POST["extraData"] : "");
                     //before sign HMAC SHA256 signature
                     $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
                     $signature = hash_hmac("sha256", $rawHash, $serectkey);
@@ -563,25 +563,6 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
                 $customerModel = new CustomerModels();
                 $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
-
-                if (isset($_GET['partnerCode'])) {
-                    $partnerCode = $_GET['partnerCode'];
-                    $orderId = $_GET['orderId'];
-                    $requestId = $_GET['requestId'];
-                    $amount = $_GET['amount'];
-                    $orderInfo = $_GET['orderInfo'];
-                    $orderType = $_GET['orderType'];
-                    $transId = $_GET['transId'];
-                    $payType = $_GET['payType'];
-                    $signature = $_GET['signature'];
-
-                    $inv_id = isset($_SESSION['inv_id']) ? $_SESSION['inv_id'] : null;
-                    $saveMomo = $customerModel ->saveMomoPayment($partnerCode, $orderId, $requestId, $amount, $orderInfo, $orderType, $transId, $payType, $signature, $inv_id);
-
-                    if($saveMomo !== null) {
-                        $customerModel->UpdateInvoiceMomoID($saveMomo, $inv_id);
-                    }
-                }
 
                 include 'Views/Customer/MomoSuccess.php';
             }

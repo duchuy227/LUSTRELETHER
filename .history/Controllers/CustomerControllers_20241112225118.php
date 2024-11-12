@@ -511,7 +511,7 @@
                 $accessKey = 'klm05TvNBzhg7h7j';
                 $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
                 $orderInfo = "Thanh toán qua MoMo";
-                $amount = intval($invoiceInfo['Inv_VATamount']);
+                $amount = "10000";
                 $orderId = rand(00,9999);
                 $redirectUrl = "http://localhost/LUSTRELETHER/index.php?action=customer_momosuccess";
                 $ipnUrl = "http://localhost/LUSTRELETHER/index.php?action=customer_momosuccess";
@@ -563,25 +563,6 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
                 $customerModel = new CustomerModels();
                 $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
-
-                if (isset($_GET['partnerCode'])) {
-                    $partnerCode = $_GET['partnerCode'];
-                    $orderId = $_GET['orderId'];
-                    $requestId = $_GET['requestId'];
-                    $amount = $_GET['amount'];
-                    $orderInfo = $_GET['orderInfo'];
-                    $orderType = $_GET['orderType'];
-                    $transId = $_GET['transId'];
-                    $payType = $_GET['payType'];
-                    $signature = $_GET['signature'];
-
-                    $inv_id = isset($_SESSION['inv_id']) ? $_SESSION['inv_id'] : null;
-                    $saveMomo = $customerModel ->saveMomoPayment($partnerCode, $orderId, $requestId, $amount, $orderInfo, $orderType, $transId, $payType, $signature, $inv_id);
-
-                    if($saveMomo !== null) {
-                        $customerModel->UpdateInvoiceMomoID($saveMomo, $inv_id);
-                    }
-                }
 
                 include 'Views/Customer/MomoSuccess.php';
             }

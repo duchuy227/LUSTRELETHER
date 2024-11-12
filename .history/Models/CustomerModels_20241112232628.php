@@ -530,27 +530,8 @@
         }
 
         public function saveMomoPayment($partnerCode, $orderId, $requestId, $amount, $orderInfo, $orderType, $transId, $payType, $signature, $inv_id){
-            $query = "INSERT INTO Momo_Transaction (MT_PartnerCode, MT_OrderID, MT_RequestID, MT_Ammount, MT_OrderInfo, MT_OrderType, MT_TransID, MT_PayType, MT_Signature, Inv_ID) VALUES (:partnerCode, :orderId, :requestId, :amount, :orderInfo, :orderType, :transId, :payType, :signature, :inv_id)";
-            $stmt = $this->conn->prepare($query);
-            $stmt->execute(array(
-                ':partnerCode' => $partnerCode,
-                ':orderId' => $orderId,
-                ':requestId' => $requestId,
-                ':amount' => $amount,
-                ':orderInfo' => $orderInfo,
-                ':orderType' => $orderType,
-                ':transId' => $transId,
-                ':payType' => $payType,
-                ':signature' => $signature,
-                ':inv_id' => $inv_id
-            ));
-            return $this->conn->lastInsertId();
-        }
+            $query = "INSERT INTO Momo_Transaction (MT_PartnerCode, MT_OrderID, MT_RequestID, MT_Ammount, MT_OrderInfo, MT_OrderType, MT_TransID, MT_PayType, )";
 
-        public function UpdateInvoiceMomoID($momo_id, $inv_id) {
-            $query = "UPDATE Invoice SET MT_ID = :mt_id, Inv_Status = 'Paid' WHERE Inv_ID = :inv_id";
-            $sql = $this->conn->prepare($query);
-            $sql->execute([':mt_id' => $momo_id, ':inv_id' => $inv_id]);
         }
 
     }

@@ -579,7 +579,7 @@
                     $saveMomo = $customerModel ->saveMomoPayment($partnerCode, $orderId, $requestId, $amount, $orderInfo, $orderType, $transId, $payType, $signature, $inv_id);
 
                     if($saveMomo !== null) {
-                        $customerModel->UpdateInvoiceMomoID($saveMomo, $inv_id);
+                        $customerModel->UpdateInvoiceVnpayID($saveMomo, $inv_id);
                     }
                 }
 

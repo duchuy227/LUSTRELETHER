@@ -294,9 +294,8 @@
                                 <label class="label mb-3">Choose Payment Method</label>
                                 
                                 <div class="col-md-6">
-                                    <a href="index.php?action=customer_momo_payment&id=<?php echo $paymentinfo['Inv_ID'] ?>">
-                                        <img src="././views/Img/momo.jpg" width="140" height="140">
-                                    </a>
+                                <a href="index.php?action=customer_vnpay_payment&id=<?php echo $paymentinfo['Inv_ID'] ?>">
+                                    <img src="././views/Img/momo.jpg" width="140" height="140">
                                 </div>
 
                                 <div class="col-md-6">
