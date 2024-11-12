@@ -369,6 +369,7 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
                 $customerModel = new CustomerModels();
                 $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
+                $invoice = $customerModel ->GetAllInvoiceByCurrentCus($_SESSION['cus_id']);
 
                 include 'Views/Customer/Payment.php';
             }

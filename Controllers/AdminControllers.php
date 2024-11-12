@@ -358,7 +358,6 @@
                             $message = "There are currently no bookings with service: $service";
                         }
                     }
-
                 } else {
                     $booking = $AdminModels->getAllBooking();
                 }

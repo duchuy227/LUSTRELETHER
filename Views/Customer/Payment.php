@@ -210,19 +210,25 @@
                         <table style="max-width:100%" class="table table-bordered">
                             <thead>
                                 <tr class="table-primary">
-                                    <th style="font-size: 16px; font-weight: 400; ">Date</th>
                                     <th style="font-size: 16px; font-weight: 400; ">Service</th>
-                                    <th style="font-size: 16px; font-weight: 400;">Total Money</th>
+                                    <th style="font-size: 16px; font-weight: 400; ">Influencer</th>
+                                    <th style="font-size: 16px; font-weight: 400;">Money (VAT)</th>
                                     <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Status</th>
                                     <th scope="col">&nbsp;</th>
                                 </tr>
                             </thead>
                                 <tbody>
+                                    <?php foreach($invoice as $i): ?>
                                     <tr>
-                                        <td>20/04/2024</td>
-                                        <td>Event 1</td>
-                                        <td>2500000 VND</td>
-                                        <td>Pending</td>
+                                        <td><?php echo $i['Booking_Content'] ?></td>
+                                        <td><?php echo $i['Influ_Fullname'] ?></td>
+                                        <td><?php echo $i['Inv_VATamount'] ?></td>
+                                        <td style="font-weight: 500; color: <?php 
+                                            if ($i['Inv_Status'] === 'Unpaid') {
+                                                echo '#F79A03';
+                                            } elseif ($i['Inv_Status'] === 'Paid') {
+                                                echo '#069603';
+                                            } ?>"><?php echo $i['Inv_Status'] ?></td>
                                         <td style="font-size: 16px; font-weight: 400; text-align: center; width: 100px" scope="row">
                                             <div style="margin: auto; width: 60px;" class="d-inline-flex justify-content-between align-items-center">
                                                 <a href="#">
@@ -234,7 +240,8 @@
                                             </div>
                                         </td>
                                     </tr>
-                            </tbody>
+                                    <?php endforeach; ?>
+                                </tbody>
                         </table>
                     </div>
                 </div>

@@ -455,5 +455,16 @@
             $sql = $this->conn->prepare($query);
             $sql->execute(array(':id' => $id));
         }
+
+        public function GetAllInvoiceByCurrentCus($cus_id){
+            $query = "SELECT Invoice.*, Booking.Booking_Content, Influencer.Influ_Fullname
+                        FROM Invoice
+                        INNER JOIN Booking ON Invoice.Booking_ID = Booking.Booking_ID
+                        INNER JOIN Influencer ON Booking.Influ_ID = Influencer.Influ_ID
+                        WHERE Booking.Cus_ID = :cus_id;";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':cus_id' => $cus_id]);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
     }
 ?>
