@@ -568,7 +568,7 @@
                     $partnerCode = $_GET['partnerCode'];
                     $orderId = $_GET['orderId'];
                     $requestId = $_GET['requestId'];
-                    $amount = $_GET['amount'];
+                    $amount = $_GET['amount'] /100;
                     $orderInfo = $_GET['orderInfo'];
                     $orderType = $_GET['orderType'];
                     $transId = $_GET['transId'];
