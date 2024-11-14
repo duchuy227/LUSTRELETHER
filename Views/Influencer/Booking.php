@@ -149,7 +149,7 @@
                                                 <a href="index.php?action=influencer_detailbooking&id=<?php echo $b['Booking_ID']?>">
                                                     <img  src="././Views/Img/u223.png" width="25" height="25">
                                                 </a>
-                                            <?php elseif ($b['Booking_Status'] === 'Rejected' && $b['Booking_Status'] === 'Approval' && $b['Booking_Status'] === 'In Progress' && $b['Booking_Status'] === 'Completed') : ?>
+                                            <?php elseif ($b['Booking_Status'] === 'Rejected' || $b['Booking_Status'] === 'In Progress' || $b['Booking_Status'] === 'Completed') : ?>
                                                 <a href="index.php?action=influencer_detailbooking&id=<?php echo $b['Booking_ID']?>">
                                                     <img  src="././Views/Img/u223.png" width="25" height="25">
                                                 </a>

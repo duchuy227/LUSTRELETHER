@@ -154,7 +154,7 @@
                                                     <label class="label">Expense</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="content"><?php echo $booking['Booking_Expense'] ?></label>
+                                                    <label class="content"><?php echo number_format($booking['Booking_Expense']) ?> VND</label>
                                                 </div>
                                             </div>
                                         </div>
