@@ -399,6 +399,19 @@
             $sql->execute([':status' => $status, ':booking_id' => $booking_id]);
         }
 
+        public function isBookingPaid($booking_id) {
+            $sql = "SELECT MT_ID, VNPay_ID 
+                    FROM Invoice 
+                    WHERE Booking_ID = :booking_id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':booking_id', $booking_id);
+            $stmt->execute();
+            $invoice = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            // Kiểm tra nếu MT_ID hoặc VNPay_ID có giá trị (đã thanh toán)
+            return !empty($invoice['MT_ID']) || !empty($invoice['VNPay_ID']);
+        }
+
         public function CreateInvoiceForBooking($booking_id, $booking_expense) {
             $query = "INSERT INTO Invoice (Inv_TotalAmount, Inv_VATamount, Inv_Status, Booking_ID, MT_ID, VNPay_ID) 
                     VALUES (:total_amount, :vat_amount, 'Unpaid', :booking_id, NULL, NULL)";
@@ -433,6 +446,33 @@
             $sql->execute([':influ_id' => $influ_id]);
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function getBookingCount($influ_id) {
+            $query = 'SELECT COUNT(*) as total_count FROM Booking Where Booking.Influ_ID = :influ_id';
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([':influ_id' => $influ_id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total_count'];
+        }
+
+        public function getTimeline($influ_id, $limit = 3) {
+            // Truy vấn SQL để lấy 3 booking mới nhất của influencer theo Booking_CreateTime
+            $query = "SELECT * FROM Booking WHERE Booking.Influ_ID = :influ_id ORDER BY Booking_CreateTime DESC LIMIT :limit";
+        
+            $stmt = $this->conn->prepare($query);
+        
+            // Ràng buộc giá trị cho tham số :influ_id và :limit
+            $stmt->bindValue(':influ_id', $influ_id, PDO::PARAM_INT);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        
+            // Thực thi câu truy vấn
+            $stmt->execute();
+        
+            // Trả về kết quả dưới dạng mảng kết hợp
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
+        
 
     }
 ?>

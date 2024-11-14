@@ -941,6 +941,17 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function getLatestPosts($limit = 2) {
+            $query = "SELECT * FROM Post 
+                    JOIN Influencer ON Post.Influ_ID = Influencer.Influ_ID
+                    JOIN Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID
+                    ORDER BY Post_CreateTime DESC LIMIT :limit";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
         
         
     }

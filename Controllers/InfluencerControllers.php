@@ -202,6 +202,12 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true){
                 $influencerModel =  new influencerModels();
                 $influInfo = $influencerModel -> getInfluencerbyUsername($_SESSION['influencer_username']);
+                $article =  $influencerModel -> getAllArticle($_SESSION['influ_id']);
+                $bookings = $influencerModel->TimeLine($_SESSION['influ_id']);
+
+                $book = $influencerModel -> getBookingCount($_SESSION['influ_id']);
+
+                $timeline = $influencerModel -> getTimeline($_SESSION['influ_id']);
                 
                 include  'views/Influencer/Dashboard.php';
             }
@@ -323,29 +329,27 @@
                 $influencerModel = new InfluencerModels();
                 $influInfo = $influencerModel->getInfluencerProfile($_SESSION['influ_id']);
                 $bookings = $influencerModel->TimeLine($_SESSION['influ_id']);
-                
                 $booking = $influencerModel->getBookingDetail($_SESSION['influ_id'], $booking_id);
-        
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    $status = $_POST['status'];
-                    $influencerModel->UpdateTimelineStatus($status, $booking_id);
-        
-                    // Nếu trạng thái mới là 'Completed', thêm bản ghi vào bảng Invoice
-                    if ($status === 'Completed') {
-                        // Giả sử booking_expense có trong thông tin $booking
-                        $booking_expense = $booking['Booking_Expense'];
-                        $inv_id = $influencerModel->CreateInvoiceForBooking($booking_id, $booking_expense);
                 
-                        // Cập nhật Inv_ID trong bảng Booking
-                        $influencerModel->UpdateBookingWithInvoiceId($booking_id, $inv_id);
-                    }
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    // Kiểm tra thanh toán trước khi thay đổi trạng thái
+                    $isPaid = $influencerModel->isBookingPaid($booking_id);
         
-                    header('Location: index.php?action=influencer_timeline');
-                    exit();
+                    if (!$isPaid) {
+                        // Nếu chưa thanh toán, hiển thị thông báo lỗi
+                        $_SESSION['error_message'] = "Customer has not paid for this booking, please remind them.";
+                    } else {
+                        // Nếu đã thanh toán, cho phép thay đổi trạng thái
+                        $status = $_POST['status'];
+                        $influencerModel->UpdateTimelineStatus($status, $booking_id);
+                        header('Location: index.php?action=influencer_timeline');
+                        exit();
+                    }
                 }
                 include 'views/Influencer/changetimeline.php';
             }
         }
+        
         
 
         public function influencer_booking(){
@@ -382,6 +386,17 @@
                     $status = $_POST['status'];
                     $Note = $_POST['Note'];
                     $influencerModel->updateBookingStatus($status, $Note, $booking_id);
+
+                    // Nếu trạng thái mới là 'Completed', thêm bản ghi vào bảng Invoice
+                    if ($status === 'In Progress') {
+                        // Giả sử booking_expense có trong thông tin $booking
+                        $booking_expense = $booking['Booking_Expense'];
+                        $inv_id = $influencerModel->CreateInvoiceForBooking($booking_id, $booking_expense);
+                
+                        // Cập nhật Inv_ID trong bảng Booking
+                        $influencerModel->UpdateBookingWithInvoiceId($booking_id, $inv_id);
+                    }
+
                     header('Location: index.php?action=influencer_timeline');
                     exit();
                 }

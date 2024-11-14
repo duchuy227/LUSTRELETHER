@@ -63,6 +63,30 @@
         font-weight: 400;
         color: #333;
     }
+
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #333;
+        color: #721c24;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100px;
+        border-radius: 10px;
+    }
     
 
 </style>
@@ -142,7 +166,7 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <div class="d-flex mt-4">
-                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                    <button type="submit" class="btn btn-success" onclick="showPopup()">Submit</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,6 +179,26 @@
         </div>
     </div>
 
+    <?php if (isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])): ?>
+        <div class="popup" id="errorPopup">
+            <p><?php echo $_SESSION['error_message']; ?></p>
+            <button class="btn" onclick="closePopup()">Close</button>
+        </div>
+        <?php unset($_SESSION['error_message']); ?>
+    <?php endif; ?>
+
+    <script>
+        function showPopup() {
+            document.getElementById('errorPopup').style.display = 'block';
+        }
+        // Đóng popup khi bấm nút "Close"
+        function closePopup() {
+            const popup = document.getElementById('errorPopup');
+            if (popup) {
+                popup.style.display = 'none';
+            }
+        }
+    </script>
 
 
     <script>

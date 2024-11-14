@@ -598,6 +598,24 @@
 
                     if($saveMomo !== null) {
                         $customerModel->UpdateInvoiceMomoID($saveMomo, $inv_id);
+                        $invoiceDetails = $customerModel->getTransactionDetailsByInvoiceID($inv_id, $_SESSION['cus_id']);
+                        $invoiceTotalAmount = $invoiceDetails['Inv_VATamount'];
+
+                        $adminIncome = $invoiceTotalAmount * 0.30;
+                        $influencerIncome = $invoiceTotalAmount * 0.70;
+
+                        $bookingDetails = $customerModel->getBookingByInvoiceID($inv_id);
+                        $influencerId = $bookingDetails['Influ_ID'];
+
+                        // Cập nhật Admin Income (cộng dồn vào Ad_Income hiện tại)
+                        $currentAdminIncome = $customerModel->getAdminIncome();
+                        $newAdminIncome = $currentAdminIncome + $adminIncome;
+                        $customerModel->updateAdminIncome($newAdminIncome);
+
+                        // Cập nhật Influencer Income (cộng dồn vào Influ_Income hiện tại)
+                        $currentInfluencerIncome = $customerModel->getInfluencerIncome($influencerId);
+                        $newInfluencerIncome = $currentInfluencerIncome + $influencerIncome;
+                        $customerModel->updateInfluencerIncome($influencerId, $newInfluencerIncome);
                     }
                 }
 

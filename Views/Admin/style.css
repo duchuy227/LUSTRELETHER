@@ -314,8 +314,6 @@ main .insights .progress .number{
     border-radius: var(--card-border-radius);
     padding: var(--card-padding);
     text-align: center;
-    box-shadow: var(--box-shadow);
-    transition: all .3s ease;
     color: var(--clr-dark);
   }
   main .recent_order table:hover{
@@ -323,6 +321,7 @@ main .insights .progress .number{
   }
 
   main table tbody td{
+    font-size: 14px;
     height: 3.8rem;
     border-bottom: 1px solid var(--clr-white);
     color:var(--clr-dark-variant)

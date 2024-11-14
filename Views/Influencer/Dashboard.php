@@ -98,14 +98,38 @@
     background-color: var(--primary-color);
     transform: scale(1.05);
     }
-    .days .day.today {
-    color: #fff;
-    background-color: var(--primary-color);
-    }
+    
     .days .day.next,
     .days .day.prev {
     color: #ccc;
     }
+    .day.booked {
+        background-color: #2200B2;
+        color: white;
+    }
+
+    /* Lớp completed sẽ thay đổi màu nền thành xanh lá */
+    .past.completed {
+        background-color: #02b519; /* Màu xanh lá cây */
+        opacity: 0.5; /* Làm mờ */
+    }
+
+    /* Lớp past sẽ làm mờ và thay đổi màu chữ */
+    .day.past {
+        opacity: 0.5; /* Làm mờ các ngày đã qua */
+        color: #bbb;  /* Thay đổi màu sắc các ngày đã qua */
+        pointer-events: none; /* Ngừng các sự kiện click cho các ngày đã qua */
+    }
+
+    /* Đảm bảo rằng nếu ngày vừa booked vừa past, booked sẽ được ưu tiên */
+    .day.booked.past {
+        background-color: #02b519 !important;
+        color: white !important;
+        opacity: 0.5 !important;  /* Hủy opacity của lớp past nếu có lớp booked */
+    }
+
+
+
 
     
 
@@ -147,11 +171,11 @@
             <main>
                 <div class="projectCard">
                     <div class="projectTop">
-                        <h2>Customer Booking</h2>
+                        <h2>Total Booking</h2>
                         <br>
-                        <div class="number">
-                                <span>20</span>
-                                <img src="./././Image/u9.png">
+                        <div class="number" style="display: flex; justify-content: center; align-items: center; gap: 20px">
+                            <span><?php echo $book ?></span>
+                            <img src="./././Image/u9.png">
                         </div>
                     </div>
                 </div>
@@ -161,22 +185,20 @@
                         <h2>Article</h2>
                         <img class="options-icon" src="./././Image/u42.png" width="35" height="35" style="opacity: 50%;">
                     </div>
+                    <?php foreach ($article as $a):?>
                     <div class="article">
-                        <span>A Storm Breaker</span>
-                        <p class="rejected">Rejected</p>
+                        <span><?php echo $a['Post_Title'] ?></span>
+                        <p style="font-weight: 500; color: <?php 
+                            if ($a['Post_Status'] === 'Pending') {
+                                echo '#F79A03';
+                            } elseif ($a['Post_Status'] === 'Rejected') {
+                                echo '#DB0101'; 
+                            } elseif ($a['Post_Status'] === 'Active') {
+                                echo '#069603';
+                            } ?>;"><?php echo $a['Post_Status'] ?>
+                        </p>
                     </div>
-                    <div class="article">
-                        <span>Hello world</span>
-                        <p class="rejected">Rejected</p>
-                    </div>
-                    <div class="article">
-                        <span>Smile All Days</span>
-                        <p class="posted">Posted</p>
-                    </div>
-                    <div class="article">
-                        <span>A Day in My Life</span>
-                        <p class="posted">Posted</p>
-                    </div>
+                    <?php endforeach;?>
                 </div>
                 
                 <div class="projectCard2">
@@ -243,22 +265,13 @@
                         <h2>Timeline</h2>
                         <img class="options-icon" src="./././Image/u42.png" width="35" height="35" style="opacity: 50%;">
                     </div>
+                    <br>
+                    <?php foreach($timeline as $t): ?>
                     <div class="timeline">
-                        <span><img style="opacity: 50%; margin-right: 5px;" src="./././Image/u79.png" width="25" height="25">Event 1</span>
-                        <p>10/09/2024</p>
+                        <span><img style="opacity: 50%; margin-right: 5px;" src="./././Image/u79.png" width="25" height="25"><?php echo $t['Booking_Content'] ?></span>
                     </div>
-                    <div class="timeline">
-                        <span><img style="opacity: 50%; margin-right: 5px;" src="./././Image/u79.png" width="25" height="25">Event 1</span>
-                        <p>11/09/2024</p>
-                    </div>
-                    <div class="timeline">
-                        <span><img style="opacity: 50%; margin-right: 5px;" src="./././Image/u79.png" width="25" height="25">Event 1</span>
-                        <p>12/09/2024</p>
-                    </div>
-                    <div class="timeline">
-                        <span><img style="opacity: 50%; margin-right: 5px;" src="./././Image/u79.png" width="25" height="25">Event 1</span>
-                        <p>13/09/2024</p>
-                    </div>
+                    <br>
+                    <?php endforeach; ?>
                 </div>
 
                 <div class="projectCard3">
@@ -333,128 +346,100 @@
 
     <script>
         const daysContainer = document.querySelector(".days"),
-        nextBtn = document.querySelector(".next-btn"),
-        prevBtn = document.querySelector(".prev-btn"),
-        month = document.querySelector(".month"),
-        todayBtn = document.querySelector(".today-btn");
-    
+            nextBtn = document.querySelector(".next-btn"),
+            prevBtn = document.querySelector(".prev-btn"),
+            month = document.querySelector(".month"),
+            todayBtn = document.querySelector(".today-btn");
+
+        // Giả sử bạn đã có danh sách các booking với thông tin 'Date' và 'Booking_Status' từ PHP
+        const bookedDates = <?php echo json_encode(array_column($bookings ?? [], 'Date')); ?>;
+        const completedBookings = <?php echo json_encode(array_column(array_filter($bookings ?? [], function($booking) {
+            return $booking['Booking_Status'] === 'Completed';
+        }), 'Date')); ?>;
+
         const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+            "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
         ];
-    
+
         const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    
-        // get current date
+
         const date = new Date();
-    
-        // get current month
         let currentMonth = date.getMonth();
-    
-        // get current year
         let currentYear = date.getFullYear();
-    
-        // function to render days
+
         function renderCalendar() {
-        // get prev month current month and next month days
-        date.setDate(1);
-        const firstDay = new Date(currentYear, currentMonth, 1);
-        const lastDay = new Date(currentYear, currentMonth + 1, 0);
-        const lastDayIndex = lastDay.getDay();
-        const lastDayDate = lastDay.getDate();
-        const prevLastDay = new Date(currentYear, currentMonth, 0);
-        const prevLastDayDate = prevLastDay.getDate();
-        const nextDays = 7 - lastDayIndex - 1;
-    
-        // update current year and month in header
-        month.innerHTML = `${months[currentMonth]} ${currentYear}`;
-    
-        // update days html
-        let days = "";
-    
-        // prev days html
-        for (let x = firstDay.getDay(); x > 0; x--) {
-            days += `<div class="day prev">${prevLastDayDate - x + 1}</div>`;
-        }
-    
-        // current month days
-        for (let i = 1; i <= lastDayDate; i++) {
-            // check if its today then add today class
-            if (
-            i === new Date().getDate() &&
-            currentMonth === new Date().getMonth() &&
-            currentYear === new Date().getFullYear()
-            ) {
-            // if date month year matches add today
-            days += `<div class="day today">${i}</div>`;
-            } else {
-            //else dont add today
-            days += `<div class="day ">${i}</div>`;
+            date.setDate(1); // Đặt ngày thành ngày đầu tiên của tháng hiện tại
+            const firstDay = new Date(currentYear, currentMonth, 1); // Ngày đầu tiên của tháng
+            const lastDay = new Date(currentYear, currentMonth + 1, 0); // Ngày cuối cùng của tháng
+            const lastDayDate = lastDay.getDate();
+            const firstDayIndex = firstDay.getDay(); // Thứ trong tuần của ngày đầu tiên
+            
+            month.innerHTML = `${months[currentMonth]} ${currentYear}`;
+            let daysHTML = "";
+
+            // Thêm khoảng trống cho các ngày trước ngày đầu tiên của tháng
+            for (let x = 0; x < firstDayIndex; x++) {
+                daysHTML += `<div class="day empty"></div>`; // Ô trống
             }
+
+            // Lặp qua tất cả các ngày trong tháng
+            for (let i = 1; i <= lastDayDate; i++) {
+                const currentDay = new Date(currentYear, currentMonth, i);
+                const currentDayFormatted = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+                const isBooked = bookedDates.includes(currentDayFormatted); // Ngày có sự kiện được đặt
+                const isTodayOrFuture = currentDay < new Date().setHours(0, 0, 0, 0);
+
+                let dayClass = "";
+
+                if (isTodayOrFuture) {
+                    const isCompleted = completedBookings.some(booking => booking['Booking_StartDate'] === currentDayFormatted);
+                    if (isCompleted) {
+                        dayClass = "completed";  // Nếu booking đã hoàn thành, thêm lớp completed
+                    }
+                    dayClass += " past";  // Thêm lớp past cho các ngày đã qua
+                }
+
+                // Thêm lớp 'booked' nếu ngày này đã được đặt
+                if (isBooked) {
+                    dayClass += " booked";
+                }
+
+                daysHTML += `<div class="day ${dayClass}">${i}</div>`;
+            }
+
+            daysContainer.innerHTML = daysHTML;
+            hideTodayBtn();
         }
-    
-        // next MOnth days
-        for (let j = 1; j <= nextDays; j++) {
-            days += `<div class="day next">${j}</div>`;
-        }
-    
-        // run this function with every calendar render
-        hideTodayBtn();
-        daysContainer.innerHTML = days;
-        }
-    
+
+
         renderCalendar();
-    
+
         nextBtn.addEventListener("click", () => {
-        // increase current month by one
-        currentMonth++;
-        if (currentMonth > 11) {
-            // if month gets greater that 11 make it 0 and increase year by one
-            currentMonth = 0;
-            currentYear++;
-        }
-        // rerender calendar
-        renderCalendar();
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
         });
-    
-        // prev monyh btn
+
         prevBtn.addEventListener("click", () => {
-        // increase by one
-        currentMonth--;
-        // check if let than 0 then make it 11 and deacrease year
-        if (currentMonth < 0) {
-            currentMonth = 11;
-            currentYear--;
-        }
-        renderCalendar();
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
         });
-    
-        // go to today
+
         todayBtn.addEventListener("click", () => {
-        // set month and year to current
-        currentMonth = date.getMonth();
-        currentYear = date.getFullYear();
-        // rerender calendar
-        renderCalendar();
+            currentMonth = date.getMonth();
+            currentYear = date.getFullYear();
+            renderCalendar();
         });
-    
-        // lets hide today btn if its already current month and vice versa
-    
+
         function hideTodayBtn() {
-            if (
-                currentMonth === new Date().getMonth() &&
-                currentYear === new Date().getFullYear()
-            ) {
+            if (currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
                 todayBtn.style.display = "none";
             } else {
                 todayBtn.style.display = "flex";

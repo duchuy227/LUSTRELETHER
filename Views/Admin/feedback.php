@@ -182,7 +182,6 @@
                                 <th style="font-size: 18px; font-weight: 400;">Title</th>
                                 <th style="font-size: 18px; font-weight: 400;">Content</th>
                                 <th style="font-size: 18px; font-weight: 400;">Time</th>
-                                <th style="width: 20%" scope="col">&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody class="hello">

@@ -344,8 +344,10 @@
             todayBtn = document.querySelector(".today-btn");
 
         // Giả sử bạn đã có danh sách các booking với thông tin 'Date' và 'Booking_Status' từ PHP
-        const bookedDates = <?php echo json_encode(array_column($bookings, 'Date')); ?>;
-        const completedBookings = <?php echo json_encode(array_filter($bookings, function($booking) { return $booking['Booking_Status'] === 'Completed'; })); ?>;
+        const bookedDates = <?php echo json_encode(array_column($bookings ?? [], 'Date')); ?>;
+        const completedBookings = <?php echo json_encode(array_column(array_filter($bookings ?? [], function($booking) {
+            return $booking['Booking_Status'] === 'Completed';
+        }), 'Date')); ?>;
 
         const months = [
             "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"

@@ -48,6 +48,8 @@
 
                 $booking_list = $AdminModels -> getLatestBookings();
 
+                $articles = $AdminModels -> getLatestPosts();
+
                 include  'views/Admin/Dashboard.php';
             }
         }

@@ -213,7 +213,8 @@
                                     <th style="font-size: 16px; font-weight: 400; ">Service</th>
                                     <th style="font-size: 16px; font-weight: 400; ">Influencer</th>
                                     <th style="font-size: 16px; font-weight: 400;">Money (VAT)</th>
-                                    <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Status</th>
+                                    <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Invoice Status</th>
+                                    <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Booking Status</th>
                                     <th scope="col">&nbsp;</th>
                                 </tr>
                             </thead>
@@ -229,16 +230,29 @@
                                             } elseif ($i['Inv_Status'] === 'Paid') {
                                                 echo '#069603';
                                             } ?>"><?php echo $i['Inv_Status'] ?></td>
+                                        <td style="font-weight: 500; color: <?php 
+                                            if ($i['Booking_Status'] === 'In Progress') {
+                                                echo '#2200B2';
+                                            } elseif ($i['Booking_Status'] === 'Completed') {
+                                                echo '#069603';
+                                            } ?>"><?php echo $i['Booking_Status'] ?></td>
                                         <td style="font-size: 16px; font-weight: 400; text-align: center; width: 100px" scope="row">
                                             <div style="margin: auto; width: 60px;" class="d-flex justify-content-between align-items-center">
-                                                <?php if ($i['Inv_Status'] === 'Unpaid'): ?>
+                                                <?php if ($i['Inv_Status'] === 'Unpaid' && $i['Booking_Status'] === 'In Progress'): ?>
                                                 <a href="index.php?action=customer_paymentinfo&id=<?php echo $i['Inv_ID'] ?>">
                                                     <img  src="././Views/Img/wallet.png" width="25" height="25">
                                                 </a>
-                                                <?php elseif ($i['Inv_Status'] === 'Paid'): ?>
+                                                
+                                                <?php elseif ($i['Inv_Status'] === 'Paid' && $i['Booking_Status'] === 'Completed'): ?>
                                                 <a href="index.php?action=customer_detailInvoice&id=<?php echo $i['Inv_ID'] ?>">
                                                     <img src="././Views/Img/u223.png" width="25" height="25">
                                                 </a>
+
+                                                <?php elseif ($i['Inv_Status'] === 'Paid' && $i['Booking_Status'] === 'In Progress'): ?>
+                                                <a href="index.php?action=customer_detailInvoice&id=<?php echo $i['Inv_ID'] ?>">
+                                                    <img src="././Views/Img/u223.png" width="25" height="25">
+                                                </a>
+
                                                 <?php endif; ?>
                                             </div>
                                         </td>

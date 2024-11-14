@@ -28,9 +28,8 @@
         border-radius: var(--card-border-radius);
         padding: var(--card-padding);
         text-align: center;
-        box-shadow: var(--box-shadow);
-        transition: all .3s ease;
         color: var(--clr-dark);
+        font-size: 13px;
         }
         main .recent_order table:hover{
         box-shadow: none;
@@ -94,9 +93,24 @@
                         <tr>
                             <td><?php echo $b['Booking_CreateTime'] ?></td>
                             <td><?php echo $b['Booking_Content'] ?></td>
-                            <td><?php echo $b['Booking_Expense'] ?></td>
-                            <td><?php echo $b['Booking_Status'] ?></td>
-                            <td>Details</td>
+                            <td><?php echo number_format($b['Booking_Expense']) ?></td>
+
+                            <td style="font-weight: 400; color: <?php 
+                                if ($b['Booking_Status'] === 'Pending') {
+                                    echo '#F79A03';
+                                } elseif ($b['Booking_Status'] === 'Rejected') {
+                                    echo '#DB0101'; 
+                                } elseif ($b['Booking_Status'] === 'Approval') {
+                                    echo '#6F00B2';
+                                } elseif ($b['Booking_Status'] === 'In Progress') {
+                                    echo '#2200B2';
+                                } elseif ($b['Booking_Status'] === 'Completed') {
+                                    echo '#069603';
+                                } 
+                                ?>"><?php echo $b['Booking_Status'] ?></td>
+                            <td>
+                                <a style="color: #0066FF; font-weight: 500" href="index.php?action=admin_detailbooking&id=<?php echo $b['Booking_ID']?>">Detail</a>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -130,32 +144,22 @@
         </div>
 
         <div style="margin-left: 5px;" class="recent_updates">
-        <h2 style="margin-bottom: 10px;">Recent Article</h2>
-        <div class="updates">
-            <div class="update">
-                <div class="message">
-                    <p style="font-size: 14px; color: #666666; font-weight:400; margin-bottom: 10px">
-                        Quoc Bao <span>(MC)</span> has posted an article
-                    </p>
-                
-                    <span style="color: #ff3030; font-size: 13px; font-weight:400">
-                        Last 2 hours
-                    </span>
+            <h2 style="margin-bottom: 10px;">Recent Article</h2>
+            <div class="updates">
+                <?php foreach ($articles as $article): ?>
+                <div class="update">
+                    <div class="message">
+                        <p style="font-size: 15px; color: #666666; font-weight:400; margin-bottom: 10px">
+                            <?php echo $article['Influ_Username']?><span style="color: #FF6600;"> (<?php echo $article['InfluType_Name']?>) </span> has posted an article
+                        </p>
+                    
+                        <a href="index.php?action=admin_detailarticle&id=<?php echo $article['Post_ID'] ?>"><span style="color: #0000FF; font-size: 14px; font-weight:500">
+                            See Detail
+                        </span></a>
+                    </div>
                 </div>
+                <?php endforeach; ?>
             </div>
-            <div class="update">
-                <div class="message">
-                    <p style="font-size: 14px; color: #666666; font-weight:400; margin-bottom: 10px">
-                        Quoc Bao <span>(MC)</span> has posted an article
-                    </p>
-                    <span style="color: #ff3030; font-size: 13px; font-weight:400">
-                        Last 2 hours
-                    </span>
-                </div>
-            </div>
-
-            
-        </div>
         </div>
 
 
