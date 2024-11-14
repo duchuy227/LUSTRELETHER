@@ -15,6 +15,26 @@
         font-weight: 600;
         margin: auto;
     }
+
+    main table tbody td{
+        height: 3.8rem;
+        border-bottom: 1px solid var(--clr-white);
+        color:var(--clr-dark-variant)
+    }
+
+    main .recent_order table{
+        background: var(--clr-white);
+        width: 100%;
+        border-radius: var(--card-border-radius);
+        padding: var(--card-padding);
+        text-align: center;
+        box-shadow: var(--box-shadow);
+        transition: all .3s ease;
+        color: var(--clr-dark);
+        }
+        main .recent_order table:hover{
+        box-shadow: none;
+        }
     
 
     

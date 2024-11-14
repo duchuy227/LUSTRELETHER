@@ -254,7 +254,7 @@
                         <select name="influType">
                             <option value="" hidden>Influencer</option>
                             <option value="7">KOC</option>
-                            <option value="9">KOL</option>
+                            <option value="6">KOL</option>
                             <option value="5">MC</option>
                         </select>
                     </div>

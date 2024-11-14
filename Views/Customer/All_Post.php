@@ -274,7 +274,7 @@
                         if ($count > 0): ?>
                             <?php foreach ($shownImages as $imagePath): ?>
                                 <div class="col-md-<?php echo $colSize; ?> col-6">
-                                    <img class="carousel-image" style=" border-radius: 5px; object-fit:cover; cursor:pointer" src="<?php echo htmlspecialchars($imagePath); ?>" width="45" height="45" onclick="changeProfileImage(this.src)"/>
+                                    <img class="carousel-image" style=" border-radius: 5px; object-fit:cover; cursor:pointer;" src="<?php echo htmlspecialchars($imagePath); ?>" width="45" height="45" onclick="changeProfileImage(this.src)"/>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
@@ -324,13 +324,16 @@
                             $count = count($otherImagess);
 
                             $colSize = 12;
+                            if ($count == 1) $colSize = 12;
                             if ($count == 2) $colSize = 6;
+                            if ($count == 3) $colSize = 4;
+                            if ($count == 4) $colSize = 6;
 
 
                         if ($count > 0): ?>
                             <?php foreach ($otherImagess as $imagePath): ?>
                                 <div class="col-md-<?php echo $colSize; ?>">
-                                    <img style="object-fit:cover; border-radius: 10px; max-width:100%" src="<?php echo htmlspecialchars($imagePath); ?>" width="95%" height="500" class="image-fluid"/>
+                                    <img style="object-fit:cover; border-radius: 10px; max-width:100%;" src="<?php echo htmlspecialchars($imagePath); ?>" width="95%" height="300" class="image-fluid"/>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>

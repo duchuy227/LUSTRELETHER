@@ -261,7 +261,7 @@
         }
 
         public function getAllArticle($influ_id){
-            $query = "SELECT * FROM Post WHERE Influ_ID = :influ_id AND Post_Status  = 'Pending'";
+            $query = "SELECT * FROM Post WHERE Influ_ID = :influ_id";
             $stmt = $this->conn->prepare($query);
             $stmt->execute(array(':influ_id' => $influ_id));
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

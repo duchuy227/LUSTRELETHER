@@ -171,7 +171,9 @@
                 <?php foreach (array_slice($influencerss, 0, 4) as $i): ?>
                     <div class="col-md-3 mb-4">
                         <div class="card-viral">
+                            <a href="index.php?action=customer_influencerDetail&id=<?php echo $i['Influ_ID'] ?>">
                             <img class="card-img-top" src="<?php echo $i['Influ_Image'] ?>"/>
+                            </a>
                             <div class="card-body-viral">
                                 <h5 class="card-title-viral"><?php echo $i['Influ_Nickname'] ?></h5>
                                 <p class="card-text-viral"><?php echo $i['Influ_Address'] ?></p>
