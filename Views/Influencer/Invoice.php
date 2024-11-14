@@ -32,7 +32,7 @@
     .container1 .right main .projectCardd {
         position: relative;
         width: 100%;
-        height: 470px; 
+        height: auto; 
         background-color: rgba(255, 255, 255, 1);
         backdrop-filter: blur(5px);
         border-radius: 20px;
@@ -170,7 +170,7 @@
                         <div class="col-md-5">
                             <div class="income-container">
                                 <h3>My Income</h3>
-                                <div class="income-value">0.00 VND</div>
+                                <div class="income-value"><?php echo number_format($influInfo['Influ_Income']); ?> VND</div>
                             </div>
                         </div>
                     </div>
@@ -185,29 +185,39 @@
                                         <table style="max-width:100%" class="table table-bordered">
                                             <thead>
                                                 <tr class="table-primary">
-                                                    <th style="font-size: 16px; font-weight: 400;">Date</th>
-                                                    <th style="font-size: 16px; font-weight: 400;">Title</th>
-                                                    <th style="font-size: 16px; font-weight: 400;">Content</th>
+                                                    <th style="font-size: 16px; font-weight: 400;">Service</th>
+                                                    <th style="font-size: 16px; font-weight: 400;">Customer</th>
+                                                    <th style="font-size: 16px; font-weight: 400;">Money (VAT)</th>
                                                     <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Status</th>
                                                     <th scope="col">&nbsp;</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <?php foreach($invoice as $i): ?>
                                                 <tr>
-                                                    <td>30/10/2024</td>
-                                                    <td>Title 1</td>
-                                                    <td>
-                                                        <textarea readonly style="background: transparent; width: 100%; border:none" cols="30">Content 1</textarea>
+                                                    <td><?php echo $i['Booking_Content'] ?></td>
+                                                    <td><?php echo $i['Cus_Fullname'] ?></td>
+                                                    <td><?php echo number_format($i['Inv_VATamount']) ?> VND</td>
+                                                    <td style="font-weight: 500; color: <?php 
+                                                        if ($i['Inv_Status'] === 'Unpaid') {
+                                                            echo '#F79A03';
+                                                        } elseif ($i['Inv_Status'] === 'Paid') {
+                                                            echo '#069603';
+                                                        } ?>">
+                                                        <?php echo $i['Inv_Status'] ?>
                                                     </td>
-                                                    <td>Pending</td>
                                                     <td style="font-size: 16px; font-weight: 400; text-align: center; width: 100px" scope="row">
                                                         <div style="margin: auto;" class="d-inline-flex justify-content-between align-items-center">
+                                                        <?php if ($i['Inv_Status'] === 'Paid'): ?>
                                                             <a href="">
                                                                 <img src="././Views/Img/u223.png" width="30" height="30">
                                                             </a>
                                                         </div>
+                                                        <?php elseif ($i['Inv_Status'] === 'Unpaid'): ?>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
+                                                <?php endforeach; ?>
                                             </tbody>
                                         </table>
                                         <div id="deletePopup" class="popup">

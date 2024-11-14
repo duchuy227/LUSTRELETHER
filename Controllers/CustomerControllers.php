@@ -18,7 +18,7 @@
                     $result = $customer->CusLogin($Username, $Password);
 
                     if ($result === true) {
-                        header('Location: index.php?action=customer_dashboard');
+                        header('Location: index.php?action=customer_userpage');
                         exit();
                     } else {
                         $_SESSION['error_message'] = "Invalid Username or Password";
@@ -403,7 +403,7 @@
                 $vnp_TxnRef = rand(00,9999); // Tạo mã đơn hàng ngẫu nhiên
                 $vnp_OrderInfo = 'Thanh toan Booking';
                 $vnp_OrderType = 'billpayment';
-                $vnp_Amount = intval($invoiceInfo['Inv_VATamount']); // Giá trị đơn hàng (VNĐ)
+                $vnp_Amount = intval($invoiceInfo['Inv_VATamount']) * 100; // Giá trị đơn hàng (VNĐ)
                 $vnp_Locale = 'vn';
                 $vnp_BankCode = 'NCB';
                 $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -472,6 +472,24 @@
 
                     if($save !== null) {
                         $customerModel->UpdateInvoiceVnpayID($save, $inv_id);
+                        $invoiceDetails = $customerModel->getTransactionDetailsByInvoiceID($inv_id, $_SESSION['cus_id']);
+                        $invoiceTotalAmount = $invoiceDetails['Inv_VATamount'];
+
+                        $adminIncome = $invoiceTotalAmount * 0.30;
+                        $influencerIncome = $invoiceTotalAmount * 0.70;
+
+                        $bookingDetails = $customerModel->getBookingByInvoiceID($inv_id);
+                        $influencerId = $bookingDetails['Influ_ID'];
+
+                        // Cập nhật Admin Income (cộng dồn vào Ad_Income hiện tại)
+                        $currentAdminIncome = $customerModel->getAdminIncome();
+                        $newAdminIncome = $currentAdminIncome + $adminIncome;
+                        $customerModel->updateAdminIncome($newAdminIncome);
+
+                        // Cập nhật Influencer Income (cộng dồn vào Influ_Income hiện tại)
+                        $currentInfluencerIncome = $customerModel->getInfluencerIncome($influencerId);
+                        $newInfluencerIncome = $currentInfluencerIncome + $influencerIncome;
+                        $customerModel->updateInfluencerIncome($influencerId, $newInfluencerIncome);
                     }
                     
                 }

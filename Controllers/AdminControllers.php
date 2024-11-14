@@ -37,6 +37,17 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true){
                 $AdminModels =  new AdminModels();
                 $admins =  $AdminModels->getAllAdminAccount();
+
+                $booking = $AdminModels->getBookingCount();
+
+                $customers = $AdminModels ->getCustomerCount();
+
+                $influencers = $AdminModels ->getInfluCount();
+
+                $post = $AdminModels ->getArticleCount();
+
+                $booking_list = $AdminModels -> getLatestBookings();
+
                 include  'views/Admin/Dashboard.php';
             }
         }
@@ -327,6 +338,10 @@
                 $AdminModels =  new AdminModels();
                 $admins =  $AdminModels->getAllAdminAccount();
 
+                $totalInvoices = $AdminModels->getInvoiceCount();
+                
+                $totalVATAmount = $AdminModels->getTotalVATAmount();
+
                 include 'Views/Admin/invoice.php';
             }
         }
@@ -422,10 +437,7 @@
                             } else {
                                 echo "Error: Could not retrieve Com_ID.";
                             }
-                        } else {
-                            echo "Error: Admin ID is not set or is null.";
-                            exit;
-                        }
+                        } 
                     }
         
                     header("Location: index.php?action=admin_article");

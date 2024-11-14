@@ -423,5 +423,16 @@
             ]);
         }
 
+        public function getAllInvoiceByInflu($influ_id){
+            $query = "SELECT Invoice.*, Booking.Booking_Content, Customer.Cus_Fullname
+                        FROM Invoice
+                        INNER JOIN Booking ON Invoice.Booking_ID = Booking.Booking_ID
+                        INNER JOIN Customer ON Booking.Cus_ID = Customer.Cus_ID
+                        WHERE Booking.Influ_ID = :influ_id;";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':influ_id' => $influ_id]);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
     }
 ?>

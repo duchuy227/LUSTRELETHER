@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./views/Admin/style.css">
+    <link rel="stylesheet" href="./views/Admin/style.css?v=1.0">
     <title>Invoice</title>
 </head>
 <style>
@@ -126,12 +126,7 @@
         .card img {
             width: 50px;
             height: 50px;
-        }
-    
-        .card-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            
         }
         .select {
             -webkit-appearance: none;
@@ -256,9 +251,9 @@
                 <div class="col-md-4">
                     <div class="card">
                         <h5 style="font-size: 28px; font-weight: 600">Total Invoice</h5>
-                        <div class="card-content">
-                            <span style="font-size: 60px; font-weight: bold;">30</span>
-                            <img class="img" src="././Views/Img/u24.png" width="70" height="70"/>
+                        <div class="card-content" style="display: flex; justify-content: center; align-items: center; gap: 20px">
+                            <span style="font-size: 60px; font-weight: bold; gap: 10px"><?php echo $totalInvoices; ?></span>
+                            <img class="img" src="././Views/Img/u24.png"/>
                         </div>
                     </div>
                 </div>
@@ -266,8 +261,8 @@
                     <div class="card">
                         <h5 style="font-size: 28px; font-weight: 600">Total Money</h5>
                         <div style="margin-top: 30px;">
-                            <span style="font-size: 25px; font-weight: bold;">1.000.000</span>
-                            <img src="././Views/Img/dong.png"/>
+                            <span style="font-size: 25px; font-weight: bold;"><?php echo number_format($totalVATAmount, 0) . " VND"; ?></span>
+                            
                         </div>
                     </div>
                 </div>
@@ -275,8 +270,9 @@
                     <div class="card">
                         <h5 style="font-size: 28px; font-weight: 600">Income</h5>
                         <div style="margin-top: 30px;">
-                            <span style="font-size: 25px; font-weight: bold;">300.000</span>
-                            <img src="././Views/Img/dong.png"/>
+                            <?php foreach ($admins as $admin): ?>
+                            <span style="font-size: 25px; font-weight: bold;"><?php echo number_format($admin['Ad_Income']); ?> VND</span>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>

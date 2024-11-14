@@ -6,7 +6,7 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <a class="navbar-brand d-flex align-items-center" href="index.php?action=customer_userpage">
-                    <img alt="Logo" height="60" src="././views/Img/u2.png" width="60"/>
+                    <img alt="Logo" height="60" src="././views/Img/u2.jpg" width="60"/>
                     <span class="ms-2">LustreLether</span>
                 </a>
                 <div class="collapse navbar-collapse">

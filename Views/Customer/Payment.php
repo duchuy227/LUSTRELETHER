@@ -222,7 +222,7 @@
                                     <tr>
                                         <td><?php echo $i['Booking_Content'] ?></td>
                                         <td><?php echo $i['Influ_Fullname'] ?></td>
-                                        <td><?php echo $i['Inv_VATamount'] ?></td>
+                                        <td><?php echo number_format($i['Inv_VATamount']) ?> VND</td>
                                         <td style="font-weight: 500; color: <?php 
                                             if ($i['Inv_Status'] === 'Unpaid') {
                                                 echo '#F79A03';

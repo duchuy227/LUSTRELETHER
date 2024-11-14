@@ -885,6 +885,63 @@
             $sql->execute([':booking_id' => $booking_id]);
             return $sql->fetch(PDO::FETCH_ASSOC); // Chỉ trả về 1 booking duy nhất
         }
+
+        public function getInvoiceCount() {
+            $query = 'SELECT COUNT(*) as total_count FROM Invoice';
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total_count'];
+        }
+
+        public function getTotalVATAmount() {
+            $query = 'SELECT SUM(Inv_VATamount) as total_vat_amount FROM Invoice';
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total_vat_amount'];
+        }
+
+        public function getBookingCount() {
+            $query = 'SELECT COUNT(*) as total_count FROM Booking';
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total_count'];
+        }
+
+        public function getCustomerCount() {
+            $query = 'SELECT COUNT(*) as total_count FROM Customer';
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total_count'];
+        }
+
+        public function getInfluCount() {
+            $query = 'SELECT COUNT(*) as total_count FROM Influencer';
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total_count'];
+        }
+
+        public function getArticleCount() {
+            $query = 'SELECT COUNT(*) as total_count FROM Post';
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total_count'];
+        }
+
+        public function getLatestBookings($limit = 4) {
+            $query = "SELECT * FROM Booking ORDER BY Booking_CreateTime DESC LIMIT :limit";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
         
     }
 ?>

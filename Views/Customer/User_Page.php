@@ -147,7 +147,7 @@
             <?php foreach (array_slice($influencers, 0, 4) as $i): ?>
                 <div class="col-md-3 mb-4">
                     <div class="card-viral">
-                        <a href="">
+                        <a href="index.php?action=customer_influencerDetail&id=<?php echo $i['Influ_ID'] ?>">
                             <img class="card-img-top" src="<?php echo $i['Influ_Image'] ?>"/>
                         </a>
                         <div class="card-body-viral">

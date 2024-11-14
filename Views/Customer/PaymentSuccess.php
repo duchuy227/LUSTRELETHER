@@ -122,89 +122,6 @@
         margin-top: 30px;
     }
     
-
-    .profile-container .col-md-4 {
-        margin-top: 20px;
-    }
-
-    .profile-container .col-md-4  input{
-        font-size: 16px;
-        font-weight: 300;
-    }
-
-    .profile-container .col-md-4  label{
-        font-size: 18px;
-        font-weight: 500;
-    }
-
-    .profile-container .col-md-8  input{
-        font-size: 16px;
-        font-weight: 300;
-    }
-
-    .profile-container .col-md-8  label{
-        font-size: 18px;
-        font-weight: 500;
-    }
-
-    .profile-container .mb-3 .row .col-md-4 {
-        margin-bottom: 20px;
-    }
-
-    .profile-container .mb-3 .form-label {
-        margin-bottom: 10px;
-        font-size: 18px;
-        font-weight: 500;
-    }
-
-    .profile-container .mb-3 .row .col-md-4 label {
-        font-size: 17px;
-        font-weight: 300;
-    }
-
-    .profile-container .col-md-4 input[type="file"] {
-        width: 240px;
-        padding: 5px; 
-        box-sizing: border-box; 
-        overflow: hidden;
-        white-space: nowrap;
-        font-size: 14px;
-        border: 1px solid #e3e3e3;
-    }
-
-    .profile-container .col-md-4 input[type="date"] {
-        width: 240px;
-    } 
-
-    .profile-container .form-control {
-        margin-bottom: 45px;
-    }
-    .profile-container .btn-save {
-        background-color: #0690DE;
-        color: #fff;
-        font-weight: bold;
-        width: 100%;
-        height: 44px;
-        font-size: 18px;
-        font-weight: 600;
-        border-radius: 30px;
-    }
-
-    .form-control {
-        padding-right: 2.5rem; /* Để khoảng trống cho icon */
-    }
-    
-    .label {
-        font-size: 18px;
-        color: #3D67BA;
-        font-weight: 500;
-    }
-
-    .content {
-        font-size: 18px;
-        color: #333;
-        font-weight: 300;
-    }
         
 </style>
 <body>
@@ -215,7 +132,10 @@
             <div class="col-md-9 offset-md-3">
                 <h2>Payment</h2>
                 <div class="profile-container">
-                    <h3>Payment Succesful</h3>
+                    <div class="container" style="text-align: center">
+                        <img src="././Views/Img/check.png" width="200" height="200">
+                        <h3 style="margin: 20px 0px; text-align:center; padding: 20px 150px">VNPay Payment successful, thank you for using LustreLether service</h3>
+                    </div>
                 </div>
             </div>
         </div>

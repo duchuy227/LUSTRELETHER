@@ -7,7 +7,7 @@
     <link rel="icon" href="././views/Img/u2.jpg" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./views/Admin/style.css">
+    <link rel="stylesheet" href="./views/Admin/style.css?v=1.0">
     <title>Dashboard</title>
 </head>
 <style>
@@ -32,8 +32,8 @@
                 <div class="box" style="width: 200px; height: 200px">
                     <h3 style="text-align: center">Total Booking</h3>
                     <br>
-                    <div class="content">
-                        <span style="font-size: 70px" class="number">35</span>
+                    <div class="content" style="display: flex; justify-content: center; align-items: center; gap: 20px">
+                        <span style="font-size: 70px" class="number"><?php echo $booking ?></span>
                         <img src="./././Image/u22.png" width="60">
                     </div>
                 </div>
@@ -41,8 +41,8 @@
                 <div class="box" style="width: 200px; height: 200px">
                     <h3 style="text-align: center">Total Influencer</h3>
                     <br>
-                    <div class="content">
-                        <span style="font-size: 70px" class="number">50</span>
+                    <div class="content" style="display: flex; justify-content: center; align-items: center; gap: 20px">
+                        <span style="font-size: 70px" class="number"><?php echo $influencers ?></span>
                         <img src="./././Image/u19.png" width="60">
                     </div>
                 </div>
@@ -50,8 +50,8 @@
                 <div class="box" style="width: 200px; height: 200px">
                     <h3 style="text-align: center">Total Articles</h3>
                     <br>
-                    <div class="content">
-                        <span style="font-size: 70px" class="number">30</span>
+                    <div class="content" style="display: flex; justify-content: center; align-items: center; gap: 20px">
+                        <span style="font-size: 70px" class="number"><?php echo $post ?></span>
                         <img src="./././Image/u21.png" width="60">
                     </div>
                 </div>
@@ -63,41 +63,22 @@
                 <table> 
                     <thead>
                     <tr>
-                        <th>Customer</th>
-                        <th>Influencer</th>
-                        <th>Booking Date</th>
+                        <th>Create Time</th>
+                        <th>Service</th>
+                        <th>Expense</th>
                         <th>Status</th>
                     </tr>
                     </thead>
                     <tbody>
+                        <?php foreach ($booking_list as $b): ?>
                         <tr>
-                        <td>Duc Huy</td>
-                        <td>Quoc Bao</td>
-                        <td>10/04/2024</td>
-                        <td class="warning">Pending</td>
-                        <td class="primary">Details</td>
+                            <td><?php echo $b['Booking_CreateTime'] ?></td>
+                            <td><?php echo $b['Booking_Content'] ?></td>
+                            <td><?php echo $b['Booking_Expense'] ?></td>
+                            <td><?php echo $b['Booking_Status'] ?></td>
+                            <td>Details</td>
                         </tr>
-                        <tr>
-                            <td>Duc Huy</td>
-                            <td>Quoc Bao</td>
-                            <td>10/04/2024</td>
-                            <td class="warning">Pending</td>
-                            <td class="primary">Details</td>
-                        </tr>
-                        <tr>
-                            <td>Duc Huy</td>
-                            <td>Quoc Bao</td>
-                            <td>10/04/2024</td>
-                            <td class="warning">Pending</td>
-                            <td class="primary">Details</td>
-                        </tr>
-                        <tr>
-                            <td>Duc Huy</td>
-                            <td>Quoc Bao</td>
-                            <td>10/04/2024</td>
-                            <td class="warning">Pending</td>
-                            <td class="primary">Details</td>
-                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

@@ -123,10 +123,11 @@
     }
 
     .img-small {
-            height: 430px;
+            height: 356px;
             cursor: pointer; 
             image-rendering: -webkit-optimize-contrast;
-            object-fit: cover;
+            object-fit: contain;
+            border-radius: 20px;
         }
 
         /* CSS để hiển thị ảnh phóng to */
@@ -180,92 +181,81 @@
                 <div class="profile">
                     <div class="row">
                         <div class="col-md-5">
-                            <div class="profile-container p-5">
-                                
-                                <img class="img-small"  src="<?php echo $customers['Cus_Image']; ?>" width="356" height="400" class="img-fluid"/>
-                                <img class="img-fullscreen"  src="<?php echo $customers['Cus_Image']; ?>" width="356" height="383" class="img-fluid"/>
-                                
+                            <div class="profile-container p-5 mt-4">
+                                <img class="img-small"  src="<?php echo $customers['Cus_Image']; ?>" width="356" class="img-fluid"/>
+                                <img class="img-fullscreen"  src="<?php echo $customers['Cus_Image']; ?>">
                             </div>
                         </div>
                         <div class="col-md-7">
                             <div class="info p-5">
                                 
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-md-6 d-flex justify-content-between">
+                                <div class="row mb-3">
+                                    <div class="col-md-5">
                                         <span>Username</span>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <p class="mb-0"><?php echo $customers['Cus_Username'] ; ?></p>
                                     </div>
                                 </div>
-                                
-                                <!-- <div class="row align-items-center mb-3">
-                                    <div class="col-md-6 d-flex justify-content-between">
-                                        <span>Password</span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p style="display:none" class="mb-0"><?php echo $customers['Cus_Password'] ; ?></p>
-                                    </div>
-                                </div> -->
 
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-md-6 d-flex justify-content-between">
+                                <div class="row mb-3">
+                                    <div class="col-md-5">
                                         <span>Email</span>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <p class="mb-0"><?php echo $customers['Cus_Email'] ; ?></p>
                                     </div>
                                 </div>
 
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-md-6 d-flex justify-content-between">
+                                <div class="row mb-3">
+                                    <div class="col-md-5">
                                         <span>Fullname</span>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <p class="mb-0"><?php echo $customers['Cus_Fullname'] ; ?></p>
                                     </div>
                                 </div>
 
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-md-6 d-flex justify-content-between">
+                                <div class="row mb-3">
+                                    <div class="col-md-5">
                                         <span class="me-3">Phone Number</span>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <p class="mb-0"><?php echo $customers['Cus_PhoneNumber'] ; ?></p>
                                     </div>
                                 </div>
 
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-md-6 d-flex justify-content-between">
+                                <div class="row mb-3">
+                                    <div class="col-md-5">
                                         <span class="me-3">Date of Birth</span>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <p class="mb-0"><?php echo $customers['Cus_DOB']; ?></p>
                                     </div>
                                 </div>
 
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-md-6 d-flex justify-content-between">
+                                <div class="row mb-3">
+                                    <div class="col-md-5">
                                         <span class="me-3">Topic</span>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <p class="mb-0"><?php echo implode(', ', $customers['Topics']); ?></p>
                                     </div>
                                 </div>
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-md-6 d-flex justify-content-between">
+                                <div class="row mb-3">
+                                    <div class="col-md-5">
                                         <span class="me-3">Event</span>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <p class="mb-0"><?php echo implode(', ', $customers['Events']); ?></p>
                                     </div>
                                 </div>
 
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-md-6 d-flex justify-content-between">
+                                <div class="row mb-3">
+                                    <div class="col-md-5">
                                         <span class="me-3">Content</span>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <p class="mb-0"><?php echo implode(', ', $customers['Contents']); ?></p>
                                     </div>
                                 </div>
@@ -273,7 +263,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center mt-4">
+                    <div class="d-flex justify-content-center">
                         <a href="index.php?action=admin_customer">
                             <button type="button" class="btn btn-success">List Customer</button>
                         </a>

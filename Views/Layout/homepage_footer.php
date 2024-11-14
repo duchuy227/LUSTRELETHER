@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-3">
                 <h5 style="color:#666565; font-size: 20px; font-weight:500">
-                    <img alt="Logo with LT letters in a gradient background" class="img-fluid mb-3" src="././views/Img/u2.png" width="80" height="80"/> LustreLether
+                    <img alt="Logo with LT letters in a gradient background" class="img-fluid mb-3" src="././views/Img/u2.jpg" width="80" height="80"/> LustreLether
                 </h5>
                 <p>Community of the most influential people in Vietnam</p>
                 <p>098 765 4321</p>

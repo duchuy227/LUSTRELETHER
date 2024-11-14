@@ -100,21 +100,7 @@ p{
 b{
   color: var(--clr-dark);
 }
-.primary {
-  color: var(--clr-primary);
-}
 
-.success {
-  color: var(--clr-success);
-}
-
-.danger {
-  color: var(--clr-danger);
-}
-
-.warning {
-  color: var(--clr-warnig);
-}
 
 
 /* aside */
@@ -311,43 +297,27 @@ main .insights .progress .number{
 
 /* recent order */
 
-main .recent_order{
-   margin-top: 2rem;
-}
+  main .recent_order{
+    margin-top: 2rem;
+  }
 
-main .recent_order h2{
+  main .recent_order h2{
+      color: var(--clr-dark);
+  }
+
+  main .recent_order h2{
+    margin-bottom: 0.8rem;
+  }
+  main .recent_order table{
+    background: var(--clr-white);
+    width: 100%;
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    text-align: center;
+    
     color: var(--clr-dark);
-}
-
-main .recent_order h2{
-  margin-bottom: 0.8rem;
-}
-main .recent_order table{
-  background: var(--clr-white);
-  width: 100%;
-  border-radius: var(--card-border-radius);
-  padding: var(--card-padding);
-  text-align: center;
-  transition: all .3s ease;
-  color: var(--clr-dark);
-  font-size: 14px;
-}
-
-
-main table tbody td{
-font-size: 14px;
-   height: 3.8rem;
-   border-bottom: 1px solid var(--clr-white);
-   color:var(--clr-dark-variant)
-}
-
-
-
-main .recent_order a{
-  text-align: center;
-  display: block;
-  margin: 1rem;
-}
+    font-size: 14px;
+  }
 
 
 /*********************

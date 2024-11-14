@@ -547,6 +547,49 @@
             return $this->conn->lastInsertId();
         }
 
+        public function getBookingByInvoiceID($inv_id){
+            $query = "SELECT * FROM Booking WHERE Inv_ID = :inv_id LIMIT 1";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([':inv_id' => $inv_id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($result) {
+                return $result;
+            } else {
+                return null;
+            }
+        }
+
+        public function getAdminIncome() {
+            $query = "SELECT Ad_Income FROM Admin WHERE Ad_ID = 1"; // Giả sử chỉ có 1 Admin
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['Ad_Income'];
+        }
+        
+        // Cập nhật thu nhập của Admin
+        public function updateAdminIncome($newIncome) {
+            $query = "UPDATE Admin SET Ad_Income = :newIncome WHERE Ad_ID = 1";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([':newIncome' => $newIncome]);
+        }
+        
+        // Lấy thu nhập hiện tại của Influencer
+        public function getInfluencerIncome($influencerId) {
+            $query = "SELECT Influ_Income FROM Influencer WHERE Influ_ID = :influencerId";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([':influencerId' => $influencerId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['Influ_Income'];
+        }
+        
+        // Cập nhật thu nhập của Influencer
+        public function updateInfluencerIncome($influencerId, $newIncome) {
+            $query = "UPDATE Influencer SET Influ_Income = :newIncome WHERE Influ_ID = :influencerId";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([':newIncome' => $newIncome, ':influencerId' => $influencerId]);
+        }
+
         public function UpdateInvoiceMomoID($momo_id, $inv_id) {
             $query = "UPDATE Invoice SET MT_ID = :mt_id, Inv_Status = 'Paid' WHERE Inv_ID = :inv_id";
             $sql = $this->conn->prepare($query);

@@ -582,6 +582,7 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset ($_SESSION['influ_id'])) {
                 $influencerModel = new InfluencerModels();
                 $influInfo = $influencerModel -> getInfluencerProfile($_SESSION['influ_id']);
+                $invoice = $influencerModel -> getAllInvoiceByInflu($_SESSION['influ_id']);
 
                 include  'views/Influencer/Invoice.php';
             }
