@@ -248,6 +248,26 @@
         font-size: 16px;
         font-weight: 300;
     }
+
+    .button-container {
+    display: flex;
+        justify-content: space-between; /* Giữ khoảng cách đều nếu có nhiều thẻ */
+        align-items: center; /* Căn giữa theo chiều dọc */
+        width: 100px; /* Cố định chiều rộng cho container */
+        
+    }
+
+    .button-container a {
+        margin: 0 5px; /* Khoảng cách giữa các thẻ */
+    }
+
+    .button-container a:first-child {
+        margin-left: 0; /* Không có khoảng cách bên trái cho thẻ đầu tiên */
+    }
+
+    .button-container a:last-child {
+        margin-right: 0; /* Không có khoảng cách bên phải cho thẻ cuối cùng */
+    }
         
 </style>
 <body>
@@ -265,7 +285,7 @@
                                 <th style="font-size: 16px; font-weight: 400; ">Booking Date</th>
                                 <th style="font-size: 16px; font-weight: 400; ">Service</th>
                                 <th style="font-size: 16px; font-weight: 400;">Influencer</th>
-                                <th style="font-size: 16px; font-weight: 400;">Topic</th>
+                                <th style="font-size: 16px; font-weight: 400;">Invoice</th>
                                 <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Status</th>
                                 <th scope="col">&nbsp;</th>
                             </tr>
@@ -276,7 +296,22 @@
                                     <td><?php echo $b['Booking_CreateTime'] ?></td>
                                     <td><?php echo $b['Booking_Content'] ?></td>
                                     <td><?php echo $b['Influ_Nickname'] ?></td>
-                                    <td><?php echo $b['Topic_Name'] ?></td>
+                                    <td style="font-weight: 500; color: <?php 
+                                            if ($b['Inv_Status'] === 'Unpaid') {
+                                                echo '#2200B2';
+                                            } elseif ($b['Inv_Status'] === 'Paid') {
+                                                echo '#069603';
+                                            } 
+                                        ?>;">
+                                        <?php 
+                                        // Kiểm tra trạng thái của Booking
+                                        if ($b['Booking_Status'] === 'Pending' || $b['Booking_Status'] === 'Rejected') {
+                                            echo ""; // Cột Invoice sẽ trống
+                                        } else {
+                                            echo !empty($b['Inv_Status']) ? $b['Inv_Status'] : "No Invoice"; // Hiển thị thông tin Invoice nếu có, hoặc thông báo nếu không có
+                                        }
+                                        ?>
+                                    </td>
                                     <td style="font-weight: 500; color: <?php 
                                             if ($b['Booking_Status'] === 'Pending') {
                                                 echo '#F79A03';
@@ -290,21 +325,17 @@
                                                 echo '#069603';
                                             } 
                                         ?>;"><?php echo $b['Booking_Status'] ?></td>
-                                    <td style="font-size: 16px; font-weight: 400; text-align: center; width: 100px" scope="row">
-                                        <div style="margin: auto; width: 130px;" class="d-inline-flex justify-content-between align-items-center">
+                                    <td scope="row">
+                                        <div class="button-container">
                                         <?php if ($b['Booking_Status'] === 'Completed'): ?>
                                             <a href="#">
                                                 <img  src="././Views/Img/comments.png" width="23" height="23">
                                             </a>
-                                            <a href="index.php?action=customer_editBooking&id=<?php echo $b['Booking_ID'] ?>">
-                                                <img  src="././Views/Img/u550.png" width="25" height="25">
-                                            </a>
+                                            
                                             <a href="index.php?action=customer_detailBooking&id=<?php echo $b['Booking_ID'] ?>">
                                                 <img src="././Views/Img/u223.png" width="25" height="25">
                                             </a>
-                                            <a href="index.php?action=customer_deleteBooking&id=<?php echo $b['Booking_ID'] ?>" onclick="openPopup(event);">
-                                                <img  src="././Views/Img/deletecus_u544.png" width="25" height="25">
-                                            </a>
+                                            
                                         <?php elseif ($b['Booking_Status'] === 'Pending'): ?>
                                             <a href="index.php?action=customer_editBooking&id=<?php echo $b['Booking_ID'] ?>">
                                                 <img  src="././Views/Img/u550.png" width="25" height="25">
@@ -315,7 +346,7 @@
                                             <a href="index.php?action=customer_deleteBooking&id=<?php echo $b['Booking_ID'] ?>" onclick="openPopup(event);">
                                                 <img  src="././Views/Img/deletecus_u544.png" width="25" height="25">
                                             </a>
-                                        <?php elseif ($b['Booking_Status'] === 'Aprroval' && $b['Booking_Status'] === 'In Progress'): ?>
+                                        <?php elseif ($b['Booking_Status'] === 'In Progress'): ?>
                                             <a href="index.php?action=customer_detailBooking&id=<?php echo $b['Booking_ID'] ?>">
                                                 <img src="././Views/Img/u223.png" width="25" height="25">
                                             </a>

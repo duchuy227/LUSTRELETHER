@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th10 14, 2024 lúc 11:42 AM
+-- Thời gian đã tạo: Th10 15, 2024 lúc 12:10 AM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 7.4.27
 
@@ -43,7 +43,7 @@ CREATE TABLE `Admin` (
 --
 
 INSERT INTO `Admin` (`Ad_ID`, `Ad_Username`, `Ad_Password`, `Ad_Email`, `Ad_Fullname`, `Ad_DOB`, `Ad_Image`, `Ad_Income`) VALUES
-(1, 'quocbao12', 'quocbao12@', 'quocbao@gmail.com', 'Quoc Bao', '2000-04-11', 'Views/Img/image.jpeg', '517500.00');
+(1, 'quocbao12', 'quocbao12@', 'quocbao@gmail.com', 'Quoc Bao', '2000-04-11', 'Views/Img/image.jpeg', '2737920.00');
 
 -- --------------------------------------------------------
 
@@ -76,13 +76,17 @@ INSERT INTO `Booking` (`Booking_ID`, `Booking_CreateTime`, `Booking_Content`, `B
 (100, '2024-11-09 22:50:53', 'Product Review', '1.00', 'Completed', '2024-11-10', '2024-11-11', '1500000.00', '', 61, 101, 11, NULL, 100),
 (101, '2024-11-09 22:51:24', 'Instructions and tips', '1.00', 'In Progress', '2024-11-15', '2024-11-15', '1800000.00', '', 61, 103, 13, NULL, NULL),
 (102, '2024-11-09 22:51:49', 'Product launch', '1.00', 'Rejected', '2024-11-21', '2024-11-23', '1500000.00', '', 61, 101, 14, NULL, NULL),
-(103, '2024-11-10 00:12:25', 'Product launch', '2.00', 'Pending', '2024-11-14', '2024-11-15', '3218000.00', NULL, 60, 109, 11, NULL, NULL),
-(105, '2024-11-10 00:07:26', 'Product Review', '2.00', 'Pending', '2024-11-22', '2024-11-23', '3218000.00', NULL, 60, 109, 11, NULL, NULL),
+(103, '2024-11-10 00:12:25', 'Product launch', '2.00', 'Completed', '2024-11-14', '2024-11-15', '3218000.00', 'Oke', 60, 109, 11, NULL, 101),
+(105, '2024-11-10 00:07:26', 'Product Review', '2.00', 'Completed', '2024-11-11', '2024-11-12', '3218000.00', '', 60, 109, 11, NULL, 102),
 (106, '2024-11-10 00:12:14', 'Product launch', '3.00', 'Pending', '2024-11-27', '2024-11-29', '12000000.00', NULL, 60, 106, 11, NULL, NULL),
-(108, '2024-11-10 00:11:53', 'Consulting & suggesting', '3.00', 'In Progress', '2024-11-14', '2024-11-16', '4500000.00', '', 60, 101, 15, NULL, NULL),
+(108, '2024-11-10 00:11:53', 'Consulting & suggesting', '3.00', 'Pending', '2024-11-14', '2024-11-16', '4500000.00', '', 60, 101, 15, NULL, NULL),
 (110, '2024-11-09 23:36:04', 'Livestream', '1.00', 'Pending', '2024-11-20', '2024-11-20', '2100000.00', NULL, 60, 107, 14, NULL, NULL),
 (111, '2024-11-10 00:13:02', 'Analysis and comparison', '2.00', 'Pending', '2024-11-14', '2024-11-15', '6000000.00', NULL, 60, 105, 13, NULL, NULL),
-(112, '2024-11-13 21:16:28', 'Analysis and comparison', '1.00', 'In Progress', '2024-11-16', '2024-11-16', '1800000.00', 'Oke', 60, 103, 13, NULL, NULL);
+(112, '2024-11-13 21:16:28', 'Analysis and comparison', '1.00', 'Pending', '2024-11-16', '2024-11-16', '1800000.00', 'Oke', 60, 103, 13, NULL, NULL),
+(113, '2024-11-14 00:50:50', 'Instructions for use', '2.00', 'Pending', '2024-11-15', '2024-11-16', '3600000.00', NULL, 61, 102, 12, NULL, NULL),
+(114, '2024-11-14 06:44:02', 'Livestream', '4.00', 'In Progress', '2024-11-17', '2024-11-20', '6436000.00', '', 60, 109, 14, NULL, 103),
+(115, '2024-11-14 06:44:56', 'Workshops', '5.00', 'In Progress', '2024-11-24', '2024-11-28', '8045000.00', '', 60, 109, 11, NULL, 104),
+(116, '2024-11-14 09:31:11', 'Instructions for use', '1.00', 'Rejected', '2024-11-21', '2024-11-21', '4000000.00', NULL, 60, 106, 15, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -96,6 +100,15 @@ CREATE TABLE `Comment` (
   `Post_ID` int(11) NOT NULL,
   `Ad_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `Comment`
+--
+
+INSERT INTO `Comment` (`Com_ID`, `Com_Detail`, `Post_ID`, `Ad_ID`) VALUES
+(150, 'Oke fine', 103, 1),
+(151, 'Good content', 104, 1),
+(152, 'Wow, impressive', 105, 1);
 
 -- --------------------------------------------------------
 
@@ -407,7 +420,7 @@ INSERT INTO `Influencer` (`Influ_ID`, `Influ_Username`, `Influ_Password`, `Influ
 (106, 'chaubui123', 'chaubui', 'chaubui@gmail.com', 'Bùi Thái Bảo Châu', '1992-11-13', '0876537273', 'Ha Noi', 'Châu Bùi', '#chaubui', '4000000.00', NULL, 'Views/Influ_Image/kol22222.jpg', 'Views/Influ_Image/kol2.jpg,Views/Influ_Image/kol2x2.jpg,Views/Influ_Image/kol22.jpg,Views/Influ_Image/kol222.jpg,Views/Influ_Image/kol2222.webp,Views/Influ_Image/kol222222.webp', 'Chau Bui has collaborated with major brands such as Zara, H&M, and Sephora, helping them reach out to young consumers. She has more than 2 million followers on Instagram and 1 million followers on TikTok. In addition, Chau Bui also founded her own fashion brand Chou by Chau Bui, loved by fashionistas.', 'Chau Bui is a prominent KOC in the fashion and beauty industry, loved for her trendy style and sophisticated aesthetic sense. She started her career as a fashionista on social media platforms, quickly attracting the attention of many young people. Chau Bui is not only an influencer but also an icon of modern lifestyle trends.', 'Active', '0.00', 6, 22, 11, 2),
 (107, 'vohalinh123', 'vohalinh', 'vhlinh.1211@gmail.com', 'Vo Ha Linh', '1996-11-12', '0917062002', 'Hanoi', 'Linh Be', '#beauty', '2100000.00', NULL, 'Views/Influ_Image/koc11.jpg', 'Views/Influ_Image/koc1.jpg,Views/Influ_Image/koc111.jpg,Views/Influ_Image/koc111111.jpg,Views/Influ_Image/koc1x1.jpg,Views/Influ_Image/koc1111.jpg', 'Ha Linh has collaborated with many big brands such as L\'Oreal, Maybelline, and The Face Shop, helping to increase the presence of products in the market strongly. She has over 1 million followers on YouTube and over 500,000 followers on Instagram. She is also the founder of the Vo Ha Linh Beauty channel, which provides beauty and self-care tutorial videos to the community.', 'Vo Ha Linh is a prominent KOC in the beauty and lifestyle community, known for her videos sharing about makeup, beauty care, and personal life. She started her career from sharing her experiences on YouTube and quickly made an impression with her sincerity and naturalness. With her close communication skills and solid expertise, Ha Linh has become a role model for young people who love beauty.', 'Active', '0.00', 7, 20, 10, 2),
 (108, 'truongphat', 'truongphat', 'killerhine@gmail.com', 'Nguyễn Hữu Trường Phát', '2002-07-22', '0911090007', 'Ha Noi', 'Bon Bon', '#bon', '2500000.00', NULL, 'Views/Influ_Image/koc2.jpg', 'Views/Influ_Image/koc22.jpg,Views/Influ_Image/koc222.jpg,Views/Influ_Image/koc2222.jpg,Views/Influ_Image/koc22222.jpg,Views/Influ_Image/koc2222222.jpg,Views/Influ_Image/koc2x2.jpg', 'Truong Phat has cooperated with major technology brands such as Samsung, Xiaomi, and Sony, helping to promote and grow the technology product market. He has more than 800,000 followers on YouTube and more than 400,000 followers on Facebook. Truong Phat is also the founder of the Tech Phat channel, where he shares review videos, user guides and tips on outstanding technology products.', 'Nguyen Huu Truong Phat is a prominent KOC in the field of technology and life, known for his videos sharing about technology products, tips and modern lifestyle. He started his career with articles and product review videos on social networking platforms, quickly attracting the attention of the technology-loving community. Truong Phat has become a major influencer in the Vietnamese tech community with his extensive knowledge and easy-to-understand approach.', 'Active', '0.00', 7, 20, 9, 1),
-(109, 'ngoc1609', 'ngoc1609', 'ngoc@gmail.com', 'Hoàng Thị Ngọc', '2001-09-16', '0388875225', 'Phú Thọ', 'Rabbit Baby', '#anne', '1609000.00', NULL, 'Views/Influ_Image/koc3.jpg', 'Views/Influ_Image/koc333.jpg,Views/Influ_Image/koc33.jpg,Views/Influ_Image/koc3333.jpg,Views/Influ_Image/koc33333.jpg,Views/Influ_Image/koc33x3.JPG,Views/Influ_Image/koc3x3.JPG', 'Ngoc has hosted many prominent television programs such as \"National Music Program\" and \"Hot Entertainment Event\". She is also the main MC of major award ceremonies and international events, demonstrating her talent and confidence. Along with that, Ngoc has received many prestigious awards in the television industry, leaving an impression in the hearts of audiences who love her charm and professionalism.', 'Hoang Thi Ngoc is a prominent MC in the entertainment industry, especially in television programs and major events. She is known for her professional and charming hosting style and ability to connect with the audience. With her constant efforts, Ngoc has affirmed her solid position in the hearts of fans.', 'Active', '0.00', 5, 20, 10, 2),
+(109, 'ngoc1609', 'ngoc1609', 'ngoc@gmail.com', 'Hoàng Thị Ngọc', '2001-09-16', '0388875225', 'Phú Thọ', 'Rabbit Baby', '#anne', '1609000.00', NULL, 'Views/Influ_Image/koc3.jpg', 'Views/Influ_Image/koc333.jpg,Views/Influ_Image/koc33.jpg,Views/Influ_Image/koc3333.jpg,Views/Influ_Image/koc33333.jpg,Views/Influ_Image/koc33x3.JPG,Views/Influ_Image/koc3x3.JPG', 'Ngoc has hosted many prominent television programs such as \"National Music Program\" and \"Hot Entertainment Event\". She is also the main MC of major award ceremonies and international events, demonstrating her talent and confidence. Along with that, Ngoc has received many prestigious awards in the television industry, leaving an impression in the hearts of audiences who love her charm and professionalism.', 'Hoang Thi Ngoc is a prominent MC in the entertainment industry, especially in television programs and major events. She is known for her professional and charming hosting style and ability to connect with the audience. With her constant efforts, Ngoc has affirmed her solid position in the hearts of fans.', 'Active', '5180980.00', 5, 20, 10, 2),
 (110, 'huongdao', 'huongdao', 'huong@gmail.com', 'Dao Mai Huong', '2001-11-10', '0936092933', 'Ha Noi', 'Bé Đào', '#bedao', '2500000.00', NULL, 'Views/Influ_Image/koc4.jpg', 'Views/Influ_Image/koc4x4.jpg,Views/Influ_Image/koc44.jpg,Views/Influ_Image/koc444.jpg,Views/Influ_Image/koc44444.jpg,Views/Influ_Image/koc444444.jpg', 'Mai Huong has collaborated with many famous brands in the cosmetics industry such as Innisfree, L\'Oreal, and Laneige, contributing to the development and promotion of beauty products. She has more than 700,000 followers on Instagram and more than 500,000 subscribers on YouTube. In addition, Mai Huong is also the founder of Huong Beauty, a platform for sharing about beauty and lifestyle, loved by many people.', 'Dao Mai Huong is a prominent KOC in the beauty and fashion community, loved for her natural personal style and strong influence on social media platforms. She started her career through beauty tutorials and sharing self-care tips on YouTube, thereby attracting the attention of a large number of fans. Mai Huong always stands out with useful advice and a close approach, easily connecting with followers.', 'Active', '0.00', 7, 20, 10, 2),
 (111, 'quynhchuc1706', 'chuc1706', 'chuc@gmail.com', 'Nguyen Thi Quynh Chuc', '2002-06-17', '0976039034', 'Thuong Tin', 'Luciaaa', '#ducky', '1706000.00', NULL, 'Views/Influ_Image/koc555.jpg', 'Views/Influ_Image/koc5.jpg,Views/Influ_Image/koc5x5.jpg,Views/Influ_Image/kocprofile.jpg,Views/Influ_Image/koc55.jpg,Views/Influ_Image/koc55555.jpg', 'Quynh Chuc has collaborated with many big brands such as The Face Shop, Shiseido, and Vichy, helping to increase awareness and promote beauty care products. She has more than 600,000 followers on Instagram and 400,000 followers on Facebook, where she shares articles and videos about beauty, nutrition, and lifestyle. In addition, Quynh Chuc also founded Chuc Beauty, a channel specializing in providing knowledge about beauty and self-care, which is loved by many people.', 'Nguyen Thi Quynh Chuc is a prominent KOC in the beauty and health care industry, known for her useful sharing about products and healthy living habits. She started her career with beauty and health care tutorial videos on social media platforms, quickly attracting the attention of a large number of followers. With a gentle and approachable style, Quynh Chuc has built a community that loves and trusts her advice.\r\n', 'Active', '0.00', 7, 20, 10, 2);
 
@@ -547,7 +560,11 @@ CREATE TABLE `Invoice` (
 --
 
 INSERT INTO `Invoice` (`Inv_ID`, `Inv_TotalAmount`, `Inv_VATamount`, `Inv_Status`, `Booking_ID`, `MT_ID`, `VNPay_ID`) VALUES
-(100, '1500000.00', '1725000.00', 'Paid', 100, NULL, 50);
+(100, '1500000.00', '1725000.00', 'Paid', 100, NULL, 50),
+(101, '3218000.00', '3700700.00', 'Paid', 103, NULL, 52),
+(102, '3218000.00', '3700700.00', 'Paid', 105, NULL, 51),
+(103, '6436000.00', '7401400.00', 'Unpaid', 114, NULL, NULL),
+(104, '8045000.00', '9251750.00', 'Unpaid', 115, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -609,7 +626,10 @@ CREATE TABLE `Post` (
 
 INSERT INTO `Post` (`Post_ID`, `Post_CreateTime`, `Post_Title`, `Post_Content`, `Post_Hastag`, `Post_Status`, `Post_Image`, `Post_Video`, `Influ_ID`, `Com_ID`, `Vio_ID`) VALUES
 (100, '2024-11-13 21:31:06', 'Discover the joy of culinary travel', 'Hello everyone! I\'m Dino Vu, and one of my biggest passions is culinary travel. Every place I visit has its own unique flavors, from street food to fine dining. I believe that through each dish, we can understand more about the culture and people of that place. The feeling of trying a dish for the first time or discovering a unique recipe always makes me excited and gives me more interesting stories to tell everyone. I hope you will join me on my next culinary journeys!', '#DinoVu #KOC #Foodie', 'Active', 'Views/Influ_Image/food.jpg,Views/Influ_Image/food1.jpg,Views/Influ_Image/food2.jpg', NULL, 100, NULL, NULL),
-(102, '2024-11-13 21:32:07', 'Memorable Experience in Sapa', 'Hello everyone! I just had a wonderful trip to Sapa, and I want to share with you about this memorable experience. Sapa really overwhelmed me with its majestic mountains, lush green valleys and especially its picturesque terraced fields. Here, I was able to immerse myself in the life of the local people, enjoy specialties such as thang co, sticky rice and feel the rusticity and gentleness of the people of the Northwest. If you are looking for a place to relax and recharge, Sapa is definitely a destination not to be missed!', '#VietnameseKOL #Travel', 'Active', 'Views/Influ_Image/travel1.jpg,Views/Influ_Image/travel2.jpg', NULL, 100, NULL, NULL);
+(102, '2024-11-13 21:32:07', 'Memorable Experience in Sapa', 'Hello everyone! I just had a wonderful trip to Sapa, and I want to share with you about this memorable experience. Sapa really overwhelmed me with its majestic mountains, lush green valleys and especially its picturesque terraced fields. Here, I was able to immerse myself in the life of the local people, enjoy specialties such as thang co, sticky rice and feel the rusticity and gentleness of the people of the Northwest. If you are looking for a place to relax and recharge, Sapa is definitely a destination not to be missed!', '#VietnameseKOL #Travel', 'Active', 'Views/Influ_Image/travel1.jpg,Views/Influ_Image/travel2.jpg', NULL, 100, NULL, NULL),
+(103, '2024-11-14 06:33:27', 'My View on Dating', 'Hello everyone! I\'m Truong Quoc Bao, and today I want to share a little bit about my personal views on dating. For me, dating is not only about romantic moments, but also about the process of getting to know and understand each other. I believe that sincerity and respect are always the most important foundations for any relationship. In addition, taking the time to listen, share and experience new things together will help the relationship become deeper. I hope you also find your own meaning in your love story!', '#TruongQuocBao #HenHo #TinhYeu', 'Active', 'Views/Influ_Image/love2.jpg,Views/Influ_Image/love.jpg', 'Views/Influ_Video/436561318_7694815903913125_2227720811541531921_n.mp4', 105, 150, NULL),
+(104, '2024-11-14 06:36:17', 'Passion for mini aquariums', 'Hello everyone! I\'m Truong Quoc Bao, and one of my special hobbies is taking care of mini aquariums. For me, aquariums are not only a decoration but also a relaxing space, helping to reduce stress after working hours. I really like the feeling of watching small fish swimming and green aquatic plants, creating a vibrant miniature ecosystem. Taking care of aquariums also helps me practice patience and meticulousness. Hopefully through my sharing, you will find joy in the world of mini aquariums!', '#VietnameseKOL #Hobby #AquaLife', 'Active', 'Views/Influ_Image/fish.webp,Views/Influ_Image/fish1.jpeg', 'Views/Influ_Video/435416394_25147579671556333_8549465919080432288_n.mp4', 105, 151, NULL),
+(105, '2024-11-14 06:39:56', 'A memorable day in the photo shoot', 'Hello everyone! I\'m Bao Ngoc, and today I want to share with everyone about an interesting photo shoot. From the time of preparing the costume, makeup to standing in front of the lens, I felt excited and full of energy. In particular, working with a professional and creative team helped me express myself more confidently. Each photo is a recorded moment, carrying its own emotions and stories. This is truly a memorable experience, helping me have more beautiful memories!', '#MCBaoNgoc #PhotoShoot', 'Active', 'Views/Influ_Image/koc33.jpg,Views/Influ_Image/koc333.jpg', 'Views/Influ_Video/A15ACA40-9A74-4432-95C9-9269619C8F6A.MOV', 109, 152, NULL);
 
 -- --------------------------------------------------------
 
@@ -857,7 +877,9 @@ CREATE TABLE `VNPay_Transaction` (
 --
 
 INSERT INTO `VNPay_Transaction` (`VNPay_ID`, `VNP_Amount`, `VNP_BankCode`, `VNP_BankTranNo`, `VNP_CardType`, `VNP_OrderInfo`, `VNP_PayDate`, `VNP_Respond_code`, `VNP_TMNCode`, `VNP_TransactionNo`, `VNP_TransactionStatus`, `VNP_TxnRef`, `VNP_SecureHash`, `Inv_ID`) VALUES
-(50, '172500000', 'NCB', 'VNP14672736', 'ATM', 'Thanh+toan+Booking', '20241114172223', '00', '660JIX0L', '14672736', '00', '1525', '170d003c19d394fb6a077cc759108487acbb4ca95cd99f3bb6ae7f6ea5f6411507e6c6838c1e52b1265b637566aff49b8d4a7ef706b5b01e588d6164c9948bf2', 100);
+(50, '172500000', 'NCB', 'VNP14672736', 'ATM', 'Thanh+toan+Booking', '20241114172223', '00', '660JIX0L', '14672736', '00', '1525', '170d003c19d394fb6a077cc759108487acbb4ca95cd99f3bb6ae7f6ea5f6411507e6c6838c1e52b1265b637566aff49b8d4a7ef706b5b01e588d6164c9948bf2', 100),
+(51, '370070000', 'NCB', 'VNP14673644', 'ATM', 'Thanh+toan+Booking', '20241115041327', '00', '660JIX0L', '14673644', '00', '6079', 'b05087d128228a9636f5c0facb2c44e3c1d6394ce2b363d17a37fe394f525eed110c825d111702d9586bd9940abd38658cb7b564c453cb230869418ed7251cb0', 102),
+(52, '370070000', 'NCB', 'VNP14673651', 'ATM', 'Thanh+toan+Booking', '20241115042915', '00', '660JIX0L', '14673651', '00', '4999', '5860dfb999811994bf818bfd85e6b9f2c2b4d21ac0144bc32a5ba101b803442e87a9b2eb68c29fa6c5632b207a30d479bfd61af3713252553808425e25c7b7c1', 101);
 
 -- --------------------------------------------------------
 
@@ -1109,13 +1131,13 @@ ALTER TABLE `Admin`
 -- AUTO_INCREMENT cho bảng `Booking`
 --
 ALTER TABLE `Booking`
-  MODIFY `Booking_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `Booking_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 
 --
 -- AUTO_INCREMENT cho bảng `Comment`
 --
 ALTER TABLE `Comment`
-  MODIFY `Com_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=150;
+  MODIFY `Com_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
 
 --
 -- AUTO_INCREMENT cho bảng `Content`
@@ -1181,7 +1203,7 @@ ALTER TABLE `Instagram`
 -- AUTO_INCREMENT cho bảng `Invoice`
 --
 ALTER TABLE `Invoice`
-  MODIFY `Inv_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `Inv_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT cho bảng `Mail`
@@ -1199,7 +1221,7 @@ ALTER TABLE `Momo_Transaction`
 -- AUTO_INCREMENT cho bảng `Post`
 --
 ALTER TABLE `Post`
-  MODIFY `Post_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `Post_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT cho bảng `Tiktok`
@@ -1229,7 +1251,7 @@ ALTER TABLE `Violation_word`
 -- AUTO_INCREMENT cho bảng `VNPay_Transaction`
 --
 ALTER TABLE `VNPay_Transaction`
-  MODIFY `VNPay_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `VNPay_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT cho bảng `Workplace`

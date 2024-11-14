@@ -413,13 +413,34 @@
         
         public function getAllBookingCurrentCus($cus_id){
             $query = "SELECT * FROM Booking
-                    JOIN Influencer  i ON Booking.Influ_ID = i.Influ_ID
-                    JOIN Topic  t ON Booking.Topic_ID = t.Topic_ID
-                    WHERE Cus_ID = :cus_id";
+                        Left JOIN Influencer i ON Booking.Influ_ID = i.Influ_ID
+                        Left JOIN Topic t ON Booking.Topic_ID = t.Topic_ID
+                        Left JOIN Invoice iv ON Booking.Inv_ID = iv.Inv_ID
+                        WHERE Cus_ID = :cus_id
+                        ORDER BY 
+                            CASE 
+                                WHEN Booking_Status = 'Pending' THEN 1
+                                WHEN Booking_Status = 'In Progress' THEN 2
+                                WHEN Booking_Status = 'Completed' THEN 3
+                                WHEN Booking_Status = 'Rejected' THEN 4
+                                ELSE 5
+                            END,
+                            
+                            CASE 
+                                WHEN iv.Inv_Status IS NULL THEN 1  -- Nếu không có hóa đơn (No Invoice)
+                                WHEN iv.Inv_Status = 'Unpaid' THEN 2 -- Nếu hóa đơn chưa thanh toán (Unpaid)
+                                WHEN iv.Inv_Status = 'Paid' THEN 3 -- Nếu hóa đơn đã thanh toán (Paid)
+                                ELSE 4
+                            END
+                            ";
+            
             $stmt = $this->conn->prepare($query);
             $stmt->execute([':cus_id' => $cus_id]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+        
+        
+        
 
         public function getBookingbyID($cus_id, $booking_id){
             $query = "SELECT * FROM Booking

@@ -226,7 +226,7 @@
                                         <td><?php echo number_format($i['Inv_VATamount']) ?> VND</td>
                                         <td style="font-weight: 500; color: <?php 
                                             if ($i['Inv_Status'] === 'Unpaid') {
-                                                echo '#F79A03';
+                                                echo '#2200B2';
                                             } elseif ($i['Inv_Status'] === 'Paid') {
                                                 echo '#069603';
                                             } ?>"><?php echo $i['Inv_Status'] ?></td>
