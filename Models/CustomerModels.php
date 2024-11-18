@@ -412,10 +412,12 @@
         }
         
         public function getAllBookingCurrentCus($cus_id){
-            $query = "SELECT * FROM Booking
-                        Left JOIN Influencer i ON Booking.Influ_ID = i.Influ_ID
-                        Left JOIN Topic t ON Booking.Topic_ID = t.Topic_ID
-                        Left JOIN Invoice iv ON Booking.Inv_ID = iv.Inv_ID
+                $query = "SELECT Booking.Booking_ID, Booking.Booking_CreateTime, Booking.Booking_Content, Booking.Booking_Status, i.Influ_Nickname, iv.Inv_Status, f.Feed_ID
+                        FROM Booking
+                        LEFT JOIN Influencer i ON Booking.Influ_ID = i.Influ_ID
+                        LEFT JOIN Topic t ON Booking.Topic_ID = t.Topic_ID
+                        LEFT JOIN Invoice iv ON Booking.Inv_ID = iv.Inv_ID
+                        LEFT JOIN Feedbacks f ON Booking.Feed_ID = f.Feed_ID
                         WHERE Cus_ID = :cus_id
                         ORDER BY 
                             CASE 
@@ -425,13 +427,13 @@
                                 WHEN Booking_Status = 'Rejected' THEN 4
                                 ELSE 5
                             END,
-                            
                             CASE 
-                                WHEN iv.Inv_Status IS NULL THEN 1  -- Nếu không có hóa đơn (No Invoice)
-                                WHEN iv.Inv_Status = 'Unpaid' THEN 2 -- Nếu hóa đơn chưa thanh toán (Unpaid)
-                                WHEN iv.Inv_Status = 'Paid' THEN 3 -- Nếu hóa đơn đã thanh toán (Paid)
+                                WHEN iv.Inv_Status IS NULL THEN 1
+                                WHEN iv.Inv_Status = 'Unpaid' THEN 2
+                                WHEN iv.Inv_Status = 'Paid' THEN 3
                                 ELSE 4
                             END
+
                             ";
             
             $stmt = $this->conn->prepare($query);
@@ -552,7 +554,7 @@
         }
 
         public function saveMomoPayment($partnerCode, $orderId, $requestId, $amount, $orderInfo, $orderType, $transId, $payType, $signature, $inv_id){
-            $query = "INSERT INTO Momo_Transaction (MT_PartnerCode, MT_OrderID, MT_RequestID, MT_Ammount, MT_OrderInfo, MT_OrderType, MT_TransID, MT_PayType, MT_Signature, Inv_ID) VALUES (:partnerCode, :orderId, :requestId, :amount, :orderInfo, :orderType, :transId, :payType, :signature, :inv_id)";
+            $query = "INSERT INTO Momo_Transaction (MT_PartnerCode, MT_OrderID, MT_RequestID, MT_Ammount, MT_OrderInfo, MT_OrderType, MT_TransID, MT_PayDate, MT_Signature, Inv_ID) VALUES (:partnerCode, :orderId, :requestId, :amount, :orderInfo, :orderType, :transId, :payType, :signature, :inv_id)";
             $stmt = $this->conn->prepare($query);
             $stmt->execute(array(
                 ':partnerCode' => $partnerCode,
@@ -645,6 +647,42 @@
             }
             
             return $invoice;
+        }
+
+        public function getFeedback($CreateTime, $Feed_Content, $booking_id){
+            $query = "INSERT INTO Feedbacks (Feed_CreateTime, Feed_Content, Booking_ID) VALUES (:Feed_CreateTime, :Feed_Content, :booking_id)";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([
+                ':Feed_CreateTime' => $CreateTime, 
+                ':Feed_Content' => $Feed_Content, 
+                ':booking_id' => $booking_id]);
+            return $this->conn->lastInsertId();
+        }
+
+        public function UpdateBookingFeedID($feed_id, $booking_id) {
+            $query = "UPDATE Booking SET Feed_ID = :feed_id WHERE Booking_ID = :booking_id";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':feed_id' => $feed_id, ':booking_id' => $booking_id]);
+        }
+
+        public function getAllFeedbackCurrentCus($cus_id){
+            $query = "SELECT * FROM Feedbacks 
+                    INNER JOIN Booking ON Feedbacks.Booking_ID = Booking.Booking_ID
+                    INNER JOIN Influencer ON Booking.Influ_ID = Influencer.Influ_ID 
+                     WHERE Booking.Cus_ID = :cus_id";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':cus_id' => $cus_id]);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllFeedbackCurrentInflu($influ_id){
+            $query = "SELECT * FROM Feedbacks 
+                    INNER JOIN Booking ON Feedbacks.Booking_ID = Booking.Booking_ID
+                    INNER JOIN Customer ON Booking.Cus_ID = Customer.Cus_ID 
+                     WHERE Booking.Influ_ID = :influ_id";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':influ_id' => $influ_id]);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
     }

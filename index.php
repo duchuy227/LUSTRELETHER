@@ -535,5 +535,17 @@
             $customerControllers = new CustomerControllers();
             $customerControllers->customer_detailInvoice($_GET['id']);
             break;
+        
+        case 'customer_feedback':
+            require_once "Controllers/CustomerControllers.php";
+            $customerControllers = new CustomerControllers();
+            $customerControllers->customer_feedback($_GET['id']);
+            break;
+        
+        case 'customer_Allfeedback':
+            require_once "Controllers/CustomerControllers.php";
+            $customerControllers = new CustomerControllers();
+            $customerControllers->customer_Allfeedback();
+            break;
     }
 ?>

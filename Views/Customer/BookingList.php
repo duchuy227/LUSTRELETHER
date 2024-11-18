@@ -328,13 +328,19 @@
                                     <td scope="row">
                                         <div class="button-container">
                                         <?php if ($b['Booking_Status'] === 'Completed'): ?>
-                                            <a href="#">
+                                            <?php if (!empty($b['Feed_ID'])): ?>
+                                                <a href="index.php?action=customer_detailBooking&id=<?php echo $b['Booking_ID'] ?>">
+                                                <img src="././Views/Img/u223.png" width="25" height="25">
+                                            </a>
+                                            <?php else: ?>
+                                            <a href="index.php?action=customer_feedback&id=<?php echo $b['Booking_ID'] ?>">
                                                 <img  src="././Views/Img/comments.png" width="23" height="23">
                                             </a>
                                             
                                             <a href="index.php?action=customer_detailBooking&id=<?php echo $b['Booking_ID'] ?>">
                                                 <img src="././Views/Img/u223.png" width="25" height="25">
                                             </a>
+                                            <?php endif; ?>
                                             
                                         <?php elseif ($b['Booking_Status'] === 'Pending'): ?>
                                             <a href="index.php?action=customer_editBooking&id=<?php echo $b['Booking_ID'] ?>">

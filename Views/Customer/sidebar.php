@@ -15,6 +15,9 @@
                 <a href="index.php?action=customer_password">
                     <img src="././views/Img/u437.png" width="30" height="30"> Change Password
                 </a>
+                <a href="index.php?action=customer_Allfeedback">
+                    <img src="././views/Img/comments.png" width="30" height="30"> Feedback
+                </a>
                 <a href="index.php?action=CusLogout">
                     <img src="././views/Img/u440.png" width="30" height="30"> Log Out
                 </a>

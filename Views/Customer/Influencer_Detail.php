@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="././views/Img/u2.png" type="image/x-icon">
+    <link rel="icon" href="././views/Img/u2.jpg" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -645,56 +645,20 @@
             <div class="col-md-5">
                 <div class="feedbacks">
                     <h5 style="margin: 10px 20px; font-weight:500; font-size: 20px;">Feedbacks</h5>
-                    <div class="d-flex align-items-center mb-3" style="margin: 10px 20px;">
-                        <img src="././views/Img/quan.png">
-                        <div class="ms-3">
-                            <h6 class="mb-0">QuanDH</h6>
-                            <small>21:05:32 22/08/2024</small>
+                    <?php foreach ($feedback as $f): ?>
+                        <div class="d-flex align-items-center mb-3" style="margin: 10px 20px;">
+                            <img src="<?php echo $f['Cus_Image'] ?>">
+                            <div class="ms-3">
+                                <h6 class="mb-0"><?php echo $f['Cus_Username'] ?></h6>
+                                <small><?php echo $f['Feed_CreateTime'] ?></small>
+                            </div>
+                            <div class="ms-auto">
+                                <small>Book <?php echo number_format($f['Booking_TotalDay']) ?> days</small>
+                            </div>
                         </div>
-                        <div class="ms-auto">
-                            <small>Book 2 days</small>
-                        </div>
-                    </div>
-                    <p style="margin: 10px 20px;">KOC's booking process is very quick and professional, the results exceed expectations!</p>
-
-                    <hr style="margin: 10px 20px;">
-                    <div class="d-flex align-items-center mb-3" style="margin: 10px 20px;">
-                        <img src="././views/Img/tuyen.png">
-                        <div class="ms-3">
-                            <h6 class="mb-0">TuyenPD</h6>
-                            <small>20:05:32 20/08/2024</small>
-                        </div>
-                        <div class="ms-auto">
-                            <small>Book 2 days</small>
-                        </div>
-                    </div>
-                    <p style="margin: 10px 20px;">Working with you was easy, you were always on time and her creative content fit our campaign</p>
-
-                    <hr style="margin: 10px 20px;">
-                    <div class="d-flex align-items-center mb-3" style="margin: 10px 20px;">
-                        <img src="././views/Img/Chu.png">
-                        <div class="ms-3">
-                            <h6 class="mb-0">ChuNH</h6>
-                            <small>13:05:32 10/08/2024</small>
-                        </div>
-                        <div class="ms-auto">
-                            <small>Book 2 days</small>
-                        </div>
-                    </div>
-                    <p style="margin: 10px 20px;">Booking you was the right decision, you understands the product well and conveys naturally</p>
-
-                    <hr style="margin: 10px 20px;">
-                    <div class="d-flex align-items-center mb-3" style="margin: 10px 20px;">
-                        <img src="././views/Img/u57_div.jpg">
-                        <div class="ms-3">
-                            <h6 class="mb-0">HuyVH</h6>
-                            <small>11:05:32 02/08/2024</small>
-                        </div>
-                        <div class="ms-auto">
-                            <small>Book 1 day</small>
-                        </div>
-                    </div>
-                    <p style="margin: 10px 20px;">Very satisfied with the results when working with you, creative review content and high communication effectiveness</p>
+                        <p style="margin: 10px 20px;"><?php echo $f['Feed_Content'] ?></p>
+                        <hr style="margin: 10px 20px;">
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>

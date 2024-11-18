@@ -131,6 +131,8 @@
 
                 $articles = $customerModel ->getArticlebyID($influ_id);
 
+                $feedback = $customerModel ->getAllFeedbackCurrentInflu($influ_id);
+
                 include 'Views/Customer/Influencer_Detail.php';
             }
         }
@@ -630,6 +632,44 @@
                 $invoiceDetails = $customerModel ->getTransactionDetailsByInvoiceID($inv_id, $_SESSION['cus_id']);
 
                 include 'Views/Customer/Detail_Invoice.php';
+            }
+        }
+
+        public function customer_feedback($booking_id){
+            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
+                $customerModel = new CustomerModels();
+                $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
+
+                $booking =  $customerModel -> getBookingById($_SESSION['cus_id'], $booking_id);
+
+                if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+                    $time = time();
+                    $currentTime = $time - (7 * 3600);
+                    $CreateTime = date('Y-m-d H:i:s', $currentTime);
+                    $Feed_Content = $_POST['content'];
+                    $result = $customerModel ->getFeedback($CreateTime, $Feed_Content, $booking_id);
+
+                    if ($result !== null){
+                        $customerModel ->UpdateBookingFeedID($result, $booking_id);
+                    }
+
+                    header("Location: index.php?action=customer_Allfeedback");
+                    exit();
+                }
+
+
+                include 'Views/Customer/Feedback.php';
+            }
+        }
+
+        public function customer_Allfeedback(){
+            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
+                $customerModel = new CustomerModels();
+                $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
+
+                $feedback = $customerModel -> getAllFeedbackCurrentCus($_SESSION['cus_id']);
+
+                include 'Views/Customer/AllFeedback.php';
             }
         }
 

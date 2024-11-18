@@ -208,7 +208,7 @@
                                 <div class="col-md-6" style="width: 40%">
                                     <label class="label">Service</label>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" style="width: 60%">
                                     <label class="content"><?php echo $booking['Booking_Content'] ?></label>
                                 </div>
                             </div>
