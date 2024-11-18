@@ -220,7 +220,7 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="index.php?action=customer_sendmail">
+                            <a href="index.php?action=customer_sendMail">
                                 <button class="btn btn-primary">Send An Email</button>
                             </a>
                         </div>
@@ -235,21 +235,20 @@
                                     <th style="font-size: 16px; font-weight: 400; ">Influencer</th>
                                     <th style="font-size: 16px; font-weight: 400;">Title</th>
                                     <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Content</th>
-                                    <th scope="col">&nbsp;</th>
+                                    
                                 </tr>
                             </thead>
                                 <tbody>
+                                    <?php foreach($mail as $m): ?>
                                     <tr>
-                                        <td>21:05:32 11/04/2024</td>
-                                        <td>Vo Ha Linh</td>
-                                        <td>Hello Influencer</td>
+                                        <td><?php echo $m['Mail_CreateTime'] ?></td>
+                                        <td><?php echo $m['Influ_Nickname'] ?></td>
+                                        <td><?php echo $m['Mail_Title'] ?></td>
                                         <td>
-                                            <textarea readonly style="background: transparent; width: 100%; border:none" cols="30"></textarea>
-                                        </td>
-                                        <td class="text-center" style="width: 150px" scope="row">
-                                            <a style="text-decoration: none; color:#fff" href="index.php?action=influencer_repmail" class="btn1 d-flex align-items-center justify-content-center">Rep Email</a>
+                                            <textarea readonly style="background: transparent; width: 100%; border:none; resize:none" cols="30" rows="5"><?php echo $m['Mail_Content'] ?></textarea>
                                         </td>
                                     </tr>
+                                    <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>

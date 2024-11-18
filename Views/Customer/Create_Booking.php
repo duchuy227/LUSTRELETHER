@@ -645,7 +645,7 @@
                     <p style="margin: 20px 20px 0 20px; font-size: 16px; font-weight: 500">Booking Recieved: 20</p>
                     <p style="margin: 10px 20px; font-size: 16px; font-weight: 500">20 feedbacks</p>
                     
-                    <button style="margin: 10px 37px; width: 218px; height: 50px; font-weight: 600;font-size: 18px;" class="btn btn-secondary">MAIL</button>
+                    
                     <br>
                 </div>
             </div>

@@ -62,9 +62,9 @@
 
 
         public function GetCustomerbyID($cus_id){
-            $query = "SELECT * FROM Customer WHERE Cus_ID = '$cus_id'";
+            $query = "SELECT * FROM Customer WHERE Cus_ID = :cus_id";
             $sql =  $this->conn->prepare($query);
-            $sql->execute(array(":id" => $cus_id));
+            $sql->execute(array(":cus_id" => $cus_id));
             $customer = $sql->fetch(PDO::FETCH_ASSOC);
 
             if ($customer) {
@@ -98,6 +98,13 @@
             }
         
             return $customer;
+        }
+
+        public function GetCustomerbyUsername($Username){
+            $query = "SELECT * FROM Customer WHERE Cus_Username = :username";
+            $sql =  $this->conn->prepare($query);
+            $sql->execute(array(":username" => $Username));
+            $customer = $sql->fetch(PDO::FETCH_ASSOC);
         }
 
         public function updateCusProfile($cus_id, $Username, $Email, $Fullname, $PhoneNumber, $DOB, $Image, $Topic, $Content, $Event){
@@ -684,6 +691,53 @@
             $sql->execute([':influ_id' => $influ_id]);
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function SendAnEmail($CreateTime, $Title, $Content, $influ_id, $cus_id){
+            $query = "INSERT INTO Mail (Mail_CreateTime, Mail_Title, Mail_Content, Influ_ID, Cus_ID) VALUES (:createtime, :title, :content, :influ_id, :cus_id)";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([
+                ':createtime' => $CreateTime,
+                ':title' => $Title,
+                ':content' => $Content,
+                ':influ_id' => $influ_id,
+                ':cus_id' => $cus_id
+            ]);
+        }
+
+        public function getAllMailCurrentCus($cus_id) {
+            $query = "SELECT * FROM Mail 
+                      JOIN Influencer ON Mail.Influ_ID = Influencer.Influ_ID 
+                      WHERE Mail.Cus_ID = :cus_id 
+                      ORDER BY Mail_CreateTime DESC";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':cus_id' => $cus_id]);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getInfluencersForCustomer($cus_id){
+            $query1 = "SELECT DISTINCT i.Influ_ID, i.Influ_Nickname From Influencer i
+                    Join Booking b On b.Influ_ID = i.Influ_ID
+                    WHERE b.Cus_ID = :cus_id";
+            $stmt1 = $this->conn->prepare($query1);
+            $stmt1->bindParam(':cus_id', $cus_id);
+            $stmt1->execute();
+            $bookedInfluencers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+            $query2 = "SELECT DISTINCT i.Influ_ID, i.Influ_Nickname From Influencer i
+                    Join Mail m On m.Influ_ID = i.Influ_ID
+                    WHERE m.Cus_ID = :cus_id";
+            $stmt2 = $this->conn->prepare($query2);
+            $stmt2->bindParam(':cus_id', $cus_id);
+            $stmt2->execute();
+            $emailedInfluencers = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+            $allInfluencers = array_merge($bookedInfluencers, $emailedInfluencers);
+            $uniqueInfluencers = array_unique($allInfluencers, SORT_REGULAR);
+
+            // Trả về danh sách influencer
+            return $uniqueInfluencers;
+        }
+        
 
     }
 ?>

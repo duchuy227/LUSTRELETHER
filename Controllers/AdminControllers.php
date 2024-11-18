@@ -2,6 +2,7 @@
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
+    require_once __DIR__ . '/../vendor/autoload.php';
     require_once "Models/AdminModels.php";
 
     class AdminControllers {
@@ -49,6 +50,8 @@
                 $booking_list = $AdminModels -> getLatestBookings();
 
                 $articles = $AdminModels -> getLatestPosts();
+
+                $feedback = $AdminModels -> getLatestFeedback();
 
                 include  'views/Admin/Dashboard.php';
             }

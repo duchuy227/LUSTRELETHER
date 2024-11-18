@@ -1,4 +1,8 @@
-<?php 
+<?php
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
+    require_once __DIR__ . '/../vendor/autoload.php';
     require_once "Models/CustomerModels.php";
     require_once "Models/AdminModels.php";
     require_once "Controllers/AdminControllers.php";
@@ -678,7 +682,146 @@
                 $customerModel = new CustomerModels();
                 $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
 
+                $mail = $customerModel -> getAllMailCurrentCus($_SESSION['cus_id']);
+
                 include 'Views/Customer/Mail_List.php';
+            }
+        }
+
+        public function customer_sendInfluMail(){
+            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
+                $customerModel = new CustomerModels();
+                $AdminModels  = new AdminModels();
+                $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
+                $influencers = $AdminModels->getInfluencerByID($_GET['influ_id']);
+
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $Nickname = $_POST['nickname'];
+                    $time = time();
+                    $currentTime = $time - (7 * 3600);
+                    $CreateTime = date('Y-m-d H:i:s', $currentTime);
+
+                    $Influ_ID = $_POST['influ_id'];
+                    $Title = $_POST['title'];
+                    $Content = $_POST['content'];
+
+                    $customerModel -> SendAnEmail($CreateTime, $Title, $Content, $Influ_ID, $_SESSION['cus_id']);
+                    $this ->mailToInfluencer($Nickname, $Title, $Content, $customer);
+                    header("Location: index.php?action=customer_MailList");
+                    exit();
+                }
+
+
+                include 'Views/Customer/SendEmail.php';
+            }
+        }
+
+        public function customer_sendMail(){
+            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
+                $customerModel = new CustomerModels();
+                $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
+                $influencers = $customerModel->getInfluencersForCustomer($_SESSION['cus_id']);
+
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $Nickname = $_POST['nickname'];
+                    $time = time();
+                    $currentTime = $time - (7 * 3600);
+                    $CreateTime = date('Y-m-d H:i:s', $currentTime);
+
+                    $Influ_ID = $_POST['influ_id'];
+                    $Title = $_POST['title'];
+                    $Content = $_POST['content'];
+
+                    $customerModel -> SendAnEmail($CreateTime, $Title, $Content, $Influ_ID, $_SESSION['cus_id']);
+                    $this ->mailToInfluencer($Nickname, $Title, $Content, $customer);
+                    header("Location: index.php?action=customer_MailList");
+                    exit();
+                }
+
+
+                include 'Views/Customer/SendAnEmail.php';
+            }
+        }
+
+        public function mailToInfluencer($Nickname, $Title, $Content, $customer){
+            $mail = new PHPMailer(true);
+            try {
+                $mail->SMTPDebug = 0;
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com'; 
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'leduchuy22072002@gmail.com';
+                $mail->Password   = 'utkziciechiujjxy';
+                $mail->Port       = 587;
+                $mail->setFrom('leduchuy22072002@gmail.com');
+                $mail->addAddress('huyldgbh200353@fpt.edu.vn');
+                $mail->isHTML(true);
+                $mail->Subject = 'Account Status';
+                $htmlContent = '
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Account Status</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f4;
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+                            .container {
+                                max-width: 600px;
+                                margin: 20px auto;
+                                background-color: #fff;
+                                padding: 20px;
+                                border-radius: 8px;
+                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                            }
+                            h1 {
+                                color: #8B008B;
+                                text-align: center;
+                            }
+                            p {
+                                color: #333;
+                                font-size: 18px;
+                                line-height: 1.6;
+                                
+                            }
+
+                            span {
+                                color:  #14BA05;
+                                font-size: 20px;
+                                margin-bottom: 20px;
+                                font-weight: bold;
+                            }   
+                            .rejected {
+                                color: #009966;
+                                font-size: 20px;
+                                font-weight: bold;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h1>Mail To Influencer</h1>
+                            <span>Dear ' . htmlspecialchars($Nickname) . '</span>
+                            
+                            <p>I am <strong>' . htmlspecialchars($customer['Cus_Username']) . '</strong></p>
+                            <p> Title: <strong>' .$Title.' </strong></p>
+                            <p> Content: <strong>' .$Content.' </strong></p>
+                            
+                            <p>I hope you can reply as soon as possible</p>
+                        </div>
+                    </body>
+                    </html>
+                ';
+                $mail->Body = $htmlContent;
+                $mail->send();
+            } catch (Exception $e) {
+        
             }
         }
 

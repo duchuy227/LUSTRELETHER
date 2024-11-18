@@ -451,6 +451,18 @@
             $CustomerControllers =  new CustomerControllers();
             $CustomerControllers -> customer_MailList();
             break;
+
+        case 'customer_sendInfluMail':
+            require_once "Controllers/CustomerControllers.php";
+            $CustomerControllers =  new CustomerControllers();
+            $CustomerControllers -> customer_sendInfluMail();
+            break;
+        
+        case 'customer_sendMail':
+            require_once "Controllers/CustomerControllers.php";
+            $CustomerControllers =  new CustomerControllers();
+            $CustomerControllers -> customer_sendMail();
+            break;
         
         case 'customer_influencer':
             require_once "Controllers/CustomerControllers.php";

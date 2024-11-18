@@ -164,26 +164,18 @@
 
 
         <div class="sales-analytics">
-        <h2>Feedbacks</h2>
-
-        <div class="item onlion">
-            <img src="./././Image/u84.png" width="56">
-            <div class="right_text">
-            <div class="info" style="margin-left: 20px;">
-                <h3>Duc Huy</h3>
-                <small class="text-muted">Thank you for event</small>
+            <h2>Feedbacks</h2>
+            <?php foreach ($feedback as $f): ?>
+            <div class="item onlion">
+                <img src="<?php echo $f['Cus_Image'] ?>" width="56" style="border-radius: 50%">
+                <div class="right_text">
+                    <div class="info" style="margin-left: 20px;">
+                        <h3><?php echo $f['Cus_Username'] ?></h3>
+                        <small class="text-muted"><?php echo $f['Feed_Content'] ?></small>
+                    </div>
+                </div>
             </div>
-            </div>
-        </div>
-        <div class="item onlion">
-            <img src="./././Image/u87.png" width="56">
-            <div class="right_text">
-            <div class="info" style="margin-left: 20px;">
-                <h3>Quoc Bao</h3>
-                <small class="text-muted">Thank you for event</small>
-            </div>
-            </div>
-        </div>
+            <?php endforeach; ?>
         </div>
 
     </div>

@@ -952,7 +952,17 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-        
-        
+
+        public function getLatestFeedback($limit = 2) {
+            $query = "SELECT * FROM Feedbacks 
+                    Join Booking ON Feedbacks.Booking_ID = Booking.Booking_ID
+                    Join Customer ON Booking.Cus_ID = Customer.Cus_ID
+                    ORDER BY Feed_CreateTime DESC LIMIT :limit";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
     }
 ?>

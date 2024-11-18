@@ -544,9 +544,13 @@
                 <div class="profile-card">
                     <p style="margin: 20px 20px 0 20px; font-size: 16px; font-weight: 500">Booking Recieved: 20</p>
                     <p style="margin: 10px 20px; font-size: 16px; font-weight: 500">20 feedbacks</p>
-                    <a href="index.php?action=customer_createbooking&influ_id=<?php echo $influ_id; ?>"><button class="btn btn-booking">BOOKING</button></a>
+
+                    <a style="color: #fff; text-decoration:none" href="index.php?action=customer_createbooking&influ_id=<?php echo $influ_id; ?>"><button class="btn btn-booking">BOOKING</button></a>
                     <br>
-                    <button style="margin: 10px 37px; width: 218px; height: 50px; font-weight: 600;font-size: 18px;" class="btn btn-secondary">MAIL</button>
+                    
+                    <a style="color: #fff; text-decoration:none" href="index.php?action=customer_sendInfluMail&influ_id=<?php echo $influ_id; ?>">
+                        <button style="margin: 10px 37px; width: 218px; height: 50px; font-weight: 600;font-size: 18px;" class="btn btn-secondary">MAIL</button>
+                    </a>
                     <br>
                 </div>
             </div>
