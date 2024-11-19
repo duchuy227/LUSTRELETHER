@@ -313,6 +313,9 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true){
                 $AdminModels =  new AdminModels();
                 $admins =  $AdminModels->getAllAdminAccount();
+                $bdata = $AdminModels ->getBookingCountsByTopic();
+                $idata = $AdminModels ->getInfluCountbyType();
+                $priceData = $AdminModels->getTotalPriceByInfluencerType();
 
                 include 'Views/Admin/analytics.php';
             }

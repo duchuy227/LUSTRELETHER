@@ -110,27 +110,34 @@
                                 <div class="projectTopp">
                                     <h4 style="color: #847F7F; font-size: 26px; font-weight:bold" class="text-center">Send An Email</h4>
                                     <br>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12">
-                                            <label for="">Title</label>
-                                            <input type="text" class="form-control" id="title" name="title">
+                                    <form method="post">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="">Title</label>
+                                                <input type="text" class="form-control" id="title" name="title">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label for="">Content</label>
+                                                <textarea class="form-control" name="content" rows="5"></textarea>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label for="">Receiver</label>
+                                                <select class="form-control" name="username" id="influencerDropdown" onchange="updateInfluencerId()">
+                                                <option hidden>Recipient</option>
+                                                    <?php foreach ($customer as $customer): ?>
+                                                        <option value="<?php echo $customer['Cus_Username']; ?>" data-id="<?php echo $customer['Cus_ID']; ?>">
+                                                            <?php echo $customer['Cus_Username']; ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+
+                                                <input type="hidden" name="cus_id" id="influencerIdInput">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <button type="submit" class="btn btn-success">Send Mail</button>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-12">
-                                            <label for="">Content</label>
-                                            <textarea class="form-control" rows="5"></textarea>
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label for="">Receiver</label>
-                                            <select class="form-control" name="" id="">
-                                                <option value="" hidden>Recipient</option>
-                                                <option value="">Customer 1</option>
-                                                <option value="">Customer 1</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <button type="submit" class="btn btn-success">Send Mail</button>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -177,6 +184,20 @@
             }
         };
     </script>
+
+<script>
+    function updateInfluencerId() {
+        // Lấy giá trị của lựa chọn trong dropdown
+        var dropdown = document.getElementById("influencerDropdown");
+        var selectedOption = dropdown.options[dropdown.selectedIndex];
+        
+        // Lấy Influ_ID từ data-id của lựa chọn đã chọn
+        var influencerId = selectedOption.getAttribute("data-id");
+        
+        // Cập nhật giá trị của input với Influ_ID
+        document.getElementById("influencerIdInput").value = influencerId;
+    }
+</script>
 
 </body>
 </html>

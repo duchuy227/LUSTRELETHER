@@ -964,5 +964,37 @@
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        public function getBookingCountsByTopic() {
+            $query = "SELECT t.Topic_Name, COUNT(b.Booking_ID) AS booking_count
+                    FROM Booking b
+                    JOIN Topic t ON b.Topic_ID = t.Topic_ID
+                    GROUP BY t.Topic_Name";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getInfluCountbyType(){
+            $query = "SELECT it.InfluType_Name, COUNT(i.Influ_ID) AS influencer_count
+                    FROM Influencer i
+                    JOIN Influencer_Type it ON i.InfluType_ID = it.InfluType_ID
+                    GROUP BY it.InfluType_Name;";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getTotalPriceByInfluencerType() {
+            $query = "SELECT it.InfluType_Name, AVG(i.Influ_Price) AS average_price
+                      FROM Influencer i
+                      JOIN Influencer_Type it ON i.InfluType_ID = it.InfluType_ID
+                      GROUP BY it.InfluType_Name
+                      ORDER BY average_price DESC;";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
+
     }
 ?>

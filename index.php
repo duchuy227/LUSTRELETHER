@@ -392,11 +392,7 @@
             $InfluControllers -> influencer_sendmail();
             break;
 
-        case 'influencer_repmail':
-            require_once "Controllers/InfluencerControllers.php";
-            $InfluControllers = new InfluencerControllers();
-            $InfluControllers -> influencer_repmail();
-            break;
+        
         
         case 'influencer_faq':
             require_once "Controllers/InfluencerControllers.php";

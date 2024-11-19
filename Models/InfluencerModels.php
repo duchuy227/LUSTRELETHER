@@ -455,6 +455,15 @@
             return $result['total_count'];
         }
 
+        public function getBookingPaidCount($influ_id) {
+            $query = 'SELECT COUNT(*) as total_count FROM Invoice 
+                    Inner Join Booking ON Invoice.Booking_ID = Booking.Booking_ID AND Invoice.Inv_Status = "Paid" Where Booking.Influ_ID = :influ_id';
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([':influ_id' => $influ_id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total_count'];
+        }
+
         public function getTimeline($influ_id, $limit = 3) {
             // Truy vấn SQL để lấy 3 booking mới nhất của influencer theo Booking_CreateTime
             $query = "SELECT * FROM Booking WHERE Booking.Influ_ID = :influ_id ORDER BY Booking_CreateTime DESC LIMIT :limit";
@@ -472,6 +481,62 @@
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         
+
+        public function getAllFeedback($influ_id){
+            $query = "SELECT * FROM Feedbacks
+                    INNER JOIN Booking ON Feedbacks.Booking_ID = Booking.Booking_ID
+                    INNER JOIN Customer ON Booking.Cus_ID = Customer.Cus_ID 
+                    WHERE Booking.Influ_ID = :influ_id";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':influ_id' => $influ_id]);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllMailCurrentInflu($influ_id) {
+            $query = "SELECT * FROM Mail 
+                    JOIN Customer ON Mail.Cus_ID = Customer.Cus_ID 
+                    WHERE Mail.Influ_ID = :influ_id 
+                    ORDER BY Mail_CreateTime DESC";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':influ_id' => $influ_id]);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function SendAnEmail($CreateTime, $Title, $Content, $influ_id, $cus_id){
+            $query = "INSERT INTO Mail (Mail_CreateTime, Mail_Title, Mail_Content, Influ_ID, Cus_ID) VALUES (:createtime, :title, :content, :influ_id, :cus_id)";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([
+                ':createtime' => $CreateTime,
+                ':title' => $Title,
+                ':content' => $Content,
+                ':influ_id' => $influ_id,
+                ':cus_id' => $cus_id
+            ]);
+        }
+
+        public function getCustomerForInflu($influ_id){
+            $query1 = "SELECT DISTINCT c.Cus_ID, c.Cus_Username From Customer c
+                    Join Booking b On b.Cus_ID = c.Cus_ID
+                    WHERE b.Influ_ID = :influ_id";
+            $stmt1 = $this->conn->prepare($query1);
+            $stmt1->bindParam(':influ_id', $influ_id);
+            $stmt1->execute();
+            $bookedInfluencers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+            $query2 = "SELECT DISTINCT c.Cus_ID, c.Cus_Username From Customer c
+                    Join Mail m On m.Cus_ID = c.Cus_ID
+                    WHERE m.Influ_ID = :influ_id";
+            $stmt2 = $this->conn->prepare($query2);
+            $stmt2->bindParam(':influ_id', $influ_id);
+            $stmt2->execute();
+            $emailedInfluencers = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+            $allInfluencers = array_merge($bookedInfluencers, $emailedInfluencers);
+            $uniqueInfluencers = array_unique($allInfluencers, SORT_REGULAR);
+
+            // Trả về danh sách influencer
+            return $uniqueInfluencers;
+        }
         
 
     }

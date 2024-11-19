@@ -9,6 +9,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./views/Admin/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Analytics</title>
 </head>
 <style>
@@ -103,6 +104,43 @@
         font-weight: 500;
     }
 
+    .faculty-contri {
+        max-width: 100%;
+        height: 500px;
+        position: relative;
+        overflow: hidden;
+        margin: 40px;
+    }
+
+    .chart-container {
+        display: flex;
+        flex-direction: column; /* Căn theo chiều dọc */
+        justify-content: center; /* Canh giữa nội dung */
+        align-items: center; /* Canh giữa nội dung */
+        text-align: center; /* Canh giữa chữ */
+    }
+
+    .chart-container canvas {
+        max-width: 100%; /* Giới hạn kích thước biểu đồ */
+        height: 500px;
+        margin-bottom: 30px;
+    }
+
+    .chart-wrapper {
+        display: flex;
+        justify-content: center; /* Căn giữa theo chiều ngang */
+        align-items: center; /* Căn giữa theo chiều dọc */
+        height: 400px; /* Đặt chiều cao của khung bao quanh */
+        margin: 40px;
+    }
+
+    .chart-wrapper canvas {
+        max-width: 100%; /* Đảm bảo biểu đồ không bị vỡ kích thước */
+        max-height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
 
 </style>
 <body>
@@ -138,7 +176,10 @@
             <div class="recent_order">
                 <div class="profile">
                     <br>
-                    <h3 class="text-center">Line Chart</h3>
+                    <h3 class="text-center">Booking Topic Chart</h3>
+                    <div class="faculty-contri">
+                        <canvas id="facultyChart"></canvas>
+                    </div>
                 </div>
                 <br>
             </div>
@@ -146,7 +187,13 @@
             <div class="recent_order">
                 <div class="profile">
                     <br>
-                    <h3 class="text-center">Column chart</h3>
+                    <div class="chart-container">
+                        <h3 class="text-center">Total Influencer by Type</h3>
+                        <br>
+                        <div class="influencer-type">
+                            <canvas id="influencerChart"></canvas>
+                        </div>
+                    </div>
                 </div>
                 <br>
             </div>
@@ -154,7 +201,10 @@
             <div class="recent_order">
                 <div class="profile">
                     <br>
-                    <h3 class="text-center">Pie Chart</h3>
+                    <h3 class="text-center">Average Service Price by Influencer Type</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="priceChart"></canvas>
+                    </div>
                 </div>
                 <br>
             </div>
@@ -182,8 +232,188 @@
         })
     </script>
 
+    <script>
+        // Data for Booking Topic Chart
+        var facultyData = <?php echo json_encode($bdata); ?>;
+        var topicNames = [];
+        var bookingCounts = [];
+
+        for (var i = 0; i < facultyData.length; i++) {
+            topicNames.push(facultyData[i].Topic_Name); // Sử dụng Topic_Name từ dữ liệu
+            bookingCounts.push(parseInt(facultyData[i].booking_count)); // Sử dụng booking_count từ dữ liệu
+        }
+
+        var facultyCtx = document.getElementById('facultyChart').getContext('2d');
+        var facultyChart = new Chart(facultyCtx, {
+            type: 'bar',
+            data: {
+                labels: topicNames, // Labels cho biểu đồ
+                datasets: [{
+                    label: 'Number of Bookings',
+                    data: bookingCounts, // Dữ liệu số lượng booking
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { // Tùy chỉnh trục x
+                        ticks: {
+                            font: {
+                                size: 14 // Kích thước chữ của topic (nhãn trục x)
+                            },
+                            color: '#333333' // Tùy chọn: chỉnh màu chữ (nếu cần)
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                size: 14 // Kích thước chữ của số liệu trục y
+                            },
+                            color: '#333333'
+                        }
+                    }
+                }
+            }
+        });
+
+
+       // Data for Influencer Count by Type Chart
+        var influencerData = <?php echo json_encode($idata); ?>;
+        var influencerTypeNames = [];
+        var influencerCounts = [];
+
+        // Lặp qua dữ liệu để tạo mảng tên loại và số lượng influencer
+        for (var i = 0; i < influencerData.length; i++) {
+            influencerTypeNames.push(influencerData[i].InfluType_Name); // Tên loại influencer
+            influencerCounts.push(parseInt(influencerData[i].influencer_count)); // Số lượng influencer (chuyển sang số nguyên)
+        }
+
+        var influencerCtx = document.getElementById('influencerChart').getContext('2d');
+        var influencerChart = new Chart(influencerCtx, {
+            type: 'pie',
+            data: {
+                labels: influencerTypeNames, // Nhãn của các loại influencer
+                datasets: [{
+                    label: 'Influencer Count',
+                    data: influencerCounts, // Dữ liệu số lượng influencer
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(153, 102, 255, 0.5)',
+                        'rgba(255, 159, 64, 0.5)'
+                        // Thêm màu nếu cần
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                        // Thêm màu nếu cần
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top', // Vị trí của chú thích (top, bottom, left, right)
+                        labels: {
+                            font: {
+                                size: 14 // Kích thước chữ của chú thích
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                var label = influencerTypeNames[tooltipItem.dataIndex] || '';
+                                var value = influencerCounts[tooltipItem.dataIndex] || 0;
+                                return `${label}: ${value}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+
+       // Lấy dữ liệu từ PHP
+        var priceData = <?php echo json_encode($priceData); ?>;
+        var typeNames = [];
+        var averagePrices = [];
+
+        // Xử lý dữ liệu thành mảng labels và data
+        for (var i = 0; i < priceData.length; i++) {
+            typeNames.push(priceData[i].InfluType_Name); // Tên loại influencer
+            averagePrices.push(parseFloat(priceData[i].average_price)); // Giá trung bình
+        }
+
+        // Vẽ biểu đồ bằng Chart.js
+        var ctx = document.getElementById('priceChart').getContext('2d');
+        var priceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: typeNames, // Nhãn trục X
+                datasets: [{
+                    label: '', // Bạn có thể để trống hoặc thêm label nếu cần
+                    data: averagePrices, // Dữ liệu trục Y (giá trung bình)
+                    backgroundColor: [
+                        'rgba(0, 139, 139, 0.5)',  // Cyan
+                        'rgba(0, 0, 139, 0.5)',    // Xanh biển
+                        'rgba(0, 128, 0, 0.5)'     // Xanh lá cây
+                    ],
+                    borderColor: [
+                        'rgba(0, 139, 139, 1)',    // Viền Cyan
+                        'rgba(0, 0, 139, 1)',      // Viền Xanh biển
+                        'rgba(0, 128, 0, 1)'       // Viền Xanh lá cây
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Average Price (VND)' // Thay đổi label của trục Y thành giá trung bình
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Influencer Type',
+                            font: { size: 16 }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Ẩn hoàn toàn chú thích nếu không cần
+                    }
+                }
+            }
+        });
+
+
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
 </body>
 </html>

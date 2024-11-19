@@ -95,20 +95,22 @@
                                     <tr class="table-primary">
                                         <th style="font-size: 16px; font-weight: 400; ">Datetime</th>
                                         <th style="font-size: 16px; font-weight: 400; ">Customer</th>
+                                        <th style="font-size: 16px; font-weight: 400;">Service</th>
                                         <th style="font-size: 16px; font-weight: 400;">Content</th>
-                                        <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Service</th>
                                         
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach($feedback as $f): ?>
                                     <tr>
-                                        <td>20:00 30/10/2024</td>
-                                        <td>Customer 1</td>
+                                        <td><?php echo $f['Feed_CreateTime']?></td>
+                                        <td><?php echo $f['Cus_Username']?></td>
+                                        <td><?php echo $f['Booking_Content']?></td>
                                         <td>
-                                            <textarea readonly style="background: transparent; border:none; width: 100%">Content 1</textarea>
+                                            <textarea readonly style="background: transparent; border:none; width: 100%; outline:none; resize:none" rows="3"><?php echo $f['Feed_Content']?></textarea>
                                         </td>
-                                        <td>Event 1</td>
                                     </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>

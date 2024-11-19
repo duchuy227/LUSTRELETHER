@@ -600,6 +600,8 @@
                 $influInfo = $influencerModel -> getInfluencerProfile($_SESSION['influ_id']);
                 $invoice = $influencerModel -> getAllInvoiceByInflu($_SESSION['influ_id']);
 
+                $total = $influencerModel ->getBookingPaidCount($_SESSION['influ_id']);
+
                 include  'views/Influencer/Invoice.php';
             }
         }
@@ -608,6 +610,8 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset ($_SESSION['influ_id'])) {
                 $influencerModel = new InfluencerModels();
                 $influInfo = $influencerModel -> getInfluencerProfile($_SESSION['influ_id']);
+
+                $feedback = $influencerModel -> getAllFeedback($_SESSION['influ_id']);
 
                 include  'views/Influencer/Feedback.php';
             }
@@ -618,6 +622,8 @@
                 $influencerModel = new InfluencerModels();
                 $influInfo = $influencerModel -> getInfluencerProfile($_SESSION['influ_id']);
 
+                $mail = $influencerModel -> getAllMailCurrentInflu($_SESSION['influ_id']);
+
                 include  'views/Influencer/Mail.php';
             }
         }
@@ -627,18 +633,110 @@
                 $influencerModel = new InfluencerModels();
                 $influInfo = $influencerModel -> getInfluencerProfile($_SESSION['influ_id']);
 
+                $customer = $influencerModel -> getCustomerForInflu($_SESSION['influ_id']);
+
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $Username = $_POST['username'];
+                    $time = time();
+                    $currentTime = $time - (7 * 3600);
+                    $CreateTime = date('Y-m-d H:i:s', $currentTime);
+
+                    $Cus_ID = $_POST['cus_id'];
+                    $Title = $_POST['title'];
+                    $Content = $_POST['content'];
+                    $influencerModel -> SendAnEmail($CreateTime, $Title, $Content, $_SESSION['influ_id'], $Cus_ID);
+                    $this ->mailToCustomer($Username, $Title, $Content, $influInfo);
+                    header("Location: index.php?action=influencer_mail");
+                    exit();
+                }
+
                 include  'views/Influencer/SendMail.php';
             }
         }
 
-        public function influencer_repmail(){
-            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset ($_SESSION['influ_id'])) {
-                $influencerModel = new InfluencerModels();
-                $influInfo = $influencerModel -> getInfluencerProfile($_SESSION['influ_id']);
+        public function mailToCustomer($Username, $Title, $Content, $influInfo){
+            $mail = new PHPMailer(true);
+            try {
+                $mail->SMTPDebug = 0;
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com'; 
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'leduchuy22072002@gmail.com';
+                $mail->Password   = 'utkziciechiujjxy';
+                $mail->Port       = 587;
+                $mail->setFrom('leduchuy22072002@gmail.com');
+                $mail->addAddress('huyldgbh200353@fpt.edu.vn');
+                $mail->isHTML(true);
+                $mail->Subject = 'Account Status';
+                $htmlContent = '
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Account Status</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f4;
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+                            .container {
+                                max-width: 600px;
+                                margin: 20px auto;
+                                background-color: #fff;
+                                padding: 20px;
+                                border-radius: 8px;
+                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                            }
+                            h1 {
+                                color: #8B008B;
+                                text-align: center;
+                            }
+                            p {
+                                color: #333;
+                                font-size: 18px;
+                                line-height: 1.6;
+                                
+                            }
 
-                include  'views/Influencer/RepMail.php';
+                            span {
+                                color:  #14BA05;
+                                font-size: 20px;
+                                margin-bottom: 20px;
+                                font-weight: bold;
+                            }   
+                            .rejected {
+                                color: #009966;
+                                font-size: 20px;
+                                font-weight: bold;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h1>Mail To Customer</h1>
+                            <span>Dear ' . htmlspecialchars($Username) . '</span>
+                            
+                            <p>I am <strong>' . htmlspecialchars($influInfo['Influ_Nickname']) . '</strong></p>
+                            <p> Title: <strong>' .$Title.' </strong></p>
+                            <p> Content: <strong>' .$Content.' </strong></p>
+                            
+                            <p>I hope you can reply as soon as possible</p>
+                        </div>
+                    </body>
+                    </html>
+                ';
+                $mail->Body = $htmlContent;
+                $mail->send();
+            } catch (Exception $e) {
+        
             }
         }
+
+        
 
         public function influencer_faq(){
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset ($_SESSION['influ_id'])) {

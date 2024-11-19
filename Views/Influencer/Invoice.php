@@ -160,16 +160,16 @@
             <main>
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-7 mb-3 mb-md-0">
-                            <div class="chart-container">
-                                <h3 class="text-center" style="font-weight: bold; color: #847F7F">Monthly Revenue Chart</h3>
-                                <canvas id="revenueChart"></canvas>
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <div class="income-container">
+                                <h3 class="text-center" style="font-weight: bold; color: #847F7F">Total Booking Paid</h3>
+                                <div class="income-value"><?php echo number_format($total); ?> Bookings</div>
                             </div>
                         </div>
                         
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                             <div class="income-container">
-                                <h3>My Income</h3>
+                                <h3 class="text-center" style="font-weight: bold; color: #847F7F">My Income</h3>
                                 <div class="income-value"><?php echo number_format($influInfo['Influ_Income']); ?> VND</div>
                             </div>
                         </div>

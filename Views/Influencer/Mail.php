@@ -121,21 +121,19 @@
                                                     <th style="font-size: 16px; font-weight: 400; ">Customer</th>
                                                     <th style="font-size: 16px; font-weight: 400;">Title</th>
                                                     <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Content</th>
-                                                    <th scope="col">&nbsp;</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <?php foreach($mail as $m): ?>
                                                 <tr>
-                                                    <td>20:00 30/10/2024</td>
-                                                    <td>Customer 1</td>
-                                                    <td>Title 1</td>
+                                                    <td><?php echo $m['Mail_CreateTime'] ?></td>
+                                                    <td><?php echo $m['Cus_Username'] ?></td>
+                                                    <td><?php echo $m['Mail_Title'] ?></td>
                                                     <td>
-                                                        <textarea readonly style="background: transparent; border:none; width: 100%">Content A</textarea>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <a style="text-decoration: none; color:#fff" href="index.php?action=influencer_repmail" class="btn1 d-flex align-items-center justify-content-center">Rep Email</a>
+                                                        <textarea readonly style="background: transparent; border:none; width: 100%; outline: none; resize: none;"><?php echo $m['Mail_Content'] ?></textarea>
                                                     </td>
                                                 </tr>
+                                                <?php endforeach; ?>
                                             </tbody>
                                         </table>
                                     </div>
