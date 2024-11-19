@@ -17,6 +17,7 @@
         position: relative;
         top: 1rem;
         border-radius: 10px;
+        
     }
 
     aside .sidebar a {

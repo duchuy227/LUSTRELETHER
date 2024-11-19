@@ -25,33 +25,8 @@
         display: grid;
         width: 96%;
         gap: 1.8rem;
-        grid-template-columns: 14rem auto 16rem;
+        grid-template-columns: 250px auto;
         margin: 0 auto;
-    }
-
-    main .recent_order{
-        margin-top: 2rem;
-        background: var(--clr-white);
-        width: 970px;
-        height: auto;
-        border-radius: 20px;
-    }
-
-    aside .sidebar{
-        background: var(--clr-white);
-        display: flex;
-        flex-direction: column;
-        height: 646px;
-        position: relative;
-        top: 1rem;
-    }
-
-    aside .sidebar a {
-        text-decoration: none;
-    }
-
-    aside .sidebar a h3 {
-        margin-top: 10px;
     }
 
     .profile-photo img {
@@ -71,18 +46,12 @@
         color: #333333;
     }
 
-    
-
-    .btn-success {
-        margin-left: 20px;
-        margin-top: 10px;
-        justify-content: space-between;
-        align-items: center;
-        width: 140px;
-        border-radius: 25px;
-        border: none;
-        font-size: 18px;
-        height: 40px;
+    main .recent_order{
+        margin-top: 2rem;
+        background: var(--clr-white);
+        width: 100%;
+        height: auto;
+        border-radius: 20px;
     }
 
     main .recent_order a{
@@ -94,7 +63,7 @@
     }
 
     .profile .col-md-6 {
-        margin-top: 20px;
+        margin: 20px;
     }
 
     .profile .form-group {
@@ -111,9 +80,10 @@
 
     .recent_order .profile table {
         margin: 0 auto;
-        width: 80%;
+        width: 90%;
     }
 
+    
 
     .inputBx {
         position: relative;
@@ -125,7 +95,7 @@
         justify-content: flex-start;
         align-items: center;
         padding-left: 10px;
-        margin-left: 40px;
+        margin: 0px;
         gap: 10px;
         overflow: hidden;
     }
@@ -147,6 +117,8 @@
         font-size: 18px;
         font-weight: 400;
     }
+
+    
 
         .popup {
             display: none; /* Ẩn popup mặc định */
@@ -221,7 +193,9 @@
         .pagination button:hover {
             background-color: #e0e0e0;
         }
+    
         
+
 </style>
 <body>
     <div class="container1">
@@ -234,7 +208,7 @@
                     <h2 style="font-size: 40px; font-weight:bold; color:#333333">Customers</h2>
                 </div>
 
-                <div class="col-md-3 d-flex align-items-center">
+                <div class="col-md-3 d-flex align-items-center justify-content-end">
                     <div class="d-flex align-items-center">
                         <div class="info me-3" style=" margin-right: 30px">
                             <small class="text-muted" style="font-size: 15px; font-weight: 300; color: #333333;">
@@ -254,13 +228,13 @@
             </div>
 
             <div class="row" style="margin-top: 20px;">
-                <div class="col-md-6">
+                <div class="col-md-6 d-flex justify-content-start align-items-center">
                     <div class="row">
-                        <a href="index.php?action=admin_addcustomer"><button style="width: auto; color: white; font-weight: 500; margin-left: 20px" type="submit" class="btn btn-primary">Add Customer</button></a>
+                        <a href="index.php?action=admin_addcustomer"><button style="width: auto; color: white; font-weight: 500; margin:20px" type="submit" class="btn btn-primary">Add Customer</button></a>
                     </div>
                 </div>
 
-                <div class="col-md-6 d-flex justify-content-end">
+                <div class="col-md-6 d-flex justify-content-end align-items-center">
                     <form method="post">
                         <div class="inputBx">
                             <img src="././Views/Img/search.png" alt="" width="30" height="30">
@@ -274,57 +248,60 @@
                 <div class="profile">
                     <br>
                     <h3 style="text-align: center;">List of customers</h3>
-                    <?php if (!empty($message)): ?>
-                        <p style="color: red; text-align: center; font-size: 20px; margin-top: 20px"><?php echo $message; ?></p>
-                    <?php endif; ?>
-                    
-                    <?php if (!empty($customers)): ?>
-                    
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr class="table-active">
-                                <th style="font-size: 18px; font-weight: 400">Username</th>
-                                <th style="font-size: 18px; font-weight: 400;">Email</th>
-                                <th style="font-size: 18px; font-weight: 400;">Fullname</th>
-                                <th style="font-size: 18px; font-weight: 400;">Date of birth</th>
-                                <th style="width: 20%" scope="col">&nbsp;</th>
-                            </tr>
-                        </thead>
-                        <tbody class="hello">
-                            <?php foreach ($customers as $c): ?>
-                            <tr>
-                                <td style="font-size: 16px; font-weight: 400; color: #333333" scope="row">
-                                    <?php echo $c['Cus_Username']; ?>
-                                </td>
-                                <td style="font-size: 16px; font-weight: 400; color: #333333" scope="row">
-                                    <?php echo $c['Cus_Email']; ?>
-                                </td>
-                                <td style="font-size: 16px; font-weight: 400; color: #333333" scope="row">
-                                    <?php echo $c['Cus_Fullname']; ?>
-                                </td>
-                                <td style="font-size: 16px; font-weight: 400; color: #333333" scope="row">
-                                    <?php echo $c['Cus_DOB']; ?>
-                                </td>
-                                <td style="font-size: 16px; font-weight: 400; text-align: left" scope="row">
-                                    <div class="row d-flex justify-content-center">
-                                        <a href="index.php?action=admin_editcustomer&id=<?php echo $c['Cus_ID']; ?>">
-                                            <img style="margin-right: 5px;" src="././Views/Img/u550.png" width="30" height="30">
-                                        </a>
+                    <br>
+                    <div class="table-responsive">
+                        <?php if (!empty($message)): ?>
+                            <p style="color: red; text-align: center; font-size: 20px; margin-top: 20px"><?php echo $message; ?></p>
+                        <?php endif; ?>
+                        
+                        <?php if (!empty($customers)): ?>
+                        
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="table-active">
+                                    <th style="font-size: 18px; font-weight: 400">Username</th>
+                                    <th style="font-size: 18px; font-weight: 400;">Email</th>
+                                    <th style="font-size: 18px; font-weight: 400;">Fullname</th>
+                                    <th style="font-size: 18px; font-weight: 400;">Date of birth</th>
+                                    <th style="width: 20%" scope="col">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody class="hello">
+                                <?php foreach ($customers as $c): ?>
+                                <tr>
+                                    <td style="font-size: 16px; font-weight: 400; color: #333333" scope="row">
+                                        <?php echo $c['Cus_Username']; ?>
+                                    </td>
+                                    <td style="font-size: 16px; font-weight: 400; color: #333333" scope="row">
+                                        <?php echo $c['Cus_Email']; ?>
+                                    </td>
+                                    <td style="font-size: 16px; font-weight: 400; color: #333333" scope="row">
+                                        <?php echo $c['Cus_Fullname']; ?>
+                                    </td>
+                                    <td style="font-size: 16px; font-weight: 400; color: #333333" scope="row">
+                                        <?php echo $c['Cus_DOB']; ?>
+                                    </td>
+                                    <td style="font-size: 16px; font-weight: 400; text-align: left" scope="row">
+                                        <div class="row d-flex justify-content-center">
+                                            <a href="index.php?action=admin_editcustomer&id=<?php echo $c['Cus_ID']; ?>">
+                                                <img style="margin-right: 5px;" src="././Views/Img/u550.png" width="30" height="30">
+                                            </a>
 
-                                        <a href="index.php?action=admin_detailcustomer&id=<?php echo $c['Cus_ID']; ?>">
-                                            <img style="margin-right: 5px;" src="././Views/Img/u223.png" width="30" height="30">
-                                        </a>
+                                            <a href="index.php?action=admin_detailcustomer&id=<?php echo $c['Cus_ID']; ?>">
+                                                <img style="margin-right: 5px;" src="././Views/Img/u223.png" width="30" height="30">
+                                            </a>
 
-                                        <a href="index.php?action=admin_deletecustomer&id=<?php echo $c['Cus_ID']; ?>" onclick="openPopup(event);">
-                                            <img src="././Views/Img/deletecus_u544.png" width="30" height="30">
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    <?php endif; ?>
+                                            <a href="index.php?action=admin_deletecustomer&id=<?php echo $c['Cus_ID']; ?>" onclick="openPopup(event);">
+                                                <img src="././Views/Img/deletecus_u544.png" width="30" height="30">
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                        <?php endif; ?>
+                    </div>
                     <div class="pagination"></div>
                     <div id="deletePopup" class="popup">
                         <div class="popup-content">
@@ -383,7 +360,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var perPage = 3;
+            var perPage = 5;
             var topics = document.querySelectorAll(".table .hello tr"); 
             var totalPages = Math.ceil(topics.length / perPage); 
             showPage(1);

@@ -97,7 +97,7 @@
                 <div class="row">
                     <div class="col-md-7 d-flex flex-column align-items-center">
                         <div class="card-header">
-                            <img src="./views/Img/u270.png"/>
+                            <img src="./views/Img/in.png"/>
                         </div>
                     </div>
                     <div class="col-md-5">
