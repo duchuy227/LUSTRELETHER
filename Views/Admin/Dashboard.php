@@ -187,15 +187,17 @@
 
 
         const themeToggler = document.querySelector('.theme-toggler');
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                sideMenu.style.display = "block";
+            });
+        }
 
-
-
-        menuBtn.addEventListener('click',()=>{
-            sideMenu.style.display = "block"
-        })
-        closeBtn.addEventListener('click',()=>{
-            sideMenu.style.display = "none"
-        })
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                sideMenu.style.display = "none";
+            });
+        }
 
         themeToggler.addEventListener('click',()=>{
             document.body.classList.toggle('dark-theme-variables')

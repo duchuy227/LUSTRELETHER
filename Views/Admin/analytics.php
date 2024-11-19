@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./views/Admin/style.css">
+    <link rel="stylesheet" href="./views/Admin/style.css?v=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Analytics</title>
 </head>
@@ -29,7 +29,8 @@
     main .recent_order{
         margin-top: 2rem;
         background: var(--clr-white);
-        width: 970px;
+        width: 100%;
+        
         height: auto;
         border-radius: 20px;
     }
@@ -92,17 +93,6 @@
         margin-top: 20px;
     }
 
-    .profile .form-group {
-        margin-bottom: 15px; /* Khoảng cách giữa các trường */
-        padding: 0 30px; /* Đẩy lùi vào trong bằng cách thêm padding */
-        flex: 1; /* Đảm bảo chúng có chiều rộng tương đương nhau */
-    }
-
-    .profile .form-group label {
-        font-size: 18px;
-        color: #3D67BA;
-        font-weight: 500;
-    }
 
     .faculty-contri {
         max-width: 100%;
@@ -149,7 +139,6 @@
 
         <main>
             <div class="row align-items-center">
-
                 <div class="col-md-9 d-flex align-items-center">
                     <h2 style="font-size: 40px; font-weight:bold; color:#333333">Chart - Analytics</h2>
                 </div>
