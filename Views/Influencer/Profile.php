@@ -36,7 +36,7 @@
         background-color: rgba(255, 255, 255, 1);
         backdrop-filter: blur(5px);
         border-radius: 20px;
-        padding: 20px;
+        padding: 30px;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
     }

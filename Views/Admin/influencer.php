@@ -342,7 +342,7 @@
                 <div class="profile">
                     <br>
                     <h3 style="text-align: center;">List of Influencers</h3>
-
+                    <br>
                     <?php if (!empty($message)): ?>
                         <p style="color: red; text-align: center; font-size: 20px; margin-top: 20px"><?php echo $message; ?></p>
                     <?php endif; ?>
@@ -387,7 +387,7 @@
                                     <?php echo $influ['Influ_Status']; ?>
                                 </td>
                                 <td style="font-size: 16px; font-weight: 300; text-align: left" scope="row">
-                                    <div class="row d-flex justify-content-center">
+                                    <div class="row d-flex justify-content-center" style="gap: 10px;">
                                         <?php if ($influ['Influ_Status'] === 'Pending'): ?>
                                             <a href="index.php?action=admin_detailinfluencer&id=<?php echo $influ['Influ_ID']; ?>">
                                                 <img src="././Views/Img/u223.png" width="30" height="30">

@@ -67,7 +67,7 @@
 
     .calendar {
         width: 100%;
-        max-width: 900px;
+        max-width: 1300px;
         padding: 10px 20px;
         border-radius: 10px;
         margin: 20px;

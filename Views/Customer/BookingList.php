@@ -250,10 +250,11 @@
     }
 
     .button-container {
-    display: flex;
+        display: flex;
         justify-content: space-between; /* Giữ khoảng cách đều nếu có nhiều thẻ */
         align-items: center; /* Căn giữa theo chiều dọc */
-        width: 100px; /* Cố định chiều rộng cho container */
+        width: 70px; /* Cố định chiều rộng cho container */
+        
         
     }
 

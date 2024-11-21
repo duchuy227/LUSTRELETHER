@@ -994,6 +994,21 @@
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function getBookingPercentageByInfluencerType() {
+            $query = "SELECT it.InfluType_Name, 
+                             COUNT(b.Booking_ID) AS total_bookings, 
+                             (COUNT(b.Booking_ID) * 100.0 / (SELECT COUNT(*) FROM Booking)) AS booking_percentage
+                      FROM Booking b
+                      JOIN Influencer i ON b.Influ_ID = i.Influ_ID
+                      JOIN Influencer_Type it ON i.InfluType_ID = it.InfluType_ID
+                      GROUP BY it.InfluType_Name
+                      ORDER BY total_bookings DESC;";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
         
 
     }

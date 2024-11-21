@@ -196,6 +196,17 @@
                 </div>
                 <br>
             </div>
+
+            <div class="recent_order">
+                <div class="profile">
+                    <br>
+                    <h3 class="text-center">Booking Rate by Type of Influencers</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="bookingChart"></canvas>
+                    </div>
+                </div>
+                <br>
+            </div>
         </main>
     </div>
 
@@ -275,7 +286,6 @@
         var influencerTypeNames = [];
         var influencerCounts = [];
 
-        // Lặp qua dữ liệu để tạo mảng tên loại và số lượng influencer
         for (var i = 0; i < influencerData.length; i++) {
             influencerTypeNames.push(influencerData[i].InfluType_Name); // Tên loại influencer
             influencerCounts.push(parseInt(influencerData[i].influencer_count)); // Số lượng influencer (chuyển sang số nguyên)
@@ -395,6 +405,68 @@
                 }
             }
         });
+
+
+        var bookingData = <?php echo json_encode($bookingData); ?>;
+        var typeNames = [];
+        var bookingPercentages = [];
+
+        // Xử lý dữ liệu thành mảng labels và data
+        for (var i = 0; i < bookingData.length; i++) {
+            typeNames.push(bookingData[i].InfluType_Name); // Tên loại influencer
+            bookingPercentages.push(parseFloat(bookingData[i].booking_percentage)); // Tỷ lệ phần trăm booking
+        }
+
+        var ctx = document.getElementById('bookingChart').getContext('2d');
+        var bookingChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: typeNames,
+                datasets: [{
+                    label: 'Booking Percentage (%)',
+                    data: bookingPercentages,
+                    backgroundColor: [
+                        'rgba(205, 85, 85, 0.5)', 
+                        'rgba(205, 140, 57, 0.5)',   
+                        'rgba(205, 170, 125, 0.5)' 
+                    ],
+                    borderColor: [
+                        'rgba(205, 85, 85, 1)',  
+                        'rgba(205, 140, 57, 1)', 
+                        'rgba(205, 170, 125, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y', // Đảo trục để biểu đồ cột nằm ngang
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Booking Percentage (%)',
+                            font: { size: 16 }
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Influencer Type',
+                            font: { size: 16 }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
 
 
     </script>

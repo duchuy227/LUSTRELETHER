@@ -139,7 +139,7 @@
                 </div>
             </div>
             <main>
-                <div class="container">
+                <div class="container-fluid">
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">

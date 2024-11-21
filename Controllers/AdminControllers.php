@@ -316,6 +316,7 @@
                 $bdata = $AdminModels ->getBookingCountsByTopic();
                 $idata = $AdminModels ->getInfluCountbyType();
                 $priceData = $AdminModels->getTotalPriceByInfluencerType();
+                $bookingData = $AdminModels ->getBookingPercentageByInfluencerType();
 
                 include 'Views/Admin/analytics.php';
             }

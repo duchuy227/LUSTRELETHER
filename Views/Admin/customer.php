@@ -263,7 +263,7 @@
                                     <th style="font-size: 18px; font-weight: 400;">Email</th>
                                     <th style="font-size: 18px; font-weight: 400;">Fullname</th>
                                     <th style="font-size: 18px; font-weight: 400;">Date of birth</th>
-                                    <th style="width: 20%" scope="col">&nbsp;</th>
+                                    <th scope="col">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody class="hello">
@@ -281,14 +281,14 @@
                                     <td style="font-size: 16px; font-weight: 400; color: #333333" scope="row">
                                         <?php echo $c['Cus_DOB']; ?>
                                     </td>
-                                    <td style="font-size: 16px; font-weight: 400; text-align: left" scope="row">
-                                        <div class="row d-flex justify-content-center">
+                                    <td style="font-size: 16px; font-weight: 400;" scope="row">
+                                        <div class="row d-flex justify-content-center" style="gap: 10px;">
                                             <a href="index.php?action=admin_editcustomer&id=<?php echo $c['Cus_ID']; ?>">
-                                                <img style="margin-right: 5px;" src="././Views/Img/u550.png" width="30" height="30">
+                                                <img src="././Views/Img/u550.png" width="30" height="30">
                                             </a>
 
                                             <a href="index.php?action=admin_detailcustomer&id=<?php echo $c['Cus_ID']; ?>">
-                                                <img style="margin-right: 5px;" src="././Views/Img/u223.png" width="30" height="30">
+                                                <img src="././Views/Img/u223.png" width="30" height="30">
                                             </a>
 
                                             <a href="index.php?action=admin_deletecustomer&id=<?php echo $c['Cus_ID']; ?>" onclick="openPopup(event);">

@@ -22,14 +22,14 @@
         display: grid;
         width: 96%;
         gap: 1.8rem;
-        grid-template-columns: 14rem auto 16rem;
+        grid-template-columns: 250px auto;
         margin: 0 auto;
     }
 
-    main .recent_order{
+    main .recent_order {
         margin-top: 2rem;
         background: var(--clr-white);
-        width: 970px;
+        width: 100%;
         height: auto;
         border-radius: 20px;
     }
@@ -245,8 +245,10 @@
                         </div>
 
                         <div class="form-row">
-                            <h5 class="mb-1">Select Topics</h5> 
-                            <div class="row">
+                            <div class="col-md-12">
+                                <h5 class="mb-1">Select Topics</h5>
+                            </div>
+                            <div class="row" style="margin: 0px;">
                                 <?php 
                                 $count = 0; 
                                 foreach ($topics as $topic): 

@@ -126,6 +126,7 @@
         .income-container .income-value {
             font-size: 2.5rem;
             font-weight: bold;
+            color: #847F7F;
         }
         
 </style>
@@ -158,7 +159,7 @@
                 </div>
             </div>
             <main>
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-6 mb-3 mb-md-0">
                             <div class="income-container">
