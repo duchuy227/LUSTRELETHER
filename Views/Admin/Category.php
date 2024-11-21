@@ -21,15 +21,14 @@
         display: grid;
         width: 96%;
         gap: 1.8rem;
-        grid-template-columns: 14rem auto 16rem;
+        grid-template-columns: 250px auto;
         margin: 0 auto;
     }
 
     main .recent_order{
         margin-top: 2rem;
-        margin-bottom: 20px;
         background: var(--clr-white);
-        width: 970px;
+        width: 100%;
         height: auto;
         border-radius: 20px;
     }
@@ -214,7 +213,7 @@
                     <h2 style="font-size: 40px; font-weight:bold; color:#333333">Category</h2>
                 </div>
 
-                <div class="col-md-3 d-flex align-items-center">
+                <div class="col-md-3 d-flex align-items-center justify-content-end">
                     <div class="d-flex align-items-center">
                         <div class="info me-3" style=" margin-right: 30px">
                             <small class="text-muted" style="font-size: 15px; font-weight: 300; color: #333333;">
@@ -264,7 +263,7 @@
                         <thead>
                             <tr class="table-active">
                                 <th style="font-size: 18px; font-weight: 400">Name</th>
-                                <th style="font-size: 18px; font-weight: 400; width: 40%">Description</th>
+                                <th style="font-size: 18px; font-weight: 400;">Description</th>
                                 <th style="font-size: 18px; font-weight: 400">Image</th>
                                 <th style="font-size: 18px; font-weight: 400">Content</th>
                                 <th style="font-size: 18px; font-weight: 400">Event</th>
@@ -277,10 +276,8 @@
                                 <td style="font-size: 16px; font-weight: 300; color: #333333" scope="row">
                                     <?php echo $t['Topic_Name'] ?>
                                 </td>
-                                <td style="font-size: 16px; font-weight: 300; width: 30%; " scope="row">
-                                    <textarea readonly style="background: transparent; width: 100%; margin: 0; padding: 0; resize: none" cols="30" rows="3">
-                                        <?php echo $t['Topic_Description'] ?>
-                                    </textarea>
+                                <td style="font-size: 16px; font-weight: 300;" scope="row">
+                                    <textarea readonly style="background: transparent; width: 100%;" cols="30" rows="5"><?php echo $t['Topic_Description'] ?></textarea>
                                 </td>
 
                                 <td style="font-size: 16px; font-weight: 300" scope="row">

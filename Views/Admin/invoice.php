@@ -29,7 +29,7 @@
         margin: 0 auto;
     }
 
-    main .recent_order {
+    main .recent_order{
         margin-top: 2rem;
         background: var(--clr-white);
         width: 100%;

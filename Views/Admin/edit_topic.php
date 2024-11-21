@@ -21,18 +21,16 @@
         display: grid;
         width: 96%;
         gap: 1.8rem;
-        grid-template-columns: 14rem auto 16rem;
+        grid-template-columns: 250px auto;
         margin: 0 auto;
     }
-
     main .recent_order{
         margin-top: 2rem;
         background: var(--clr-white);
-        width: 970px;
+        width: 100%;
         height: auto;
         border-radius: 20px;
     }
-
     aside .sidebar{
         background: var(--clr-white);
         display: flex;
@@ -157,7 +155,7 @@
                     <h2 style="font-size: 40px; font-weight:bold; color:#333333">Edit Topic</h2>
                 </div>
 
-                <div class="col-md-3 d-flex align-items-center">
+                <div class="col-md-3 d-flex align-items-center justify-content-end">
                     <div class="d-flex align-items-center">
                         <div class="info me-3" style=" margin-right: 30px">
                             <small class="text-muted" style="font-size: 15px; font-weight: 300; color: #333333;">
@@ -186,7 +184,7 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="topic_des">Description</label>
-                                <textarea type="text" class="form-control" id="topic_des" name="topic_des" ><?php echo $topic['Topic_Description']; ?></textarea>
+                                <textarea type="text" class="form-control" id="topic_des" name="topic_des" rows="5"><?php echo $topic['Topic_Description']; ?></textarea>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="topic_image">Image</label>

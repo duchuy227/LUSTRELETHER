@@ -13,7 +13,7 @@
 <style>
     aside .top .logo h2 {
         font-weight: 600;
-        margin: auto;
+        margin-top: 5px;
     }
 
     main table tbody td{
