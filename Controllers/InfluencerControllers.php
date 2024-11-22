@@ -209,6 +209,10 @@
                 $book = $influencerModel -> getBookingCount($_SESSION['influ_id']);
 
                 $timeline = $influencerModel -> getTimeline($_SESSION['influ_id']);
+
+                $feedback = $influencerModel -> getLatestFeedback($_SESSION['influ_id']);
+
+                $mail = $influencerModel -> getLatestMail($_SESSION['influ_id']);
                 
                 include  'views/Influencer/Dashboard.php';
             }
@@ -603,6 +607,16 @@
                 $total = $influencerModel ->getBookingPaidCount($_SESSION['influ_id']);
 
                 include  'views/Influencer/Invoice.php';
+            }
+        }
+
+        public function influencer_Detailinvoice($inv_id){
+            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset ($_SESSION['influ_id'])) {
+                $influencerModel = new InfluencerModels();
+                $influInfo = $influencerModel -> getInfluencerProfile($_SESSION['influ_id']);
+                $invoiceDetails = $influencerModel ->getDetailInvoice($_SESSION['influ_id'], $inv_id);
+
+                include  'views/Influencer/Detail_Invoice.php';
             }
         }
 

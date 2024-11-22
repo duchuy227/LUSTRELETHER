@@ -170,8 +170,7 @@
         }
 
         public function getMostInfluentialEventByCustomer($cus_id) {
-            $query = "
-                SELECT e.Event_ID, e.Event_Name, COUNT(it.Influ_ID) AS influencer_count
+            $query = "SELECT e.Event_ID, e.Event_Name, COUNT(it.Influ_ID) AS influencer_count
                 FROM Event e
                 JOIN Cus_Event ce ON e.Event_ID = ce.Event_ID
                 JOIN Topic_Event te ON e.Event_ID = te.Event_ID
@@ -189,8 +188,7 @@
         
         
         public function getInfluencersByEvent($event_id) {
-            $query = "
-                SELECT i.Influ_ID, i.Influ_Address, i.Influ_Image, i.Influ_Nickname
+            $query = "SELECT i.Influ_ID, i.Influ_Address, i.Influ_Image, i.Influ_Nickname
                 FROM Influencer i
                 JOIN Influ_Topic it ON i.Influ_ID = it.Influ_ID
                 JOIN Topic_Event te ON it.Topic_ID = te.Topic_ID
@@ -203,8 +201,7 @@
         }
 
         public function getMostInfluentialContentByCustomer($cus_id) {
-            $query = "
-                SELECT c.Content_ID, c.Content_Name, COUNT(it.Influ_ID) AS influencer_count
+            $query = 'SELECT c.Content_ID, c.Content_Name, COUNT(it.Influ_ID) AS influencer_count
                 FROM Content c
                 JOIN Cus_Content cc ON c.Content_ID = cc.Content_ID
                 JOIN Topic_Content tc ON c.Content_ID = tc.Content_ID
@@ -212,8 +209,7 @@
                 WHERE cc.Cus_ID = :cus_id
                 GROUP BY c.Content_ID, c.Content_Name
                 ORDER BY influencer_count DESC
-                LIMIT 1;
-            ";
+                LIMIT 1';
         
             $stmt = $this->conn->prepare($query);
             $stmt->execute([':cus_id' => $cus_id]);
@@ -221,8 +217,7 @@
         }
 
         public function getInfluencersByContent($content_id) {
-            $query = "
-                SELECT i.Influ_ID, i.Influ_Address, i.Influ_Image, i.Influ_Nickname
+            $query = "SELECT i.Influ_ID, i.Influ_Address, i.Influ_Image, i.Influ_Nickname
                 FROM Influencer i
                 JOIN Influ_Topic it ON i.Influ_ID = it.Influ_ID
                 JOIN Topic_Content tc ON it.Topic_ID = tc.Topic_ID
@@ -510,8 +505,7 @@
 
         public function getInvoiceBookingInfluencerInfo($invId) {
             // Truy vấn để lấy thông tin từ bảng invoice, booking và influencer
-            $sql = "
-                SELECT 
+            $sql = "SELECT 
                     invoice.Inv_VATamount, 
                     booking.Booking_Content, 
                     influencer.Influ_Fullname
@@ -693,21 +687,23 @@
         }
 
         public function SendAnEmail($CreateTime, $Title, $Content, $influ_id, $cus_id){
-            $query = "INSERT INTO Mail (Mail_CreateTime, Mail_Title, Mail_Content, Influ_ID, Cus_ID) VALUES (:createtime, :title, :content, :influ_id, :cus_id)";
+            $query = "INSERT INTO Mail (Mail_CreateTime, Mail_Title, Mail_Content, Influ_ID, Cus_ID, Sender, Receiver) VALUES (:createtime, :title, :content, :influ_id, :cus_id, :sender, :receiver)";
             $stmt = $this->conn->prepare($query);
             $stmt->execute([
                 ':createtime' => $CreateTime,
                 ':title' => $Title,
                 ':content' => $Content,
                 ':influ_id' => $influ_id,
-                ':cus_id' => $cus_id
+                ':cus_id' => $cus_id,
+                ':sender' => 'customer',
+                ':receiver' => 'influencer'
             ]);
         }
 
         public function getAllMailCurrentCus($cus_id) {
             $query = "SELECT * FROM Mail 
                       JOIN Influencer ON Mail.Influ_ID = Influencer.Influ_ID 
-                      WHERE Mail.Cus_ID = :cus_id 
+                      WHERE Mail.Cus_ID = :cus_id And Sender = 'influencer' AND Receiver = 'customer'
                       ORDER BY Mail_CreateTime DESC";
             $sql = $this->conn->prepare($query);
             $sql->execute([':cus_id' => $cus_id]);

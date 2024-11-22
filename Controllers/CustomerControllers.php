@@ -77,6 +77,13 @@
                 if ($mostInfluentialEvent) {
                     $event_id = $mostInfluentialEvent['Event_ID'];
                     $influencers = $customerModel->getInfluencersByEvent($event_id);
+                
+                    if (empty($influencers)) {
+                        $noInfluencersMessage = "Event " . $mostInfluentialEvent['Event_Name'] . " chưa có dịch vụ nào từ bất kỳ influencer.";
+                    }
+                } else {
+                    // Trường hợp không có sự kiện nào cho khách hàng hoặc topic không có event nào
+                    $noInfluencersMessage = "The event you selected is not in any topic or has no influencer participating yet";
                 }
 
                 $mostInfluentialContent = $customerModel ->getMostInfluentialContentByCustomer($_SESSION['cus_id']);
@@ -84,6 +91,12 @@
                 if ($mostInfluentialContent){
                     $content_id = $mostInfluentialContent['Content_ID'];
                     $influencerss = $customerModel->getInfluencersByContent($content_id);
+
+                    if (empty($influencers)) {
+                        $noInfluencersMessage = "Content " . $mostInfluentialContent['Content_Name'] . " chưa có dịch vụ nào từ bất kỳ influencer.";
+                    }
+                } else {
+                    $Message = "The Content you selected is not in any topic or has no influencer participating yet";
                 }
 
                 include 'views/Customer/User_page.php';

@@ -175,9 +175,19 @@
                                                     <td>
                                                         <textarea readonly style="background: transparent; width: 100%; border:none" cols="30" rows="3"><?php echo $a['Post_Content']; ?></textarea>
                                                     </td>
-                                                    <td><?php echo $a['Post_Status']; ?></td>
+                                                    <td style="font-weight:500; color: <?php 
+                                                        if ($a['Post_Status'] === 'Pending') {
+                                                            echo '#F79A03';
+                                                        } elseif ($a['Post_Status'] === 'Rejected') {
+                                                            echo '#DB0101'; 
+                                                        } elseif ($a['Post_Status'] === 'Active') {
+                                                            echo '#069603';
+                                                        } 
+                                                    ?>;"><?php echo $a['Post_Status']; ?>
+                                                    </td>
                                                     <td style="font-size: 16px; font-weight: 400; text-align: center; width: 100px" scope="row">
                                                         <div style="margin: auto; width: 100px;" class="d-inline-flex justify-content-between align-items-center">
+                                                        <?php if ($a['Post_Status'] === 'Pending'): ?>
                                                             <a href="index.php?action=influencer_editarticle&id=<?php echo  $a['Post_ID']; ?>">
                                                                 <img  src="././Views/Img/u550.png" width="30" height="30" alt="Edit">
                                                             </a>
@@ -187,6 +197,18 @@
                                                             <a href="index.php?action=influencer_deletearticle&id=<?php echo  $a['Post_ID']; ?>" onclick="openPopup(event);">
                                                                 <img  src="././Views/Img/deletecus_u544.png" width="30" height="30">
                                                             </a>
+                                                        <?php elseif ($a['Post_Status'] === 'Active'): ?>
+                                                            <a href="index.php?action=influencer_detailarticle&id=<?php echo  $a['Post_ID']; ?>">
+                                                                <img style="margin-right: 5px;" src="././Views/Img/u223.png" width="30" height="30">
+                                                            </a>
+                                                        <?php elseif ($a['Post_Status'] === 'Rejected'): ?>
+                                                            <a href="index.php?action=influencer_detailarticle&id=<?php echo  $a['Post_ID']; ?>">
+                                                                <img style="margin-right: 5px;" src="././Views/Img/u223.png" width="30" height="30">
+                                                            </a>
+                                                            <a href="index.php?action=influencer_deletearticle&id=<?php echo  $a['Post_ID']; ?>" onclick="openPopup(event);">
+                                                                <img  src="././Views/Img/deletecus_u544.png" width="30" height="30">
+                                                            </a>
+                                                        <?php endif; ?>
                                                         </div>
                                                     </td>
                                                 </tr>

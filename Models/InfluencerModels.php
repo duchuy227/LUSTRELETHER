@@ -447,6 +447,32 @@
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        public function getDetailInvoice($influ_id, $inv_id){
+            $query = "SELECT Invoice.*, Momo_Transaction.*, VNPay_Transaction.*, Booking.*,         Influencer.*, Customer.*
+            FROM Invoice
+            INNER JOIN Booking ON Invoice.Booking_ID = Booking.Booking_ID
+            LEFT JOIN Momo_Transaction ON Invoice.MT_ID = Momo_Transaction.MT_ID
+            LEFT JOIN VNPay_Transaction ON Invoice.VNPay_ID = VNPay_Transaction.VNPay_ID
+            INNER JOIN Influencer ON Booking.Influ_ID = Influencer.Influ_ID
+            INNER JOIN Customer ON Booking.Cus_ID = Customer.Cus_ID
+            WHERE Booking.Influ_ID = :influ_id AND Invoice.Inv_ID = :inv_id";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':influ_id' => $influ_id, ':inv_id' => $inv_id]);
+            $invoice = $sql->fetch(PDO::FETCH_ASSOC);
+
+            if (!$invoice) {
+                return null;
+            }
+
+            if (!empty($invoice['MT_ID'])) {
+                $invoice['method'] = 'Momo';
+            } elseif (!empty($invoice['VNPay_ID'])) {
+                $invoice['method'] = 'VNPay';
+            }
+            
+            return $invoice;
+        }
+
         public function getBookingCount($influ_id) {
             $query = 'SELECT COUNT(*) as total_count FROM Booking Where Booking.Influ_ID = :influ_id';
             $stmt = $this->conn->prepare($query);
@@ -495,22 +521,23 @@
         public function getAllMailCurrentInflu($influ_id) {
             $query = "SELECT * FROM Mail 
                     JOIN Customer ON Mail.Cus_ID = Customer.Cus_ID 
-                    WHERE Mail.Influ_ID = :influ_id 
-                    ORDER BY Mail_CreateTime DESC";
+                    WHERE Mail.Influ_ID = :influ_id And Sender = 'customer' AND Receiver = 'influencer' ORDER BY Mail_CreateTime DESC";
             $sql = $this->conn->prepare($query);
             $sql->execute([':influ_id' => $influ_id]);
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
         public function SendAnEmail($CreateTime, $Title, $Content, $influ_id, $cus_id){
-            $query = "INSERT INTO Mail (Mail_CreateTime, Mail_Title, Mail_Content, Influ_ID, Cus_ID) VALUES (:createtime, :title, :content, :influ_id, :cus_id)";
+            $query = "INSERT INTO Mail (Mail_CreateTime, Mail_Title, Mail_Content, Influ_ID, Cus_ID, Sender, Receiver) VALUES (:createtime, :title, :content, :influ_id, :cus_id, :sender, :receiver)";
             $stmt = $this->conn->prepare($query);
             $stmt->execute([
                 ':createtime' => $CreateTime,
                 ':title' => $Title,
                 ':content' => $Content,
                 ':influ_id' => $influ_id,
-                ':cus_id' => $cus_id
+                ':cus_id' => $cus_id,
+                ':sender' => 'influencer',
+                ':receiver' => 'customer'
             ]);
         }
 
@@ -538,6 +565,29 @@
             return $uniqueInfluencers;
         }
         
+
+        public function getLatestFeedback($influ_id, $limit = 2) {
+            $query = "SELECT * FROM Feedbacks 
+                    Join Booking ON Feedbacks.Booking_ID = Booking.Booking_ID
+                    Join Customer ON Booking.Cus_ID = Customer.Cus_ID
+                    Join Influencer ON Booking.Influ_ID = Influencer.Influ_ID
+                    WHERE Booking.Influ_ID = :influ_id
+                    ORDER BY Feed_CreateTime DESC LIMIT $limit";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([':influ_id' => $influ_id]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getLatestMail($influ_id, $limit = 2) {
+            $query = "SELECT * FROM Mail 
+                    Join Customer ON Mail.Cus_ID = Customer.Cus_ID
+                    Join Influencer ON Mail.Influ_ID = Influencer.Influ_ID
+                    WHERE Mail.Influ_ID = :influ_id
+                    ORDER BY Mail_CreateTime DESC LIMIT $limit";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([':influ_id' => $influ_id]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
 
     }
 ?>

@@ -237,27 +237,15 @@
                         <h2>Email</h2>
                         <img class="options-icon" src="./././Image/u42.png" width="35" height="35" style="opacity: 50%;">
                     </div>
+                    <?php foreach ($mail as $m) : ?>
                     <div class="email-item">
-                        <img src="./././Image/u87.png" width="66" height="66">
+                        <img src="<?php echo $m['Cus_Image'] ?>" width="66" height="66">
                         <div class="email-content">
-                            <span class="name">Bẻo Chỏ</span>
-                            <p class="message">Check my booking</p>
+                            <span class="name"><?php echo $m['Cus_Username'] ?></span>
+                            <p class="message"><?php echo $m['Mail_Content'] ?></p>
                         </div>
                     </div>
-                    <div class="email-item">
-                        <img src="./././Image/u59_div.png" width="66" height="66">
-                        <div class="email-content">
-                            <span class="name">Viet Huy</span>
-                            <p class="message">Are you free?</p>
-                        </div>
-                    </div>
-                    <div class="email-item">
-                        <img src="./././Image/u57_div.jpg" width="66" height="66">
-                        <div class="email-content">
-                            <span class="name">Bẻo Bẻo</span>
-                            <p class="message">Rep my email</p>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <div class="projectCard1">
@@ -279,27 +267,20 @@
                         <h2>Feedbacks</h2>
                         <img class="options-icon" src="./././Image/u42.png" width="35" height="35" style="opacity: 50%;">
                     </div>
+                    <?php foreach ($feedback as $f): ?>
                     <div class="email-item">
-                        <img src="./././Image/u55.png" width="66" height="66">
+                        <img src="<?php echo $f['Cus_Image'] ?>" width="66" height="66">
                         <div class="email-content">
-                            <span class="name">QuanDH</span>
-                            <p class="message">Good Event</p>
+                            <span class="name"><?php echo $f['Cus_Username'] ?></span>
+                            <p class="message">
+                            <?php 
+                                $content = $f['Feed_Content']; 
+                                echo strlen($content) > 25 ? substr($content, 0, 25) . '...' : $content; 
+                            ?>
+                            </p>
                         </div>
                     </div>
-                    <div class="email-item">
-                        <img src="./././Image/u56.png" width="66" height="66">
-                        <div class="email-content">
-                            <span class="name">TuyenPD</span>
-                            <p class="message">impressive</p>
-                        </div>
-                    </div>
-                    <div class="email-item">
-                        <img src="./././Image/u57.png" width="66" height="66">
-                        <div class="email-content">
-                            <span class="name">NghiLV</span>
-                            <p class="message">Thanks you</p>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </main>
         </div>

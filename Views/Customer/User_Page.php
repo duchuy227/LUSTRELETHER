@@ -142,6 +142,9 @@
         </div>
 
         <div class="influencer-viral text-center">
+            <?php if (isset($noInfluencersMessage)): ?>
+                <p style="font-size: 30px;"><?php echo $noInfluencersMessage; ?></p>
+            <?php else: ?>
             <h1><?php echo $mostInfluentialEvent['Event_Name']; ?></h1>
             <div class="row justify-content-center">
             <?php foreach (array_slice($influencers, 0, 4) as $i): ?>
@@ -163,9 +166,13 @@
                     <button class="btn">See More</button>
                 </a>
             </div>
+            <?php endif; ?>
         </div>
 
         <div class="influencer-viral text-center">
+            <?php if (isset($Message)): ?>
+                <p style="font-size: 30px;"><?php echo $Message; ?></p>
+            <?php else: ?>
             <h1><?php echo $mostInfluentialContent['Content_Name']; ?></h1>
             <div class="row justify-content-center">
                 <?php foreach (array_slice($influencerss, 0, 4) as $i): ?>
@@ -187,6 +194,7 @@
                     <button class="btn">See More</button>
                 </a>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 

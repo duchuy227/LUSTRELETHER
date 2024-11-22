@@ -374,6 +374,12 @@
             $InfluControllers -> influencer_invoice();
             break;
         
+        case 'influencer_Detailinvoice':
+            require_once "Controllers/InfluencerControllers.php";
+            $InfluControllers = new InfluencerControllers();
+            $InfluControllers -> influencer_Detailinvoice($_GET['id']);
+            break;
+        
         case 'influencer_feedback':
             require_once "Controllers/InfluencerControllers.php";
             $InfluControllers = new InfluencerControllers();

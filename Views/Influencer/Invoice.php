@@ -210,7 +210,7 @@
                                                     <td style="font-size: 16px; font-weight: 400; text-align: center; width: 100px" scope="row">
                                                         <div style="margin: auto;" class="d-inline-flex justify-content-between align-items-center">
                                                         <?php if ($i['Inv_Status'] === 'Paid'): ?>
-                                                            <a href="">
+                                                            <a href="index.php?action=influencer_Detailinvoice&id=<?php echo $i['Inv_ID'] ?>">
                                                                 <img src="././Views/Img/u223.png" width="30" height="30">
                                                             </a>
                                                         </div>
@@ -221,13 +221,6 @@
                                                 <?php endforeach; ?>
                                             </tbody>
                                         </table>
-                                        <div id="deletePopup" class="popup">
-                                            <div class="popup-content">
-                                                <p>Are you sure to delete <br>this article?</p>
-                                                <button id="confirmDelete" class="delete-btn">Delete</button>
-                                                <button id="cancelDelete" class="cancel-btn">Cancel</button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -276,27 +269,6 @@
                 body.style.overflow = '';
             }
         };
-    </script>
-
-    <script>
-        function openPopup(event) {
-            event.preventDefault(); // Ngăn không cho chuyển trang ngay lập tức
-            document.getElementById("deletePopup").style.display = "flex"; // Hiển thị popup
-
-            // Lấy URL của hành động xóa
-            const deleteUrl = event.currentTarget.href;
-
-            // Xử lý khi người dùng nhấn nút "Delete"
-            document.getElementById("confirmDelete").onclick = function() {
-                window.location.href = deleteUrl; // Chuyển hướng đến URL xóa nếu người dùng xác nhận
-            };
-
-            // Xử lý khi người dùng nhấn nút "Cancel"
-            document.getElementById("cancelDelete").onclick = function() {
-                document.getElementById("deletePopup").style.display = "none"; // Đóng popup
-            };
-        }
-
     </script>
 
 </body>
