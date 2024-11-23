@@ -221,7 +221,7 @@
     }
 
     .calendar {
-        width: 90%;
+        width: 95%;
         max-width: 900px;
         padding: 5px 20px;
         border-radius: 10px;
@@ -324,6 +324,7 @@
         display: flex;
         align-items: center;
         margin-bottom: 10px;
+        justify-content: center;
     }
 
     .note div {
@@ -519,7 +520,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6 col-sm-12">
+            <div class="col-md-9 col-sm-12">
                 <form method="post">
                     <div class="profile-card1">
                         <h5 style="text-align: center; font-weight:500; font-size: 30px; margin: 20px">Booking</h5>
@@ -640,15 +641,7 @@
                 </form>
             </div>
 
-            <div class="col-md-3 col-sm-12">
-                <div class="profile-card">
-                    <p style="margin: 20px 20px 0 20px; font-size: 16px; font-weight: 500">Booking Recieved: 20</p>
-                    <p style="margin: 10px 20px; font-size: 16px; font-weight: 500">20 feedbacks</p>
-                    
-                    
-                    <br>
-                </div>
-            </div>
+            
         </div>
 
         

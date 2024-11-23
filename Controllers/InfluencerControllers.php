@@ -636,7 +636,9 @@
                 $influencerModel = new InfluencerModels();
                 $influInfo = $influencerModel -> getInfluencerProfile($_SESSION['influ_id']);
 
-                $mail = $influencerModel -> getAllMailCurrentInflu($_SESSION['influ_id']);
+                $mailInbox = $influencerModel -> getAllMailInfluInbox($_SESSION['influ_id']);
+
+                $mailSent = $influencerModel -> getAllMailInfluSent($_SESSION['influ_id']);
 
                 include  'views/Influencer/Mail.php';
             }

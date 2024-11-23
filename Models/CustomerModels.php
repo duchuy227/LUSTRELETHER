@@ -435,9 +435,7 @@
                                 WHEN iv.Inv_Status = 'Paid' THEN 3
                                 ELSE 4
                             END
-
                             ";
-            
             $stmt = $this->conn->prepare($query);
             $stmt->execute([':cus_id' => $cus_id]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -704,6 +702,16 @@
             $query = "SELECT * FROM Mail 
                       JOIN Influencer ON Mail.Influ_ID = Influencer.Influ_ID 
                       WHERE Mail.Cus_ID = :cus_id And Sender = 'influencer' AND Receiver = 'customer'
+                      ORDER BY Mail_CreateTime DESC";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':cus_id' => $cus_id]);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllMailCusSent($cus_id) {
+            $query = "SELECT * FROM Mail 
+                      JOIN Influencer ON Mail.Influ_ID = Influencer.Influ_ID 
+                      WHERE Mail.Cus_ID = :cus_id And Sender = 'customer' AND Receiver = 'influencer'
                       ORDER BY Mail_CreateTime DESC";
             $sql = $this->conn->prepare($query);
             $sql->execute([':cus_id' => $cus_id]);

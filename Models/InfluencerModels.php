@@ -518,10 +518,19 @@
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        public function getAllMailCurrentInflu($influ_id) {
+        public function getAllMailInfluInbox($influ_id) {
             $query = "SELECT * FROM Mail 
                     JOIN Customer ON Mail.Cus_ID = Customer.Cus_ID 
                     WHERE Mail.Influ_ID = :influ_id And Sender = 'customer' AND Receiver = 'influencer' ORDER BY Mail_CreateTime DESC";
+            $sql = $this->conn->prepare($query);
+            $sql->execute([':influ_id' => $influ_id]);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllMailInfluSent($influ_id) {
+            $query = "SELECT * FROM Mail 
+                    JOIN Customer ON Mail.Cus_ID = Customer.Cus_ID 
+                    WHERE Mail.Influ_ID = :influ_id And Sender = 'influencer' AND Receiver = 'customer' ORDER BY Mail_CreateTime DESC";
             $sql = $this->conn->prepare($query);
             $sql->execute([':influ_id' => $influ_id]);
             return $sql->fetchAll(PDO::FETCH_ASSOC);

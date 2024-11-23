@@ -32,7 +32,7 @@
     .container1 .right main .projectCardd {
         position: relative;
         width: 100%;
-        height: 570px; 
+        height: auto; 
         background-color: rgba(255, 255, 255, 1);
         backdrop-filter: blur(5px);
         border-radius: 20px;
@@ -111,7 +111,7 @@
                         <div class="row">
                             <div class="projectCardd">
                                 <div class="projectTopp">
-                                    <h4 class="text-center">List of Mail</h4>
+                                    <h4 class="text-center">Inbox</h4>
                                     <br>
                                     <div class="table-responsive">
                                         <table style="max-width:100%" class="table table-bordered">
@@ -124,7 +124,44 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach($mail as $m): ?>
+                                                <?php foreach($mailInbox as $m): ?>
+                                                <tr>
+                                                    <td><?php echo $m['Mail_CreateTime'] ?></td>
+                                                    <td><?php echo $m['Cus_Username'] ?></td>
+                                                    <td><?php echo $m['Mail_Title'] ?></td>
+                                                    <td>
+                                                        <textarea readonly style="background: transparent; border:none; width: 100%; outline: none; resize: none;"><?php echo $m['Mail_Content'] ?></textarea>
+                                                    </td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="projectCardd">
+                                <div class="projectTopp">
+                                    <h4 class="text-center">Sent</h4>
+                                    <br>
+                                    <div class="table-responsive">
+                                        <table style="max-width:100%" class="table table-bordered">
+                                            <thead>
+                                                <tr class="table-primary">
+                                                    <th style="font-size: 16px; font-weight: 400; ">Datetime</th>
+                                                    <th style="font-size: 16px; font-weight: 400; ">Customer</th>
+                                                    <th style="font-size: 16px; font-weight: 400;">Title</th>
+                                                    <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Content</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach($mailSent as $m): ?>
                                                 <tr>
                                                     <td><?php echo $m['Mail_CreateTime'] ?></td>
                                                     <td><?php echo $m['Cus_Username'] ?></td>

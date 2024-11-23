@@ -334,7 +334,7 @@
                                 <td style="font-size: 16px; font-weight: 300; text-align: left" scope="row">
                                     <?php echo $b['Booking_Content']; ?>
                                 </td>
-                                <td style="font-size: 16px; font-weight: 300; text-align: left; color: <?php 
+                                <td style="font-size: 16px; font-weight: 500; text-align: left; color: <?php 
                                             if ($b['Booking_Status'] === 'Pending') {
                                                 echo '#F79A03';
                                             } elseif ($b['Booking_Status'] === 'Rejected') {

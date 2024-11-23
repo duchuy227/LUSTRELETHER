@@ -281,23 +281,10 @@
             </div>
 
             <div class="row" style="margin-top: 20px;">
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="select">
-                            <select name="fa_id" id="fa_id">
-                                <option selected disabled>Type of service</option>
-                            </select>
-                        </div>
-                            
-                        <button style="margin-left: 20px; width: 90px; color: white; font-weight: 600;" type="submit" class="btn btn-primary">Filter</button>
-                    </div>
-                </div>
-
-                <div class="col-md-6 d-flex justify-content-end">
+                <div class="col-md-12 d-flex justify-content-end">
                     <div class="inputBx">
                         <img src="././Views/Img/search.png" alt="" width="30" height="30">
                         <input type="text" placeholder="Search . . .">
-                        
                     </div>
                 </div>
             </div>
@@ -310,27 +297,41 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr class="table-active">
-                                <th style="font-size: 18px; font-weight: 400">Customer</th>
-                                <th style="font-size: 18px; font-weight: 400;">Influencer</th>
-                                <th style="font-size: 18px; font-weight: 400;">Service</th>
-                                <th style="font-size: 18px; font-weight: 400;">Time</th>
+                                <th style="font-size: 18px; font-weight: 400">Service</th>
+                                <th style="font-size: 18px; font-weight: 400;">Total Amount</th>
+                                <th style="font-size: 18px; font-weight: 400;">Vat Amount</th>
+                                <th style="font-size: 18px; font-weight: 400;">Status</th>
                                 <th scope="col">&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody class="">
-                            <!-- <?php foreach ($violation as $v): ?> -->
+                            <?php foreach($invoice as $i): ?>
                             <tr>
-                                <td style="font-size: 16px; font-weight: 300; color: #333333" scope="row"></td>
-                                <td style="font-size: 16px; font-weight: 300; text-align: left" scope="row"></td>
-                                <td style="font-size: 16px; font-weight: 300; text-align: left" scope="row"></td>
-                                <td style="font-size: 16px; font-weight: 300; text-align: left" scope="row"></td>
+                                <td style="font-size: 16px; font-weight: 300; color: #333333; text-align:left" scope="row">
+                                    <?php echo $i['Booking_Content']; ?>
+                                </td>
+                                <td style="font-size: 16px; font-weight: 300; text-align: left" scope="row">
+                                    <?php echo number_format($i['Inv_TotalAmount']); ?>
+                                </td>
+                                <td style="font-size: 16px; font-weight: 300; text-align: left" scope="row">
+                                    <?php echo number_format($i['Inv_VATamount']); ?>
+                                </td>
+                                <td style="font-size: 16px; font-weight: 300; text-align: left; color: <?php 
+                                            if ($i['Inv_Status'] === 'Unpaid') {
+                                                echo '#F79A03';
+                                            } elseif ($i['Inv_Status'] === 'Paid') {
+                                                echo '#069603';
+                                            } 
+                                        ?>; font-weight: 500" scope="row">
+                                    <?php echo $i['Inv_Status']; ?>
+                                </td>
                                 <td style="font-size: 16px; font-weight: 300; text-align: left" scope="row">
                                     <a>
                                         <img src="././Views/Img/u223.png" width="30" height="30">
                                     </a>
                                 </td>
                             </tr>
-                            <!-- <?php endforeach; ?> -->
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                     <br>

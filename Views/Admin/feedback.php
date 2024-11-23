@@ -71,19 +71,6 @@
         color: #333333;
     }
 
-    
-
-    .btn-success {
-        margin-left: 20px;
-        margin-top: 10px;
-        justify-content: space-between;
-        align-items: center;
-        width: 140px;
-        border-radius: 25px;
-        border: none;
-        font-size: 18px;
-        height: 40px;
-    }
 
     main .recent_order a{
         text-align: center;
@@ -177,25 +164,26 @@
                     <table style="margin-bottom: 20px;" class="table table-bordered">
                         <thead>
                             <tr class="table-active">
-                                <th style="font-size: 18px; font-weight: 400">Customer</th>
-                                <th style="font-size: 18px; font-weight: 400;">Influencer</th>
-                                <th style="font-size: 18px; font-weight: 400;">Title</th>
+                                <th style="font-size: 18px; font-weight: 400">Date Time</th>
+                                <th style="font-size: 18px; font-weight: 400;">Customer</th>
                                 <th style="font-size: 18px; font-weight: 400;">Content</th>
-                                <th style="font-size: 18px; font-weight: 400;">Time</th>
+                                <th style="font-size: 18px; font-weight: 400;">Booking</th>
                             </tr>
                         </thead>
                         <tbody class="hello">
+                            <?php foreach ($feedback as $f): ?>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <textarea readonly style="background: transparent; border:none; width: 100%"></textarea>
+                                <td style="color: #333333;"><?php echo $f['Feed_CreateTime']; ?></td>
+                                <td style="color: #333333;"><?php echo $f['Cus_Username']; ?></td>
+                                <td style="color: #333333;">
+                                    <textarea readonly style="background: transparent; border:none; width: 100%; resize:none; outline: none"><?php echo $f['Feed_Content']; ?></textarea>
                                 </td>
-                                <td></td>
+                                <td style="color: #333333;"><?php echo $f['Booking_Content']; ?></td>
                             </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <div class="pagination"></div>
                     <br>
                 </div>
             </div>
@@ -225,7 +213,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var perPage = 3;
+            var perPage = 5;
             var topics = document.querySelectorAll(".table .hello tr"); 
             var totalPages = Math.ceil(topics.length / perPage); 
             showPage(1);

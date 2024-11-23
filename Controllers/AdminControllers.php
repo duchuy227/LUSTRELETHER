@@ -326,7 +326,8 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true){
                 $AdminModels =  new AdminModels();
                 $admins =  $AdminModels->getAllAdminAccount();
-                $mails = $AdminModels->getAllMail();
+                $mailInflu = $AdminModels->getALlMailInflu();
+                $mailCus = $AdminModels->getALlMailCus();
 
                 include  'Views/Admin/mail.php';
             }
@@ -336,7 +337,7 @@
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true){
                 $AdminModels =  new AdminModels();
                 $admins =  $AdminModels->getAllAdminAccount();
-                $mails = $AdminModels->getAllFeedback();
+                $feedback = $AdminModels->getAllFeedback();
 
                 include  'Views/Admin/feedback.php';
             }
@@ -350,6 +351,8 @@
                 $totalInvoices = $AdminModels->getInvoiceCount();
                 
                 $totalVATAmount = $AdminModels->getTotalVATAmount();
+
+                $invoice = $AdminModels->getAllInvoice();
 
                 include 'Views/Admin/invoice.php';
             }

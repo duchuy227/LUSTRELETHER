@@ -242,7 +242,12 @@
                         <img src="<?php echo $m['Cus_Image'] ?>" width="66" height="66">
                         <div class="email-content">
                             <span class="name"><?php echo $m['Cus_Username'] ?></span>
-                            <p class="message"><?php echo $m['Mail_Content'] ?></p>
+                            <p class="message">
+                                <?php 
+                                $mailC = $m['Mail_Content'];
+                                echo strlen($mailC) > 25 ? substr($mailC, 0, 25) . '...' : $mailC;
+                                ?>
+                            </p>
                         </div>
                     </div>
                     <?php endforeach; ?>

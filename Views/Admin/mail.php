@@ -172,29 +172,63 @@
             <div class="recent_order">
                 <div class="profile">
                     <br>
-                    <h3 style="text-align: center; margin-top: 20px;">List of mails</h3>
+                    <h3 style="text-align: center; margin-top: 20px;">List of Influencer's mails</h3>
                     <br>
-                    <table style="margin-bottom: 20px;" class="table table-bordered">
+                    <table style="margin-bottom: 20px; width: 90%" class="table table-bordered">
                         <thead>
                             <tr class="table-active">
-                                <th style="font-size: 18px; font-weight: 400">Customer</th>
+                                <th style="font-size: 18px; font-weight: 400">Date time</th>
+                                <th style="font-size: 18px; font-weight: 400;">Influencer</th>
+                                <th style="font-size: 18px; font-weight: 400;">Customer</th>
+                                <th style="font-size: 18px; font-weight: 400;">Title</th>
+                                <th style="font-size: 18px; font-weight: 400; width: 30%">Content</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            <?php foreach($mailInflu as $m): ?>
+                            <tr>
+                                <td style="color: #333333; font-size: 18px"><?php echo $m['Mail_CreateTime']; ?></td>
+                                <td style="color: #333333; font-size: 18px"><?php echo $m['Influ_Username']; ?></td>
+                                <td style="color: #333333; font-size: 18px"><?php echo $m['Cus_Username']; ?></td>
+                                <td style="color: #333333; font-size: 18px"><?php echo $m['Mail_Title']; ?></td>
+                                <td>
+                                    <textarea readonly style="background: transparent; border:none; width: 100%; color: #333333; font-size: 18px"><?php echo $m['Mail_Content']; ?></textarea>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <br>
+                </div>
+            </div>
+
+            <div class="recent_order">
+                <div class="profile">
+                    <br>
+                    <h3 style="text-align: center; margin-top: 20px;">List of Customer's mails</h3>
+                    <br>
+                    <table style="margin-bottom: 20px; width: 90%" class="table table-bordered">
+                        <thead>
+                            <tr class="table-active">
+                                <th style="font-size: 18px; font-weight: 400">Date time</th>
+                                <th style="font-size: 18px; font-weight: 400;">Customer</th>
                                 <th style="font-size: 18px; font-weight: 400;">Influencer</th>
                                 <th style="font-size: 18px; font-weight: 400;">Title</th>
                                 <th style="font-size: 18px; font-weight: 400;">Content</th>
-                                <th style="font-size: 18px; font-weight: 400;">Time</th>
-                                
                             </tr>
                         </thead>
-                        <tbody class="hello">
+                        <tbody class="">
+                        <?php foreach($mailCus as $m): ?>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td style="color: #333333; font-size: 18px"><?php echo $m['Mail_CreateTime']; ?></td>
+                                <td style="color: #333333; font-size: 18px"><?php echo $m['Cus_Username']; ?></td>
+                                <td style="color: #333333; font-size: 18px"><?php echo $m['Influ_Username']; ?></td>
+                                <td style="color: #333333; font-size: 18px"><?php echo $m['Mail_Title']; ?></td>
                                 <td>
-                                    <textarea readonly style="background: transparent; border:none; width: 100%"></textarea>
+                                    <textarea readonly style="background: transparent; border:none; width: 100%; color: #333333; font-size: 18px"><?php echo $m['Mail_Content']; ?></textarea>
                                 </td>
-                                <td></td>
                             </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                     <br>

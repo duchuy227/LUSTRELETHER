@@ -697,6 +697,8 @@
 
                 $mail = $customerModel -> getAllMailCurrentCus($_SESSION['cus_id']);
 
+                $sent = $customerModel -> getAllMailCusSent($_SESSION['cus_id']);
+
                 include 'Views/Customer/Mail_List.php';
             }
         }

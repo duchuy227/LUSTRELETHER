@@ -227,6 +227,8 @@
                     </div>
                 </div>
                 <div class="profile-container">
+                    <h3 class="text-center">Inbox</h3>
+                    <br>
                     <div class="table-responsive">
                         <table style="max-width:100%" class="table table-bordered">
                             <thead>
@@ -240,6 +242,38 @@
                             </thead>
                                 <tbody>
                                     <?php foreach($mail as $m): ?>
+                                    <tr>
+                                        <td><?php echo $m['Mail_CreateTime'] ?></td>
+                                        <td><?php echo $m['Influ_Nickname'] ?></td>
+                                        <td><?php echo $m['Mail_Title'] ?></td>
+                                        <td>
+                                            <textarea readonly style="background: transparent; width: 100%; border:none; resize:none" cols="30" rows="5"><?php echo $m['Mail_Content'] ?></textarea>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="profile-container">
+                    <h3 class="text-center">Sent</h3>
+                    <br>
+                    <div class="table-responsive">
+                        <table style="max-width:100%" class="table table-bordered">
+                            <thead>
+                                <tr class="table-primary">
+                                    <th style="font-size: 16px; font-weight: 400;">Datetime</th>
+                                    <th style="font-size: 16px; font-weight: 400;">Influencer</th>
+                                    <th style="font-size: 16px; font-weight: 400;">Title</th>
+                                    <th style="font-size: 16px; font-weight: 400; white-space: nowrap;">Content</th>
+                                    
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <?php foreach($sent as $m): ?>
                                     <tr>
                                         <td><?php echo $m['Mail_CreateTime'] ?></td>
                                         <td><?php echo $m['Influ_Nickname'] ?></td>

@@ -179,6 +179,14 @@
         margin-bottom: 10px;
     }
 
+    .col-md-12 input {
+        border: 1px solid #333;
+    }
+
+    .col-md-12 textarea {
+        border: 1px solid #333;
+    }
+
 </style>
 <body>
     <?php include 'navbar.php'?>
@@ -239,7 +247,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6 col-sm-12">
+            <div class="col-md-9 col-sm-12">
                 <form method="post">
                     <div class="profile-card1">
                         <h5 style="text-align: center; font-weight:500; font-size: 30px; margin: 20px">Send An Email</h5>
@@ -267,15 +275,6 @@
                         <br>
                     </div>
                 </form>
-            </div>
-
-            <div class="col-md-3 col-sm-12">
-                <div class="profile-card">
-                    <p style="margin: 20px 20px 0 20px; font-size: 16px; font-weight: 500">Booking Recieved: 20</p>
-                    <p style="margin: 10px 20px; font-size: 16px; font-weight: 500">20 feedbacks</p>
-                    
-                    <br>
-                </div>
             </div>
         </div>
 

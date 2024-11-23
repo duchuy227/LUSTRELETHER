@@ -314,17 +314,27 @@
         }
         
 
-        public function getALlMail(){
-            $query = "SELECT * FROM Mail";
+        public function getALlMailInflu(){
+            $query = "SELECT * FROM Mail
+                    Inner join Customer on Mail.Cus_ID = Customer.Cus_ID
+                    Inner join Influencer on Mail.Influ_ID = Influencer.Influ_ID
+                    Where Sender = 'influencer' AND Receiver = 'customer'";
             $sql = $this->conn->prepare($query);
+            $sql->execute();
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        public function getALlFeedback(){
-            $query = "SELECT * FROM Feedbacks";
+        public function getALlMailCus(){
+            $query = "SELECT * FROM Mail
+                    Inner join Customer on Mail.Cus_ID = Customer.Cus_ID
+                    Inner join Influencer on Mail.Influ_ID = Influencer.Influ_ID
+                    Where Sender = 'customer' AND Receiver = 'influencer'";
             $sql = $this->conn->prepare($query);
+            $sql->execute();
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        
         
         public function addCustomer($Username, $Password, $Email, $Fullname, $PhoneNumber, $DOB, $Image, $Topic, $Content, $Event){
             $this->conn->beginTransaction();
@@ -831,9 +841,16 @@
             $query = "SELECT * FROM Booking
                     LEFT Join Customer  on Booking.Cus_ID = Customer.Cus_ID
                     LEFT Join Topic  on Booking.Topic_ID = Topic.Topic_ID
-                    
                     LEFT Join Influencer on Booking.Influ_ID = Influencer.Influ_ID
-                    INNER JOIN Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID";
+                    INNER JOIN Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID
+                    Order by
+                        Case
+                            WHEN Booking_Status = 'Pending' THEN 1
+                            WHEN Booking_Status = 'In Progress' THEN 2
+                            WHEN Booking_Status = 'Completed' THEN 3
+                            WHEN Booking_Status = 'Rejected' THEN 4
+                            ELSE 5
+                        END";
             $sql = $this->conn->prepare($query);
             $sql->execute();
             return $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -902,6 +919,19 @@
             return $result['total_vat_amount'];
         }
 
+        public function getAllInvoice(){
+            $query = "SELECT * FROM Invoice
+                    Left join Booking On Invoice.Booking_ID = Booking.Booking_ID
+                    Order by Case 
+                        WHEN Inv_Status = 'Unpaid' THEN 1
+                        WHEN Inv_Status = 'Paid' THEN 2
+                        Else 3
+                    End";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
         public function getBookingCount() {
             $query = 'SELECT COUNT(*) as total_count FROM Booking';
             $stmt = $this->conn->prepare($query);
@@ -960,6 +990,16 @@
                     ORDER BY Feed_CreateTime DESC LIMIT :limit";
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllFeedback() {
+            $query = "SELECT * FROM Feedbacks 
+                    Join Booking ON Feedbacks.Booking_ID = Booking.Booking_ID
+                    Join Customer ON Booking.Cus_ID = Customer.Cus_ID
+                    ORDER BY Feed_CreateTime DESC";
+            $stmt = $this->conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
