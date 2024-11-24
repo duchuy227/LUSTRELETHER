@@ -208,7 +208,7 @@
                                     foreach ($otherImages as $image) { 
                                     ?>
                                     <div class="col-md-<?php echo $colSize; ?> mb-3">
-                                        <img src="<?php echo trim($image); ?>" width="200" height="200" class="img-fluid fixed-size-img">
+                                        <img src="<?php echo trim($image); ?>" width="200" height="200" class="img-fluid fixed-size-img" style="margin:-10px">
                                     </div>
                                 <?php 
                                     } 

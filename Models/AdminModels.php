@@ -807,6 +807,13 @@
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        public function getPostbyTitle($username){
+            $query = 'SELECT * FROM Post Join Influencer ON Post.Influ_ID = Influencer.Influ_ID WHERE Post.Post_Title LIKE :username;';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':username' => '%' . $username . '%'));
+            return $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
         public function GetArticleByID($post_id){
             $query = "SELECT * FROM Post Join Influencer ON Post.Influ_ID = Influencer.Influ_ID WHERE Post.Post_ID = :post_id";
             $sql = $this->conn->prepare($query);
@@ -930,6 +937,13 @@
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getInvoiceByService($username){
+            $query = 'SELECT * FROM Invoice INNER JOIN Booking ON Invoice.Booking_ID = Booking.Booking_ID WHERE Booking.Booking_Content LIKE :username;';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':username' => '%' . $username . '%'));
+            return $result = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
         public function getBookingCount() {

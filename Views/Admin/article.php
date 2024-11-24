@@ -252,10 +252,12 @@
 
 
             <div class="row d-flex align-items-center justify-content-end" style="margin-top: 20px; margin-right: 0px">
+                <form action="" method="post">
                     <div class="inputBx">
                         <img src="././Views/Img/search.png" alt="" width="30" height="30">
-                        <input type="text" placeholder="Search . . .">
+                        <input name="title" type="text" placeholder="Search . . .">
                     </div>
+                </form>
             </div>
 
             <div class="recent_order">
@@ -263,6 +265,13 @@
                     <br>
                     <h3 style="text-align: center;">List of Articles</h3>
                     <br>
+
+                    <div class="table-responsive">
+                        <?php if (!empty($message)): ?>
+                            <p style="color: red; text-align: center; font-size: 20px; margin-top: 20px"><?php echo $message; ?></p>
+                        <?php endif; ?>
+
+                    <?php if (!empty($articles)): ?>
                     <table class="table table-bordered">
                         <thead>
                             <tr class="table-active">
@@ -316,6 +325,7 @@
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <?php endif; ?>
                     <div class="pagination"></div>
                     <br>
                 </div>

@@ -354,6 +354,18 @@
 
                 $invoice = $AdminModels->getAllInvoice();
 
+                $message = '';
+
+                if($_SERVER ['REQUEST_METHOD'] == 'POST') {
+                    $Content  = $_POST['service'];
+                    $invoice = $AdminModels->getInvoiceByService($Content);
+                    if (empty($invoice)) {
+                        $message = "No Invoice found with service: $Content ";
+                    }
+                } else {
+                    $invoice = $AdminModels->getAllInvoice();
+                }
+
                 include 'Views/Admin/invoice.php';
             }
         }
@@ -407,6 +419,16 @@
                 $AdminModels =  new AdminModels();
                 $admins =  $AdminModels->getAllAdminAccount();
                 $articles = $AdminModels->getAllArticle();
+
+                $message = '';
+
+                if($_SERVER ['REQUEST_METHOD'] == 'POST') {
+                    $Title  = $_POST['title'];
+                    $articles = $AdminModels->getPostbyTitle($Title);
+                    if (empty($articles)) {
+                        $message = "No Invoice found with service: $Title ";
+                    }
+                } 
 
                 include   'Views/Admin/article.php';
             }

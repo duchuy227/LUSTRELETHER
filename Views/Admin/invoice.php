@@ -282,10 +282,12 @@
 
             <div class="row" style="margin-top: 20px;">
                 <div class="col-md-12 d-flex justify-content-end">
-                    <div class="inputBx">
-                        <img src="././Views/Img/search.png" alt="" width="30" height="30">
-                        <input type="text" placeholder="Search . . .">
-                    </div>
+                    <form method="post">
+                        <div class="inputBx">
+                            <img src="././Views/Img/search.png" alt="" width="30" height="30">
+                            <input name="service" type="text" placeholder="Search . . .">
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -293,7 +295,12 @@
                 <div class="profile">
                     <br>
                     <h3 style="text-align: center;">List of Invoice</h3>
-                    
+                    <div class="table-responsive">
+                        <?php if (!empty($message)): ?>
+                            <p style="color: red; text-align: center; font-size: 20px; margin-top: 20px"><?php echo $message; ?></p>
+                        <?php endif; ?>
+
+                    <?php if (!empty($invoice)): ?>
                     <table class="table table-bordered">
                         <thead>
                             <tr class="table-active">
@@ -334,6 +341,7 @@
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <?php endif; ?>
                     <br>
                 </div>
             </div>
