@@ -61,7 +61,7 @@
     .filter-section  input[type="checkbox"]:checked::before {
         content: "✔";
         color: #fff;
-        font-size: 18px;
+        font-size: 16px;
         line-height: 1;
         position: absolute;
         top: 50%;
@@ -79,7 +79,7 @@
         border-radius: 20px;
         padding: 5px 15px;
         border: 1px solid #D7D7D7;
-        width: 100%;
+        width: 150px;
         margin-left: 20px;
         font-weight: 500;
         color: #646363;
@@ -154,14 +154,26 @@
         font-weight: 500;
     }
 
-    .btn {
-        width: 400px;
+    .btn-booking {
+        width: 100px;
         background-color: #F0564A;
         color: #fff;
         border-radius: 20px;
         font-size: 18px;
         font-weight: 500;
         margin-right: 20px;
+        border: none;
+    }
+
+    .btn-filter {
+        width: 100px;
+        background-color: #7D7B7B;
+        color: #fff;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: 500;
+        margin-right: 20px;
+        border: none;
     }
     
 </style>
@@ -173,37 +185,70 @@
             <div class="col-md-3 sidebar">
                 <div class="filter-section">
                     <h5>Gender</h5>
-                    <?php foreach ($gender as $g):  ?>
-                    <label for="gender<?php echo $g['Gender_ID']; ?>">
-                        <input class="form-check-input" type="checkbox" id="gender<?php echo $g['Gender_ID']; ?>" name="gender"  value="<?php echo $g['Gender_ID']; ?>">
-                        <?php echo $g['Gender_Name']; ?>
-                    </label>
-                    <?php endforeach; ?>
+                    <?php 
+                    $selected_genders = isset($_POST['gender_ids']) ? $_POST['gender_ids'] : [];
+                    ?>
+                    <form method="post">
+                        <?php foreach ($gender as $g):  ?>
+                        <label for="gender<?php echo $g['Gender_ID']; ?>">
+                            <input required class="form-check-input" type="checkbox" id="gender<?php echo $g['Gender_ID']; ?>" name="gender_ids[]"  value="<?php echo $g['Gender_ID']; ?>" <?php echo in_array($g['Gender_ID'], $selected_genders) ? 'checked' : ''; ?>>
+                            <?php echo $g['Gender_Name']; ?>
+                        </label>
+                        <?php endforeach; ?>
+
+                        <button type="submit" class="btn-filter">Filter</button>
+                    </form>
                     
-
+                    <br>
                     <h5>Topic</h5>
-                    <?php foreach ($topics as $topic):  ?>
-                    <label class="form-check-label" for="topic<?php echo $topic['Topic_ID']; ?>">
-                        <input class="form-check-input" type="checkbox" id="topic<?php echo $topic['Topic_ID']; ?>" name="topics" value="<?php echo $topic['Topic_ID']; ?>">
-                        <?php echo $topic['Topic_Name']; ?>
-                    </label>
-                    <?php endforeach; ?>
-
+                    <?php 
+                    $selected_topics = isset($_POST['topic_ids']) ? $_POST['topic_ids'] : [];
+                    ?>
+                    <form method="post">
+                        <?php foreach ($topics as $topic):  ?>
+                        <label class="form-check-label" for="topic<?php echo $topic['Topic_ID']; ?>">
+                            <input required class="form-check-input" type="checkbox" id="topic<?php echo $topic['Topic_ID']; ?>" name="topic_ids[]" value="<?php echo $topic['Topic_ID']; ?>" <?php echo in_array($topic['Topic_ID'], $selected_topics) ? 'checked' : ''; ?>>
+                            <?php echo $topic['Topic_Name']; ?>
+                        </label>
+                        <?php endforeach; ?>
+                        <button type="submit" class="btn-filter">Filter</button>
+                    </form>
+                    
+                    <br>
                     <h5>Event</h5>
-                    <?php foreach ($events as $event):  ?>
-                    <label class="form-check-label" for="event<?php echo $event['Event_ID']; ?>">
-                        <input class="form-check-input" type="checkbox" id="event<?php echo $event['Event_ID']; ?>" name="events" value="<?php echo $event['Event_ID']; ?>">
-                        <?php echo $event['Event_Name']; ?>
-                    </label>
-                    <?php endforeach; ?>
+                    <form method="post">
+                        <?php 
+                        // Lấy danh sách đã chọn (giữ trạng thái checked)
+                        $selected_events = isset($_POST['event_ids']) ? $_POST['event_ids'] : [];
+                        ?>
+                        <?php foreach ($events as $event): ?>
+                            <label class="form-check-label" for="event<?php echo $event['Event_ID']; ?>">
+                                <input required class="form-check-input" 
+                                    type="checkbox" 
+                                    id="event<?php echo $event['Event_ID']; ?>" 
+                                    name="event_ids[]" 
+                                    value="<?php echo $event['Event_ID']; ?>" 
+                                    <?php echo in_array($event['Event_ID'], $selected_events) ? 'checked' : ''; ?>>
+                                <?php echo $event['Event_Name']; ?>
+                            </label>
+                        <?php endforeach; ?>
+                        <button type="submit" class="btn-filter">Filter</button>
+                    </form>
 
-                    <h5>Content</h5>
-                    <?php foreach ($contents as $content):  ?>
-                    <label class="form-check-label" for="content<?php echo $content['Content_ID']; ?>">
-                        <input class="form-check-input" type="checkbox" id="content<?php echo $content['Content_ID']; ?>" name="contents" value="<?php echo $content['Content_ID']; ?>">
-                        <?php echo $content['Content_Name']; ?>
-                    </label>
-                    <?php endforeach; ?>
+                    <br>
+                    <form method="post">
+                        <h5>Content</h5>
+                        <?php 
+                        $selected_contents = isset($_POST['content_ids']) ? $_POST['content_ids'] : [];
+                        ?>
+                        <?php foreach ($contents as $content):  ?>
+                        <label class="form-check-label" for="content<?php echo $content['Content_ID']; ?>">
+                            <input required class="form-check-input" type="checkbox" id="content<?php echo $content['Content_ID']; ?>" name="content_ids[]" value="<?php echo $content['Content_ID']; ?>" <?php echo in_array($content['Content_ID'], $selected_contents) ? 'checked' : ''; ?>>
+                            <?php echo $content['Content_Name']; ?>
+                        </label>
+                        <?php endforeach; ?>
+                        <button type="submit" class="btn-filter">Filter</button>
+                    </form>
                 </div>
             </div>
 
@@ -214,54 +259,61 @@
                     </div>
 
                     <div class="col-md-6 d-flex justify-content-end">
-                        <div class="inputBx">
-                            <img src="././Views/Img/search.png" alt="" width="30" height="30">
-                            <input name="username" type="text" placeholder="Search . . .">
-                        </div>
+                        <form method="post">
+                            <div class="inputBx">
+                                <img src="././Views/Img/search.png" alt="" width="30" height="30">
+                                <input name="username" type="text" placeholder="Search . . .">
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="d-flex mb-4">
-                    <select name="wplace_id" class="dropdown me-3">
-                        <option hidden>Workplace</option>
-                        <?php 
-                            foreach($all_wplace as $wplace){
-                                echo '<option value="'.$wplace['WPlace_ID'].'"';
-                                if ($wplace['WPlace_ID'] == $wplace_id) {
-                                    echo ' selected';
-                                }
-                                echo '>'.$wplace['WPlace_Name'].'</option>';
-                            }
-                        ?>
-                    </select>
-                    
-                    <select name="fol_id" class="dropdown me-3">
-                        <option hidden>Followers</option>
-                        <?php 
-                            foreach($all_fol as $fol){
-                                echo '<option value="'.$fol['Fol_ID'].'"';
-                                if ($fol['Fol_ID'] == $fol_id) {
-                                    echo ' selected';
-                                }
-                                echo '>'.$fol['Fol_Quantity'].'</option>';
-                                }
-                        ?>
-                    </select>
+                
+                    <div class="d-flex mb-4">
+                        <form method="post">
+                            <select name="wplace_id" class="dropdown me-3">
+                                <option hidden>Workplace</option>
+                                <?php 
+                                    foreach ($all_wplace as $t){
+                                        echo '<option value="'.$t['WPlace_ID'].'">'.$t['WPlace_Name'].'</option>';
+                                    }
+                                ?>
+                            </select>
 
-                    <select name="type_id" class="dropdown me-3">
-                        <option hidden>Influencer</option>
-                        <?php 
-                            foreach($all_type as $types){
-                                echo '<option value="'.$types['InfluType_ID'].'"';
-                                if ($types['InfluType_ID'] == $type_id) {
-                                    echo ' selected';
-                                }
-                                echo '>'.$types['InfluType_Name'].'</option>';
-                            }
-                        ?>
-                    </select>
+                            <button type="submit" class="btn-booking">Filter</button>
+                        </form>
+                        
+                        <form method="post">
+                            <select name="fol_id" class="dropdown me-3">
+                                <option hidden>Followers</option>
+                                <?php 
+                                    foreach ($all_fol as $t){
+                                        echo '<option value="'.$t['Fol_ID'].'">'.$t['Fol_Quantity'].'</option>';
+                                    }
+                                ?>
+                            </select>
 
-                    <button type="submit" class="btn">Filter</button>
-                </div>
+                            <button type="submit" class="btn-booking">Filter</button>
+                        </form>
+                        
+                        <form method="post">
+                            <select name="type_id" class="dropdown me-3">
+                                <option hidden>Type</option>
+                                <?php 
+                                    foreach ($all_type as $t){
+                                    echo '<option value="'.$t['InfluType_ID'].'">'.$t['InfluType_Name'].'</option>';
+                                    }
+                                ?>
+                            </select>
+
+                            <button type="submit" class="btn-booking">Filter</button>
+                        </form>
+                    </div>
+                
+                <?php if (!empty($message)): ?>
+                    <p style="color: red; text-align: center; font-size: 30px; margin-top: 20px; font-weight:600"><?php echo $message; ?></p>
+                <?php endif; ?>
+
+                <?php if (!empty($influencers)): ?>
                 <div class="row justify-content-center">
                     <?php foreach ($influencers as $i):  ?>
                     <div class="col-md-3">
@@ -277,14 +329,12 @@
                     </div>
                     <?php endforeach; ?>
                 </div>
+
+                <?php endif; ?>
             </div>
         </div>
     </div>
 
-    <!-- <?php include '././views/Layout/homepage_footer.php'?> -->
-
-
-        
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

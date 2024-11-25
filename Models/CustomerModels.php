@@ -188,8 +188,9 @@
         
         
         public function getInfluencersByEvent($event_id) {
-            $query = "SELECT i.Influ_ID, i.Influ_Address, i.Influ_Image, i.Influ_Nickname
+            $query = "SELECT Distinct i.Influ_ID, i.Influ_Address, i.Influ_Image, i.Influ_Nickname, Fol_Quantity
                 FROM Influencer i
+                Inner JOIN  Followers f ON i.Fol_ID = f.Fol_ID
                 JOIN Influ_Topic it ON i.Influ_ID = it.Influ_ID
                 JOIN Topic_Event te ON it.Topic_ID = te.Topic_ID
                 WHERE te.Event_ID = :event_id;
@@ -217,8 +218,9 @@
         }
 
         public function getInfluencersByContent($content_id) {
-            $query = "SELECT i.Influ_ID, i.Influ_Address, i.Influ_Image, i.Influ_Nickname
+            $query = "SELECT Distinct i.Influ_ID, i.Influ_Address, i.Influ_Image, i.Influ_Nickname, Fol_Quantity
                 FROM Influencer i
+                Inner JOIN  Followers f ON i.Fol_ID = f.Fol_ID
                 JOIN Influ_Topic it ON i.Influ_ID = it.Influ_ID
                 JOIN Topic_Content tc ON it.Topic_ID = tc.Topic_ID
                 WHERE tc.Content_ID = :content_id;
@@ -239,6 +241,28 @@
             $sql = $this->conn->prepare($query);
             $sql->execute();
             return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllInflubyTopic(){
+            $query = 'SELECT t.Topic_ID, t.Topic_Name, i.Influ_ID, i.Influ_Nickname, i.Influ_Address, i.Influ_Image, f.Fol_Quantity FROM Topic t    
+            LEFT JOIN Influ_Topic it ON t.Topic_ID = it.Topic_ID
+            LEFT JOIN Influencer i ON it.Influ_ID = i.Influ_ID
+            Inner Join Followers f ON i.Fol_ID = f.Fol_ID
+            ORDER BY t.Topic_ID';
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllInfluByEachTopic($topic_id){
+            $query = 'SELECT t.Topic_ID, t.Topic_Name, i.Influ_ID, i.Influ_Nickname, i.Influ_Image, f.Fol_Quantity FROM Topic t    
+            LEFT JOIN Influ_Topic it ON t.Topic_ID = it.Topic_ID
+            LEFT JOIN Influencer i ON it.Influ_ID = i.Influ_ID
+            Inner Join Followers f ON i.Fol_ID = f.Fol_ID
+            WHERE t.Topic_ID = :topic_id';
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([':topic_id' => $topic_id]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         public function getTopicsByInfluId($influ_id) {
@@ -314,11 +338,9 @@
         }
         
         public function GetBookedDate($influ_id) {
-            $query = "
-                SELECT Booking_StartDate, Booking_EndDate 
+            $query = "SELECT Booking_StartDate, Booking_EndDate 
                 FROM Booking 
-                WHERE Influ_ID = :influ_id AND (Booking_Status = 'Pending' OR Booking_Status = 'Accepted')
-            ";
+                WHERE Influ_ID = :influ_id AND (Booking_Status = 'Pending' OR Booking_Status = 'Rejected' OR Booking_Status = 'Completed' OR Booking_Status = 'In Progress');";
         
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':influ_id', $influ_id, PDO::PARAM_INT);

@@ -320,6 +320,12 @@
         color: white !important;
     }
 
+    .past-date {
+        color: #ccc !important;
+        pointer-events: none; /* Chặn nhấp chuột */
+        opacity: 0.5 !important;
+    }
+
     .note {
         display: flex;
         align-items: center;
@@ -536,7 +542,7 @@
                         <div class="d-flex flex-wrap" style="margin: 0px 20px;">
                             <?php foreach($topics as $t): ?>
                             <div class="form-check col-md-4">
-                                <input class="form-check-input" name="topic" type="radio" value="<?php echo $t['Topic_ID']; ?>" onchange="loadServices(this.value)"/>
+                                <input required class="form-check-input" name="topic" type="radio" value="<?php echo $t['Topic_ID']; ?>" onchange="loadServices(this.value)"/>
                                 <label class="form-check-label" for="topic1"><?php echo $t['Topic_Name'] ?></label>
                             </div>
                             <?php endforeach; ?>
@@ -547,7 +553,7 @@
                                 <h6 style="margin: 30px 20px; font-size: 18px; font-weight: 400">Choose Service</h6>
                             </div>
                             <div class="col-md-6" style="width: 55%">
-                                <select style="margin: 20px;" class="dropdown me-3" name="service" id="serviceDropdown">
+                                <select required style="margin: 20px;" class="dropdown me-3" name="service" id="serviceDropdown">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -557,7 +563,7 @@
                                 <h6 style="margin: 30px 20px; font-size: 18px; font-weight: 400">Total Days</h6>
                             </div>
                             <div class="col-md-6" style="width: 55%">
-                                <input type="number" style="margin: 20px;" class="dropdown me-3" name="total_days" id="totalDays" min="1" onchange="calculatePrice()">
+                                <input required type="number" style="margin: 20px;" class="dropdown me-3" name="total_days" id="totalDays" onchange="calculatePrice()">
                             </div>
 
                             <div class="col-md-6" style="width:35%">
@@ -628,8 +634,8 @@
 
                         <div class="d-flex justify-content-between" style="margin: 0px 20px;">
                             <div>
-                                <p>Start Date: <input name="start_date" type="text" placeholder="Start Date" style="border: none; outline:none"></p>
-                                <p>End Date: <input name="end_date" type="text" placeholder="End Date" style="border: none; outline:none"></p>
+                                <p>Start Date: <input readonly required name="start_date" type="text" placeholder="Start Date" style="border: none; outline:none"></p>
+                                <p>End Date: <input readonly required name="end_date" type="text" placeholder="End Date" style="border: none; outline:none"></p>
                             </div>
                             <p style="margin: 0px 20px; font-size: 20px" id="countdown">Time:  <strong id="timeLeft" style="color:#F0564A">5: 00</strong></p>
                         </div>
@@ -655,13 +661,37 @@
         </div>
     </div>
 
-    <div id="popupModal1" class="popup-modal1">
-        <div class="popup-content1">
-            <img src="././views/Img/u118.png" width="50" height="50">
-            <p><?php echo isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : ''; ?></p>
-            <button id="closeBtn1">OK</button>
-        </div>
+    <!-- Popup Modal -->
+    <div id="popupModal1" class="popup-modal1" style="display: none;">
+    <div class="popup-content1">
+        <img src="././views/Img/u118.png" width="50" height="50">
+        <p><?php echo isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : ''; ?></p>
+        <button id="closeBtn1">OK</button>
     </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Kiểm tra nếu có thông báo lỗi trong session
+        <?php if (isset($_SESSION['errorMessage'])): ?>
+            // Hiển thị popup khi có thông báo lỗi
+            document.getElementById('popupModal1').style.display = 'block';
+        <?php endif; ?>
+
+        // Đảm bảo sự kiện click chỉ được gán một lần
+        document.getElementById('closeBtn1').addEventListener('click', function() {
+            // Đóng popup
+            document.getElementById('popupModal1').style.display = 'none';
+
+            // Sau khi đóng popup, xóa thông báo lỗi trong session và reload trang
+            <?php 
+                unset($_SESSION['errorMessage']); // Xóa thông báo lỗi trong session
+            ?>
+        });
+    });
+</script>
+
+
 
     <?php include '././views/Layout/homepage_footer.php'?>
 
@@ -741,25 +771,8 @@
         });
     </script>
 
-    <script>
-            document.addEventListener('DOMContentLoaded', function () {
-            // Kiểm tra nếu có thông báo lỗi trong session
-            <?php if (isset($_SESSION['errorMessage'])): ?>
-                // Hiển thị popup khi có thông báo lỗi
-                document.getElementById('popupModal1').style.display = 'block';
-            <?php endif; ?>
 
-            // Đảm bảo sự kiện click chỉ được gán một lần
-            document.getElementById('closeBtn1').addEventListener('click', function() {
-                // Đóng popup
-                document.getElementById('popupModal1').style.display = 'none';
-                
-                // Sau khi đóng popup, xóa thông báo lỗi trong session và reload trang
-                <?php unset($_SESSION['errorMessage']); ?>  <!-- Xóa thông báo lỗi -->
-                
-            });
-        });
-    </script>
+
 
     <script>
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -778,9 +791,19 @@
         const bookedDates = <?php echo json_encode($bookedDates); ?>;
         console.log(bookedDates);
 
+        document.getElementById('totalDays').addEventListener('change', function () {
+            const totalDays = parseInt(this.value);
+            if (!isNaN(totalDays) && totalDays > 0) {
+                selectedDates = []; // Reset các ngày đã chọn
+                renderCalendar();
+                updateDateInputs();
+            }
+        });
+
         function renderCalendar() {
             const currentMonth = currentDate.getMonth();
             const currentYear = currentDate.getFullYear();
+            const today = new Date();
 
             monthElement.textContent = `${months[currentMonth]} ${currentYear}`;
 
@@ -805,20 +828,41 @@
                 dayCell.textContent = i;
 
                 // Tạo chuỗi ngày với định dạng 'YYYY-MM-DD'
-                const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                const date = new Date(dateString);
 
                 // Kiểm tra nếu ngày hiện tại có trong mảng bookedDates
-                if (bookedDates.includes(date)) {
+                if (date < new Date(today.getFullYear(), today.getMonth(), today.getDate())) {
+                    dayCell.classList.add("past-date");
+                    dayCell.style.cursor = "not-allowed";
+                } else if (bookedDates.includes(dateString)) {
+                    // Kiểm tra nếu ngày đã được đặt trước
                     dayCell.classList.add("booked");
                     dayCell.style.cursor = "not-allowed";
                 } else {
                     dayCell.addEventListener("click", function () {
+                        const totalDays = parseInt(document.getElementById('totalDays').value);
+
+                        if (selectedDates.length > 0) {
+                            const lastSelectedDate = selectedDates[selectedDates.length - 1];
+                            const dayDifference = Math.abs(i - lastSelectedDate);
+
+                            if (dayDifference !== 1) {
+                                alert("Bạn chỉ có thể chọn các ngày liên tiếp.");
+                                return;
+                            }
+                        }
+
                         if (selectedDates.includes(i)) {
                             selectedDates = selectedDates.filter(date => date !== i);
                             this.classList.remove("selected");
                         } else {
-                            selectedDates.push(i);
-                            this.classList.add("selected");
+                            if (selectedDates.length < totalDays) {
+                                selectedDates.push(i);
+                                this.classList.add("selected");
+                            } else {
+                                alert(`Bạn chỉ được chọn tối đa ${totalDays} ngày.`);
+                            }
                         }
                         updateDateInputs();
                     });
@@ -827,6 +871,9 @@
                 daysContainer.appendChild(dayCell);
             }
         }
+
+        
+
 
         function updateDateInputs() {
             if (selectedDates.length === 0) {
@@ -947,6 +994,19 @@
         .catch(error => console.error('Error:', error));
         }
 
+    </script>
+
+    <script>
+        // Lắng nghe sự kiện submit
+document.querySelector('form').addEventListener('submit', function(event) {
+    const totalDays = parseInt(document.getElementById('totalDays').value);
+
+    // Kiểm tra nếu số ngày thực tế không khớp với totalDays
+    if (selectedDates.length !== totalDays) {
+        event.preventDefault(); // Ngừng gửi form
+        alert(`Vui lòng chọn đúng ${totalDays} ngày.`);
+    }
+});
     </script>
 
         

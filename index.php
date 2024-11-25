@@ -465,6 +465,30 @@
             $CustomerControllers =  new CustomerControllers();
             $CustomerControllers -> customer_sendMail();
             break;
+
+        case 'customer_topic':
+            require_once "Controllers/CustomerControllers.php";
+            $CustomerControllers =  new CustomerControllers();
+            $CustomerControllers -> customer_topic();
+            break;
+
+        case 'customer_eachtopic':
+            require_once "Controllers/CustomerControllers.php";
+            $CustomerControllers =  new CustomerControllers();
+            $CustomerControllers -> customer_eachtopic($_GET['id']);
+            break;
+        
+        case 'customer_eventDetail':
+            require_once "Controllers/CustomerControllers.php";
+            $CustomerControllers =  new CustomerControllers();
+            $CustomerControllers -> customer_eventDetail($_GET['id']);
+            break;
+
+        case 'customer_contentDetail':
+            require_once "Controllers/CustomerControllers.php";
+            $CustomerControllers =  new CustomerControllers();
+            $CustomerControllers -> customer_contentDetail($_GET['id']);
+            break;
         
         case 'customer_influencer':
             require_once "Controllers/CustomerControllers.php";

@@ -620,8 +620,9 @@
         }
 
         public function getAllInfluencerByType($type_id){
-            $query = 'SELECT Influencer.*, Influencer_Type.InfluType_Name 
+            $query = 'SELECT Influencer.*, Influencer_Type.InfluType_Name, Followers.Fol_Quantity 
                       FROM Influencer 
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
                       INNER JOIN Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID
                       WHERE Influencer.InfluType_ID = :type_id';
             $sql = $this->conn->prepare($query);
@@ -629,12 +630,94 @@
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        public function getAllInfluencerByFollowers($fol_id){
+            $query = 'SELECT Influencer.*, Followers.Fol_Quantity 
+                      FROM Influencer 
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                      WHERE Influencer.Fol_ID= :fol_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':fol_id' => $fol_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllInfluencerByWorkplace($wplace_id){
+            $query = 'SELECT Influencer.*, Workplace.WPlace_Name, Followers.Fol_Quantity 
+                      FROM Influencer
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID 
+                      INNER JOIN Workplace ON Influencer.WPlace_ID = Workplace.WPlace_ID
+                      WHERE Influencer.WPlace_ID= :wplace_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':wplace_id' => $wplace_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }        
+        
         public function getInfluencerByUsername($username){
-            $query = 'SELECT Influencer.* ,Influencer_Type.InfluType_Name 
-                      FROM Influencer INNER Join Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID WHERE Influencer.Influ_Username LIKE :username;';
+            $query = 'SELECT Influencer.* ,Influencer_Type.InfluType_Name, Followers.Fol_Quantity 
+                    FROM Influencer
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID 
+                    INNER Join Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID 
+                    WHERE Influencer.Influ_Nickname LIKE :username;';
             $sql = $this->conn->prepare($query);
             $sql->execute(array(':username' => '%' . $username . '%'));
             return $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getInfluencerByGender($gender_ids) {
+            $placeholders = implode(',', array_fill(0, count($gender_ids), '?'));
+            $query = "SELECT Influencer.*, Followers.Fol_Quantity, Gender.Gender_Name 
+                      FROM Influencer
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID 
+                      INNER JOIN Gender ON Influencer.Gender_ID = Gender.Gender_ID
+                      WHERE Influencer.Gender_ID IN ($placeholders)";
+            $sql = $this->conn->prepare($query);
+            $sql->execute($gender_ids); // Truyền mảng giá trị Gender_ID
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
+        public function getInfluencerByTopics($topic_ids) {
+            $placeholders = implode(',', array_fill(0, count($topic_ids), '?'));
+        
+            $query = "SELECT DISTINCT Influencer.*, Followers.Fol_Quantity
+                      FROM Influencer
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                      INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                      WHERE Influ_Topic.Topic_ID IN ($placeholders)";
+                      
+            $sql = $this->conn->prepare($query);
+            $sql->execute($topic_ids);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getInfluencerByEvents($event_ids) {
+            // Tạo chuỗi placeholder dựa trên số lượng Event_ID
+            $placeholders = implode(',', array_fill(0, count($event_ids), '?'));
+        
+            $query = "SELECT DISTINCT Influencer.*, Followers.Fol_Quantity
+                      FROM Influencer
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                      INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                      INNER JOIN Topic_Event ON Influ_Topic.Topic_ID = Topic_Event.Topic_ID
+                      WHERE Topic_Event.Event_ID IN ($placeholders)";
+                    
+            $sql = $this->conn->prepare($query);
+            $sql->execute($event_ids); // Truyền danh sách Event_ID
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
+        public function getInfluencerByContent($content_id) {
+            // Tạo chuỗi placeholder dựa trên số lượng Event_ID
+            $placeholders = implode(',', array_fill(0, count($content_id), '?'));
+        
+            $query = "SELECT DISTINCT Influencer.*, Followers.Fol_Quantity
+                      FROM Influencer
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                      INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                      INNER JOIN Topic_Content ON Influ_Topic.Topic_ID = Topic_Content.Topic_ID
+                      WHERE Topic_Content.Content_ID IN ($placeholders)";
+                    
+            $sql = $this->conn->prepare($query);
+            $sql->execute($content_id); // Truyền danh sách Event_ID
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
         public function getInfluencerByID($influ_id) {

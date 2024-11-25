@@ -103,18 +103,48 @@
             }
         }
 
-        public function customer_influencer(){
+        public function customer_topic(){
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
                 $customerModel = new CustomerModels();
                 $AdminModels  = new AdminModels();
                 $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
-                $topics  = $AdminModels->getAllTopic();
-                $contents =  $AdminModels->showContent();
-                $events =  $AdminModels->showEvent();
-                $gender  = $AdminModels -> getAllGender();
 
-                $influencers = $customerModel ->getAllInfluencer();
+                $influTopic = $customerModel ->getAllInflubyTopic();
+                $topics = [];
+                foreach ($influTopic as $row) {
+                    $topicID = $row['Topic_ID'];
+                    $topicName = $row['Topic_Name'];
+                    
+                    // Nếu topic chưa tồn tại trong danh sách, khởi tạo
+                    if (!isset($topics[$topicID])) {
+                        $topics[$topicID] = [
+                            'Topic_Name' => $topicName,
+                            'Influencers' => []
+                        ];
+                    }
 
+                    // Thêm influencer vào topic nếu có đầy đủ thông tin
+                    if (!empty($row['Influ_ID']) && !empty($row['Influ_Nickname'])) {
+                        $topics[$topicID]['Influencers'][] = [
+                            'Influ_ID' => $row['Influ_ID'],
+                            'Influ_Nickname' => $row['Influ_Nickname'],
+                            'Influ_Address' => $row['Influ_Address'],
+                            'Influ_Image' => $row['Influ_Image'],
+                            'Fol_Quantity' => $row['Fol_Quantity']
+                        ];
+                    }
+                }
+
+                include 'views/Customer/Topic.php';
+            }
+        }
+
+        public function customer_eachtopic($topic_id){
+            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
+                $customerModel = new CustomerModels();
+                $AdminModels  = new AdminModels();
+                $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
+        
                 $type_id = isset($_POST['type_id']) ? $_POST['type_id'] : null;
                 $all_type = $AdminModels -> getAllInfluType();
                 $type  = $AdminModels -> getInfluencerTypeByID($type_id);
@@ -126,6 +156,159 @@
                 $fol_id = isset($_POST['fol_id']) ? $_POST['fol_id'] : '';
                 $all_fol = $AdminModels -> getAllFollowers();
                 $fol  = $AdminModels -> getFollowersByID($fol_id);
+
+                $topic = $AdminModels->getTopicByID($topic_id);
+                $influencers = $customerModel -> getAllInfluByEachTopic($topic_id);
+
+                include 'Views/Customer/EachTopic.php';
+            }
+        }
+
+        public function customer_eventDetail($event_id){
+            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
+                $customerModel = new CustomerModels();
+                $AdminModels  = new AdminModels();
+                $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
+        
+                $type_id = isset($_POST['type_id']) ? $_POST['type_id'] : null;
+                $all_type = $AdminModels -> getAllInfluType();
+                $type  = $AdminModels -> getInfluencerTypeByID($type_id);
+
+                $wplace_id = isset($_POST['wplace_id']) ? $_POST['wplace_id'] : null;
+                $all_wplace = $AdminModels -> getAllWorkplace();
+                $wplace  = $AdminModels -> getWorkplaceByID($wplace_id);
+
+                $fol_id = isset($_POST['fol_id']) ? $_POST['fol_id'] : '';
+                $all_fol = $AdminModels -> getAllFollowers();
+                $fol  = $AdminModels -> getFollowersByID($fol_id);
+
+                $event = $AdminModels ->getEventByID($event_id);
+                $influencers = $customerModel ->getInfluencersByEvent($event_id);
+
+                include 'Views/Customer/Event.php';
+            }
+        }
+
+        public function customer_contentDetail($content_id){
+            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
+                $customerModel = new CustomerModels();
+                $AdminModels  = new AdminModels();
+                $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
+        
+                $type_id = isset($_POST['type_id']) ? $_POST['type_id'] : null;
+                $all_type = $AdminModels -> getAllInfluType();
+                $type  = $AdminModels -> getInfluencerTypeByID($type_id);
+
+                $wplace_id = isset($_POST['wplace_id']) ? $_POST['wplace_id'] : null;
+                $all_wplace = $AdminModels -> getAllWorkplace();
+                $wplace  = $AdminModels -> getWorkplaceByID($wplace_id);
+
+                $fol_id = isset($_POST['fol_id']) ? $_POST['fol_id'] : '';
+                $all_fol = $AdminModels -> getAllFollowers();
+                $fol  = $AdminModels -> getFollowersByID($fol_id);
+
+                $content = $AdminModels ->getContentByID($content_id);
+                $influencers = $customerModel ->getInfluencersByContent($content_id);
+
+                include 'Views/Customer/Content.php';
+            }
+        }
+
+        public function customer_influencer(){
+            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
+                $customerModel = new CustomerModels();
+                $AdminModels  = new AdminModels();
+                $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
+                $topics  = $AdminModels->getAllTopic();
+                $contents =  $AdminModels->showContent();
+                $events =  $AdminModels->showEvent();
+                $gender  = $AdminModels -> getAllGender();
+
+                $type_id = isset($_POST['type_id']) ? $_POST['type_id'] : null;
+                $all_type = $AdminModels -> getAllInfluType();
+                $type  = $AdminModels -> getInfluencerTypeByID($type_id);
+
+                $wplace_id = isset($_POST['wplace_id']) ? $_POST['wplace_id'] : null;
+                $all_wplace = $AdminModels -> getAllWorkplace();
+                $wplace  = $AdminModels -> getWorkplaceByID($wplace_id);
+
+                $fol_id = isset($_POST['fol_id']) ? $_POST['fol_id'] : null;
+                $all_fol = $AdminModels -> getAllFollowers();
+                $fol  = $AdminModels -> getFollowersByID($fol_id);
+
+                $message = '';
+                
+                if($_SERVER ['REQUEST_METHOD'] == 'POST'){
+                    if (isset($_POST['gender_ids']) && is_array($_POST['gender_ids'])) {
+                        // Lấy danh sách các Gender_ID từ checkbox
+                        $gender_ids = $_POST['gender_ids'];
+                        $influencers = $AdminModels->getInfluencerByGender($gender_ids);
+        
+                        if (empty($influencers)) {
+                            $message = "No influencers found for the selected.";
+                        }
+                    }
+
+                    if (isset($_POST['topic_ids']) && is_array($_POST['topic_ids'])) {
+                        // Lấy danh sách các Gender_ID từ checkbox
+                        $topic_ids = $_POST['topic_ids'];
+                        $influencers = $AdminModels->getInfluencerByTopics($topic_ids);
+        
+                        if (empty($influencers)) {
+                            $message = "No influencers found for the selected.";
+                        }
+                    }
+
+                    if (isset($_POST['event_ids']) && is_array($_POST['event_ids'])) {
+                        // Lấy danh sách các Gender_ID từ checkbox
+                        $event_ids = $_POST['event_ids'];
+                        $influencers = $AdminModels->getInfluencerByEvents($event_ids);
+        
+                        if (empty($influencers)) {
+                            $message = "No influencers found for the selected.";
+                        }
+                    }
+
+                    if (isset($_POST['content_ids']) && is_array($_POST['content_ids'])) {
+                        // Lấy danh sách các Gender_ID từ checkbox
+                        $content_ids = $_POST['content_ids'];
+                        $influencers = $AdminModels->getInfluencerByContent($content_ids);
+        
+                        if (empty($influencers)) {
+                            $message = "No influencers found for the selected.";
+                        }
+                    }
+
+
+                    if(isset( $_POST['wplace_id'])){
+                        $wplace_id = $_POST['wplace_id'];
+                        $influencers =  $AdminModels->getAllInfluencerByWorkplace($wplace_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found ";
+                        }
+                    }
+                    if(isset( $_POST['fol_id'])){
+                        $fol_id = $_POST['fol_id'];
+                        $influencers =  $AdminModels->getAllInfluencerByFollowers($fol_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found ";
+                        }
+                    }
+                    if(isset( $_POST['type_id'])){
+                        $type_id = $_POST['type_id'];
+                        $influencers =  $AdminModels->getAllInfluencerByType($type_id);
+                    }
+
+                    if(isset( $_POST['username'])){
+                        $username =  $_POST['username'];
+                        $influencers = $AdminModels->getInfluencerByUsername($username);
+                        if (empty($influencers)) {
+                            $message = "No influencers found named: $username ";
+                        }
+                    }
+                } else {
+                    $influencers = $customerModel ->getAllInfluencer();
+                }
 
                 include 'Views/Customer/Influencer.php';
             }
@@ -185,21 +368,28 @@
 
                     $StartDate = $_POST['start_date'];
                     $EndDate = $_POST['end_date'];
-                    $isConflict = $customerModel->checkBookingConflict($StartDate, $EndDate, $_GET['influ_id']);
-                    if ($isConflict) {
-                        // Hiển thị thông báo nếu có xung đột
-                        $_SESSION['errorMessage']  = "The selected date range is already set, please select another date.";
+                    if (empty($StartDate) || empty($EndDate)) {
+                        $_SESSION['errorMessage'] = "Start date and end date are required.";
                     } else {
-                        unset($_SESSION['errorMessage']);
-                        $Topic_ID = $_POST['topic'];
-                        $Cus_ID = $_SESSION['cus_id'];
-                        $Influ_ID = $_GET['influ_id'];
-
-                        $InfluencerPrice = $customerModel->getInfluencerPrice($Influ_ID);
-                        $Expense = $InfluencerPrice * $TotalDay;
-                        $customerModel -> createBooking($CreateTime, $TotalDay, $Content, $StartDate, $EndDate, $Expense, $Topic_ID,  $Cus_ID, $Influ_ID);
-                        header("Location: index.php?action=customer_bookinglist");
-                        exit();
+                        // Chỉ gọi checkBookingConflict nếu start_date và end_date hợp lệ
+                        $isConflict = $customerModel->checkBookingConflict($StartDate, $EndDate, $_GET['influ_id']);
+                        
+                        if ($TotalDay <= 0 || $TotalDay > 7) {
+                            $_SESSION['errorMessage'] = "Total days must be greater than 0 and smaller than 7.";
+                        } elseif ($isConflict) {
+                            $_SESSION['errorMessage'] = "The selected date range is already set, please select another date.";
+                        } else {
+                            unset($_SESSION['errorMessage']); // Clear previous errors if validation passes
+                            $Topic_ID = $_POST['topic'];
+                            $Cus_ID = $_SESSION['cus_id'];
+                            $Influ_ID = $_GET['influ_id'];
+        
+                            $InfluencerPrice = $customerModel->getInfluencerPrice($Influ_ID);
+                            $Expense = $InfluencerPrice * $TotalDay;
+                            $customerModel->createBooking($CreateTime, $TotalDay, $Content, $StartDate, $EndDate, $Expense, $Topic_ID,  $Cus_ID, $Influ_ID);
+                            header("Location: index.php?action=customer_bookinglist");
+                            exit();
+                        }
                     }
                 }
                 

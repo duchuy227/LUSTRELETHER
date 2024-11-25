@@ -90,7 +90,7 @@
         color: white;
     }
 
-    .btn {
+    .btn-booking {
         background-color: #F0564A;
         width: 206px;
         height: 47px;
@@ -99,9 +99,10 @@
         font-weight: 700;
         color: white;
         border-radius: 20px;
+        border: none;
     }
 
-    .btn:hover {
+    .btn-booking:hover {
         background-color: #F0564A;
         color: white;
     }
@@ -130,8 +131,10 @@
                 ?>
                 <?php foreach ($topics as $t): ?>
                 <div class="<?php echo $colClass; ?> mb-4">
-                    <div class="card <?php echo $cardClass; ?>">  <!-- Thêm class "card-large" khi có 3 topic -->
-                        <img class="card-img-top" src="<?php echo $t['Topic_Image']; ?>" />
+                    <div class="card <?php echo $cardClass; ?>">
+                        <a href="index.php?action=customer_eachtopic&id=<?php echo $t['Topic_ID']; ?>">
+                            <img class="card-img-top" src="<?php echo $t['Topic_Image']; ?>" />
+                        </a>
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $t['Topic_Name']; ?></h5>
                         </div>
@@ -162,8 +165,8 @@
             <?php endforeach; ?>
             </div>
             <div class="row d-flex justify-content-center">
-                <a href="">
-                    <button class="btn">See More</button>
+                <a href="index.php?action=customer_eventDetail&id=<?php echo $mostInfluentialEvent['Event_ID']; ?>">
+                    <button class="btn-booking">See More</button>
                 </a>
             </div>
             <?php endif; ?>
@@ -190,8 +193,8 @@
                 <?php endforeach; ?>
             </div>
             <div class="row d-flex justify-content-center">
-                <a href="">
-                    <button class="btn">See More</button>
+                <a href="index.php?action=customer_contentDetail&id=<?php echo $mostInfluentialContent['Content_ID']; ?>">
+                    <button class="btn-booking">See More</button>
                 </a>
             </div>
             <?php endif; ?>

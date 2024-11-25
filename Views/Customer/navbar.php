@@ -18,7 +18,7 @@
                             <a class="nav-link" href="index.php?action=customer_influencer">Influencers</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">All Topics</a>
+                            <a class="nav-link" href="index.php?action=customer_topic">All Topics</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?action=customer_policy">Policy</a>
