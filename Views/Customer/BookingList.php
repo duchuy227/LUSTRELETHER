@@ -253,7 +253,7 @@
         display: flex;
         justify-content: space-between; /* Giữ khoảng cách đều nếu có nhiều thẻ */
         align-items: center; /* Căn giữa theo chiều dọc */
-        width: 70px; /* Cố định chiều rộng cho container */
+        width: 100%; /* Cố định chiều rộng cho container */
         
         
     }

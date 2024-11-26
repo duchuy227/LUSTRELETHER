@@ -366,21 +366,27 @@
                     $TotalDay = $_POST['total_days'];
                     $Content = $_POST['service_name'];
 
+                    $Topic_ID = isset($_POST['topic']) ? trim($_POST['topic']) : '';
+
                     $StartDate = $_POST['start_date'];
                     $EndDate = $_POST['end_date'];
-                    if (empty($StartDate) || empty($EndDate)) {
+                    if (empty($Topic_ID)) {
+                        $_SESSION['errorMessage'] = "Topic is required.";
+                    } elseif(empty($Content)) {
+                        $_SESSION['errorMessage'] = "Service are required";
+                    } elseif ($TotalDay <= 0 || $TotalDay > 7) {
+                        $_SESSION['errorMessage'] = "Total days must be greater than 0 and smaller than 7.";
+                    } elseif (empty($StartDate) || empty($EndDate)) {
                         $_SESSION['errorMessage'] = "Start date and end date are required.";
                     } else {
                         // Chỉ gọi checkBookingConflict nếu start_date và end_date hợp lệ
                         $isConflict = $customerModel->checkBookingConflict($StartDate, $EndDate, $_GET['influ_id']);
                         
-                        if ($TotalDay <= 0 || $TotalDay > 7) {
-                            $_SESSION['errorMessage'] = "Total days must be greater than 0 and smaller than 7.";
-                        } elseif ($isConflict) {
+                        if ($isConflict) {
                             $_SESSION['errorMessage'] = "The selected date range is already set, please select another date.";
                         } else {
                             unset($_SESSION['errorMessage']); // Clear previous errors if validation passes
-                            $Topic_ID = $_POST['topic'];
+                            
                             $Cus_ID = $_SESSION['cus_id'];
                             $Influ_ID = $_GET['influ_id'];
         
@@ -539,24 +545,36 @@
                     $currentTime = $time - (7 * 3600);
                     $CreateTime = date('Y-m-d H:i:s', $currentTime);
                     $TotalDay = $_POST['total_days'];
-                    $Booking_Content = $_POST['service_name'];
+                    $Content = $_POST['service_name'];
+
+                    $Topic_ID = isset($_POST['topic']) ? trim($_POST['topic']) : '';
 
                     $StartDate = $_POST['start_date'];
                     $EndDate = $_POST['end_date'];
-                    $isConflict = $customerModel->checkBookingConflict($StartDate, $EndDate, $Influ_ID, $booking_id);
-                    if ($isConflict) {
-                        // Hiển thị thông báo nếu có xung đột
-                        $_SESSION['errorMessage']  = "The selected date range is already set, please select another date.";
+                    if (empty($Topic_ID)) {
+                        $_SESSION['errorMessage'] = "Topic is required.";
+                    } elseif(empty($Content)) {
+                        $_SESSION['errorMessage'] = "Service are required";
+                    } elseif ($TotalDay <= 0 || $TotalDay > 7) {
+                        $_SESSION['errorMessage'] = "Total days must be greater than 0 and smaller than 7.";
+                    } elseif (empty($StartDate) || empty($EndDate)) {
+                        $_SESSION['errorMessage'] = "Start date and end date are required.";
                     } else {
-                        unset($_SESSION['errorMessage']);
-                        $Topic_ID = $_POST['topic'];
-                        $Status = $_POST['status'];
-
-                        $InfluencerPrice = $customerModel->getInfluencerPrice($Influ_ID);
-                        $Expense = $InfluencerPrice * $TotalDay;
-                        $customerModel -> editBooking($CreateTime, $TotalDay, $Booking_Content, $StartDate, $EndDate, $Status, $Expense, $Topic_ID,  $booking_id);
-                        header("Location: index.php?action=customer_bookinglist");
-                        exit();
+                        // Chỉ gọi checkBookingConflict nếu start_date và end_date hợp lệ
+                        $isConflict = $customerModel->checkBookingConflict($StartDate, $EndDate, $_GET['influ_id']);
+                        
+                        if ($isConflict) {
+                            $_SESSION['errorMessage'] = "The selected date range is already set, please select another date.";
+                        } else {
+                            unset($_SESSION['errorMessage']); // Clear previous errors if validation passes
+                            $Status = $_POST['status'];
+        
+                            $InfluencerPrice = $customerModel->getInfluencerPrice($Influ_ID);
+                            $Expense = $InfluencerPrice * $TotalDay;
+                            $customerModel->editBooking($CreateTime, $TotalDay, $Content, $StartDate, $EndDate, $Status, $Expense, $Topic_ID,  $booking_id);
+                            header("Location: index.php?action=customer_bookinglist");
+                            exit();
+                        }
                     }
                 }
                 include 'Views/Customer/Edit_Booking.php';

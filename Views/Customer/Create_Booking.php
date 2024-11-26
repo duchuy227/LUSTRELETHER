@@ -542,7 +542,7 @@
                         <div class="d-flex flex-wrap" style="margin: 0px 20px;">
                             <?php foreach($topics as $t): ?>
                             <div class="form-check col-md-4">
-                                <input required class="form-check-input" name="topic" type="radio" value="<?php echo $t['Topic_ID']; ?>" onchange="loadServices(this.value)"/>
+                                <input class="form-check-input" name="topic" type="radio" value="<?php echo $t['Topic_ID']; ?>" onchange="loadServices(this.value)"/>
                                 <label class="form-check-label" for="topic1"><?php echo $t['Topic_Name'] ?></label>
                             </div>
                             <?php endforeach; ?>
@@ -553,7 +553,7 @@
                                 <h6 style="margin: 30px 20px; font-size: 18px; font-weight: 400">Choose Service</h6>
                             </div>
                             <div class="col-md-6" style="width: 55%">
-                                <select required style="margin: 20px;" class="dropdown me-3" name="service" id="serviceDropdown">
+                                <select style="margin: 20px;" class="dropdown me-3" name="service" id="serviceDropdown">
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -563,7 +563,7 @@
                                 <h6 style="margin: 30px 20px; font-size: 18px; font-weight: 400">Total Days</h6>
                             </div>
                             <div class="col-md-6" style="width: 55%">
-                                <input required type="number" style="margin: 20px;" class="dropdown me-3" name="total_days" id="totalDays" onchange="calculatePrice()">
+                                <input  type="number" style="margin: 20px;" class="dropdown me-3" name="total_days" id="totalDays" onchange="calculatePrice()">
                             </div>
 
                             <div class="col-md-6" style="width:35%">
@@ -634,8 +634,8 @@
 
                         <div class="d-flex justify-content-between" style="margin: 0px 20px;">
                             <div>
-                                <p>Start Date: <input readonly required name="start_date" type="text" placeholder="Start Date" style="border: none; outline:none"></p>
-                                <p>End Date: <input readonly required name="end_date" type="text" placeholder="End Date" style="border: none; outline:none"></p>
+                                <p>Start Date: <input readonly name="start_date" type="text" placeholder="Start Date" style="border: none; outline:none"></p>
+                                <p>End Date: <input readonly name="end_date" type="text" placeholder="End Date" style="border: none; outline:none"></p>
                             </div>
                             <p style="margin: 0px 20px; font-size: 20px" id="countdown">Time:  <strong id="timeLeft" style="color:#F0564A">5: 00</strong></p>
                         </div>
@@ -663,33 +663,33 @@
 
     <!-- Popup Modal -->
     <div id="popupModal1" class="popup-modal1" style="display: none;">
-    <div class="popup-content1">
-        <img src="././views/Img/u118.png" width="50" height="50">
-        <p><?php echo isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : ''; ?></p>
-        <button id="closeBtn1">OK</button>
+        <div class="popup-content1">
+            <img src="././views/Img/u118.png" width="50" height="50">
+            <p><?php echo isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : ''; ?></p>
+            <button id="closeBtn1">OK</button>
+        </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Kiểm tra nếu có thông báo lỗi trong session
-        <?php if (isset($_SESSION['errorMessage'])): ?>
-            // Hiển thị popup khi có thông báo lỗi
-            document.getElementById('popupModal1').style.display = 'block';
-        <?php endif; ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Kiểm tra nếu có thông báo lỗi trong session
+            <?php if (isset($_SESSION['errorMessage'])): ?>
+                // Hiển thị popup khi có thông báo lỗi
+                document.getElementById('popupModal1').style.display = 'block';
+            <?php endif; ?>
 
-        // Đảm bảo sự kiện click chỉ được gán một lần
-        document.getElementById('closeBtn1').addEventListener('click', function() {
-            // Đóng popup
-            document.getElementById('popupModal1').style.display = 'none';
+            // Đảm bảo sự kiện click chỉ được gán một lần
+            document.getElementById('closeBtn1').addEventListener('click', function() {
+                // Đóng popup
+                document.getElementById('popupModal1').style.display = 'none';
 
-            // Sau khi đóng popup, xóa thông báo lỗi trong session và reload trang
-            <?php 
-                unset($_SESSION['errorMessage']); // Xóa thông báo lỗi trong session
-            ?>
+                // Sau khi đóng popup, xóa thông báo lỗi trong session và reload trang
+                <?php 
+                    unset($_SESSION['errorMessage']); // Xóa thông báo lỗi trong session
+                ?>
+            });
         });
-    });
-</script>
+    </script>
 
 
 
@@ -998,15 +998,15 @@
 
     <script>
         // Lắng nghe sự kiện submit
-document.querySelector('form').addEventListener('submit', function(event) {
-    const totalDays = parseInt(document.getElementById('totalDays').value);
+        document.querySelector('form').addEventListener('submit', function(event) {
+            const totalDays = parseInt(document.getElementById('totalDays').value);
 
-    // Kiểm tra nếu số ngày thực tế không khớp với totalDays
-    if (selectedDates.length !== totalDays) {
-        event.preventDefault(); // Ngừng gửi form
-        alert(`Vui lòng chọn đúng ${totalDays} ngày.`);
-    }
-});
+            // Kiểm tra nếu số ngày thực tế không khớp với totalDays
+            if (selectedDates.length !== totalDays) {
+                event.preventDefault(); // Ngừng gửi form
+                alert(`Vui lòng chọn đúng số ngày mà bạn đã chọn.`);
+            }
+        });
     </script>
 
         

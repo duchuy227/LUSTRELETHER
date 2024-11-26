@@ -289,6 +289,12 @@
         color: white !important; /* Text color for visibility */
     }
 
+    .past-date {
+        color: #ccc !important;
+        pointer-events: none; /* Chặn nhấp chuột */
+        opacity: 0.5 !important;
+    }
+
 
     .note {
         display: flex;
@@ -575,7 +581,7 @@
         </div>
     </div>
 
-    <div id="popupModal1" class="popup-modal1">
+    <div id="popupModal1" class="popup-modal1" style="display: none;">
         <div class="popup-content1">
             <img src="././views/Img/u118.png" width="50" height="50">
             <p><?php echo isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : ''; ?></p>
@@ -583,8 +589,8 @@
         </div>
     </div>
 
-    <script>
-            document.addEventListener('DOMContentLoaded', function () {
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
             // Kiểm tra nếu có thông báo lỗi trong session
             <?php if (isset($_SESSION['errorMessage'])): ?>
                 // Hiển thị popup khi có thông báo lỗi
@@ -595,13 +601,14 @@
             document.getElementById('closeBtn1').addEventListener('click', function() {
                 // Đóng popup
                 document.getElementById('popupModal1').style.display = 'none';
-                
+
                 // Sau khi đóng popup, xóa thông báo lỗi trong session và reload trang
-                <?php unset($_SESSION['errorMessage']); ?>  <!-- Xóa thông báo lỗi -->
-                
+                <?php 
+                    unset($_SESSION['errorMessage']); // Xóa thông báo lỗi trong session
+                ?>
             });
         });
-    </script>
+</script>
 
     <script>
 
@@ -719,143 +726,208 @@
 
     </script>
 
-    <script>
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        let currentDate = new Date();
-        let selectedDates = [];
+<script>
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let currentDate = new Date();
+    let selectedDates = [];
 
-        const monthElement = document.querySelector(".month");
-        const daysContainer = document.querySelector(".days");
-        const prevBtn = document.querySelector(".prev-btn");
-        const nextBtn = document.querySelector(".next-btn");
-        const todayBtn = document.querySelector(".today-btn");
-        const startDateInput = document.querySelector("input[placeholder='Start Date']");
-        const endDateInput = document.querySelector("input[placeholder='End Date']");
+    const monthElement = document.querySelector(".month");
+    const daysContainer = document.querySelector(".days");
+    const prevBtn = document.querySelector(".prev-btn");
+    const nextBtn = document.querySelector(".next-btn");
+    const todayBtn = document.querySelector(".today-btn");
+    const startDateInput = document.querySelector("input[placeholder='Start Date']");
+    const endDateInput = document.querySelector("input[placeholder='End Date']");
+    const totalDaysInput = document.getElementById("totalDays");
 
-        // Mảng chứa các ngày đã đặt, định dạng dưới dạng chuỗi 'YYYY-MM-DD'
-        const bookedDates = <?php echo json_encode($bookedDates); ?>;
-        const specificBookingStartDate = new Date("<?php echo $booking['Booking_StartDate']; ?>");
-        const specificBookingEndDate = new Date("<?php echo $booking['Booking_EndDate']; ?>");
-        
-        const specificBookingDates = [];
-        for (let d = new Date(specificBookingStartDate); d <= specificBookingEndDate; d.setDate(d.getDate() + 1)) {
-            specificBookingDates.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
-        }
+    // Dữ liệu booking
+    const bookedDates = <?php echo json_encode($bookedDates); ?>;
+    const specificBookingStartDate = new Date("<?php echo $booking['Booking_StartDate']; ?>");
+    const specificBookingEndDate = new Date("<?php echo $booking['Booking_EndDate']; ?>");
 
-        function renderCalendar() {
-            const currentMonth = currentDate.getMonth();
-            const currentYear = currentDate.getFullYear();
+    const specificBookingDates = [];
+    for (let d = new Date(specificBookingStartDate); d <= specificBookingEndDate; d.setDate(d.getDate() + 1)) {
+        specificBookingDates.push(formatDateISO(d));
+    }
 
-            monthElement.textContent = `${months[currentMonth]} ${currentYear}`;
-
-            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-            const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
-            const numDaysInMonth = lastDayOfMonth.getDate();
-            const firstDay = firstDayOfMonth.getDay();
-
-            daysContainer.innerHTML = "";
-
-            // Thêm ô trống trước ngày đầu tiên của tháng
-            for (let i = 0; i < firstDay; i++) {
-                const emptyCell = document.createElement("div");
-                emptyCell.classList.add("day");
-                daysContainer.appendChild(emptyCell);
-            }
-
-            // Duyệt qua tất cả các ngày trong tháng
-            for (let i = 1; i <= numDaysInMonth; i++) {
-                const dayCell = document.createElement("div");
-                dayCell.classList.add("day");
-                dayCell.textContent = i;
-
-                // Tạo chuỗi ngày với định dạng 'YYYY-MM-DD'
-                const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-
-                // Kiểm tra nếu ngày hiện tại có trong mảng specificBookingDates hoặc bookedDates
-                if (specificBookingDates.includes(date)) {
-                    dayCell.classList.add("specific-booking");
-                    dayCell.style.cursor = "pointer";
-
-                    dayCell.addEventListener("click", function () {
-                        if (selectedDates.includes(date)) {
-                            // Nếu ngày đã được chọn trước đó, bỏ chọn và gỡ bỏ lớp đã đánh dấu
-                            selectedDates = selectedDates.filter(d => d !== date);
-                            this.style.backgroundColor = ""; // Bỏ màu nền
-                        } else {
-                            // Nếu ngày chưa được chọn, thêm vào danh sách các ngày đã chọn và đánh dấu
-                            selectedDates.push(date);
-                            this.style.backgroundColor = "#07C940"; // Màu đánh dấu ngày đã chọn
-                        }
-                        updateDateInputs(); // Cập nhật input ngày
-                    });
-                } else if (bookedDates.includes(date) && !specificBookingDates.includes(date)) {
-                    dayCell.classList.add("booked");
-                    dayCell.style.cursor = "not-allowed"; // Không cho phép nhấp vào
-                } else {
-                    dayCell.addEventListener("click", function () {
-                        if (selectedDates.includes(date)) {
-                            selectedDates = selectedDates.filter(d => d !== date);
-                            this.classList.remove("selected");
-                        } else {
-                            selectedDates.push(date);
-                            this.classList.add("selected");
-                        }
-                        updateDateInputs();
-                    });
-                }
-
-                daysContainer.appendChild(dayCell);
-            }
-        }
-
-
-
-        function updateDateInputs() {
-            if (selectedDates.length === 0) {
-                startDateInput.value = "";
-                endDateInput.value = "";
-                return;
-            }
-
-            // Sắp xếp selectedDates theo thứ tự ngày tháng
-            selectedDates.sort((a, b) => new Date(a) - new Date(b));
-            
-            const startDate = new Date(selectedDates[0]);
-            const endDate = new Date(selectedDates[selectedDates.length - 1]);
-
-            // Chuyển đổi định dạng ngày theo kiểu 'j M Y'
-            const formatDate = (date) => {
-                const day = date.getDate();
-                const month = months[date.getMonth()];
-                const year = date.getFullYear();
-                return `${day} ${month} ${year}`;
-            };
-
-            // Cập nhật giá trị cho các input theo định dạng 'j M Y'
-            startDateInput.value = formatDate(startDate);
-            endDateInput.value = formatDate(endDate);
-        }
-
-
-        todayBtn.addEventListener("click", () => {
-            currentDate = new Date();
+    totalDaysInput.addEventListener("change", () => {
+        const totalDays = parseInt(totalDaysInput.value);
+        if (!isNaN(totalDays) && totalDays > 0) {
             selectedDates = [];
             renderCalendar();
             updateDateInputs();
-        });
+        }
+    });
 
-        prevBtn.addEventListener("click", () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar();
-        });
+    function renderCalendar() {
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
 
-        nextBtn.addEventListener("click", () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar();
-        });
+        monthElement.textContent = `${months[currentMonth]} ${currentYear}`;
 
+        const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+        const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+        const numDaysInMonth = lastDayOfMonth.getDate();
+        const firstDay = firstDayOfMonth.getDay();
+
+        daysContainer.innerHTML = "";
+
+        // Thêm ô trống trước ngày đầu tiên của tháng
+        for (let i = 0; i < firstDay; i++) {
+            daysContainer.appendChild(createDayCell(""));
+        }
+
+        // Duyệt qua các ngày trong tháng
+        for (let i = 1; i <= numDaysInMonth; i++) {
+            const dateString = formatDateISO(new Date(currentYear, currentMonth, i));
+            const dayCell = createDayCell(i, dateString);
+
+            // Kiểm tra trạng thái ngày
+            const today = new Date();
+            const isPast = new Date(dateString) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            const isSpecific = specificBookingDates.includes(dateString);
+            const isBooked = bookedDates.includes(dateString);
+
+            if (isPast) {
+                dayCell.classList.add("past-date");
+            } else if (isSpecific) {
+                dayCell.classList.add("specific-booking");
+                dayCell.addEventListener("click", () => toggleDateSelection(dayCell, dateString));
+            } else if (isBooked) {
+                dayCell.classList.add("booked");
+            } else {
+                dayCell.addEventListener("click", () => handleDayClick(dayCell, dateString));
+            }
+
+            daysContainer.appendChild(dayCell);
+        }
+    }
+
+    function createDayCell(content, dateString = null) {
+        const dayCell = document.createElement("div");
+        dayCell.classList.add("day");
+        dayCell.textContent = content;
+        if (dateString) dayCell.dataset.date = dateString;
+        return dayCell;
+    }
+
+    function handleDayClick(dayCell, dateString) {
+        const totalDays = parseInt(totalDaysInput.value);
+        if (selectedDates.length && !isConsecutive(dateString)) {
+            alert("Bạn chỉ có thể chọn các ngày liên tiếp.");
+            return;
+        }
+
+        if (selectedDates.includes(dateString)) {
+            selectedDates = selectedDates.filter(date => date !== dateString);
+            dayCell.classList.remove("selected");
+        } else if (selectedDates.length < totalDays) {
+            selectedDates.push(dateString);
+            dayCell.classList.add("selected");
+        } else {
+            alert(`Bạn chỉ được chọn tối đa ${totalDays} ngày.`);
+        }
+
+        updateDateInputs();
+    }
+
+    function toggleDateSelection(dayCell, dateString) {
+        if (selectedDates.includes(dateString)) {
+            selectedDates = selectedDates.filter(date => date !== dateString);
+            dayCell.style.backgroundColor = "";
+        } else {
+            selectedDates.push(dateString);
+            dayCell.style.backgroundColor = "#07C940";
+        }
+        updateDateInputs();
+    }
+
+    function updateDateInputs() {
+        if (selectedDates.length === 0) {
+            startDateInput.value = "";
+            endDateInput.value = "";
+            return;
+        }
+
+        selectedDates.sort((a, b) => new Date(a) - new Date(b));
+
+        startDateInput.value = formatDateDisplay(selectedDates[0]);
+        endDateInput.value = formatDateDisplay(selectedDates[selectedDates.length - 1]);
+    }
+
+    function isConsecutive(dateString) {
+        if (selectedDates.length === 0) return true;
+
+        const lastDate = new Date(selectedDates[selectedDates.length - 1]);
+        const currentDate = new Date(dateString);
+        return Math.abs((currentDate - lastDate) / (1000 * 60 * 60 * 24)) === 1;
+    }
+
+    function formatDateISO(date) {
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function formatDateDisplay(dateString) {
+        const date = new Date(dateString);
+        return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    }
+
+    todayBtn.addEventListener("click", () => {
+        currentDate = new Date();
+        selectedDates = [];
         renderCalendar();
-    </script>
+        updateDateInputs();
+    });
+
+    prevBtn.addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    });
+
+    nextBtn.addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    });
+
+    renderCalendar();
+</script>
+
+
+<script>
+    // Cập nhật danh sách selectedDates dựa trên giá trị của input ngày
+    function initializeSelectedDates() {
+        const startDateValue = document.querySelector("input[placeholder='Start Date']").value;
+        const endDateValue = document.querySelector("input[placeholder='End Date']").value;
+
+        if (startDateValue && endDateValue) {
+            const startDate = new Date(startDateValue);
+            const endDate = new Date(endDateValue);
+
+            selectedDates = [];
+            for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+                selectedDates.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+            }
+        }
+    }
+
+    // Lắng nghe sự kiện submit
+    document.querySelector('form').addEventListener('submit', function(event) {
+        // Cập nhật lại selectedDates trước khi kiểm tra
+        initializeSelectedDates();
+
+        const totalDays = parseInt(document.getElementById('totalDays').value);
+
+        // Kiểm tra nếu số ngày thực tế không khớp với totalDays
+        if (selectedDates.length !== totalDays) {
+            event.preventDefault(); // Ngừng gửi form
+            alert(`Vui lòng chọn đúng số ngày mà bạn đã chọn.`);
+        }
+    });
+
+    // Khởi tạo selectedDates khi trang tải
+    document.addEventListener('DOMContentLoaded', initializeSelectedDates);
+</script>
+
 
 </body>
 </html>
