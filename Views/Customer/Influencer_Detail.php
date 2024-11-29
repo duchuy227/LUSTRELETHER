@@ -289,23 +289,23 @@
                     <div class="recently-booked">
                         <div class="event">
                             <img style="border-radius: 50%; margin: auto" src="././views/Img/avatar.jpg" width="50" height="50">
-                            <span>Event 1</span>
+                            <span><?php echo strlen('Livestream') > 8 ? substr('Livestream', 0, 8) . '...' : 'Livestream'; ?></span>
                             <span>1 days</span>
                         </div>
                         <div class="event">
                             <img style="border-radius: 50%; margin: auto" src="././views/Img/a1.jpg" width="50" height="50">
-                            <span>Event 1</span>
+                            <span><?php echo strlen('Product Review') > 8 ? substr('Product Review', 0, 8) . '...' : 'Product Review'; ?></span>
                             <span>1 days</span>
                         </div>
                         <div class="event">
                             <img style="border-radius: 50%; margin: auto" src="././views/Img/u73_div.png" width="50" height="50">
-                            <span>Event 1</span>
-                            <span>1 days</span>
+                            <span><?php echo strlen('Livestream') > 8 ? substr('Livestream', 0, 8) . '...' : 'Livestream'; ?></span>
+                            <span>2 days</span>
                         </div>
                         <div class="event">
                             <img style="border-radius: 50%; margin: auto" src="././views/Img/u87.png" width="50" height="50">
-                            <span>Event 1</span>
-                            <span>1 days</span>
+                            <span><?php echo strlen('Product Review') > 8 ? substr('Product Review', 0, 8) . '...' : 'Product Review'; ?></span>
+                            <span>2 days</span>
                         </div>
                     </div>
                 </div>

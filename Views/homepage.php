@@ -140,10 +140,10 @@
                     <div class="col-md-3 mb-4">
                         <div class="card-viral">
                             <a href="javascript:void(0)" onclick="openPopup()">
-                                <img class="card-img-top" src="./views/Img/giang3.png"/>
+                                <img class="card-img-top" src="./views/Img/u59_div.png"/>
                             </a>
                             <div class="card-body-viral">
-                                <h5 class="card-title-viral">Nguyen Duc Giang</h5>
+                                <h5 class="card-title-viral">Ho Viet Huy</h5>
                                 <p class="card-text-viral">Booking received: 20</p>
                             </div>
                         </div>
@@ -178,92 +178,12 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img class="card-img-top" src="./views/Img/u70_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Linh Barbie</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img class="card-img-top" src="./views/Img/u73_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Linh Sim</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img class="card-img-top" src="./views/Img/u74_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Huy Cung</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img class="card-img-top" src="./views/Img/u75_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Chloe Nguyễn</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
         </div>
 
         <div class="influencer-viral">
                 <h1>Viral Influencers</h1>
                 <div class="row justify-content-center">
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img alt="Tran Thanh" class="card-img-top" src="./views/Img/u87_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Tran Thanh</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img alt="Tran Thanh" class="card-img-top" src="./views/Img/u90_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Hariwon</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img alt="Tran Thanh" class="card-img-top" src="./views/Img/u91_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Truong Giang</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img alt="Tran Thanh" class="card-img-top" src="./views/Img/u92_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Dai Nghia</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="col-md-3 mb-4">
                         <div class="card-viral">
                             <img alt="Tran Thanh" class="card-img-top" src="./views/Img/u103_div.png"/>
