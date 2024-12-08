@@ -547,7 +547,6 @@
                             </div>
                             <?php endforeach; ?>
                         </div>
-                        
                         <div class="row">
                             <div class="col-md-6" style="width:35%">
                                 <h6 style="margin: 30px 20px; font-size: 18px; font-weight: 400">Choose Service</h6>
@@ -573,7 +572,6 @@
                                 <input style="margin: 20px;" class="dropdown me-3" id="servicePrice" readonly>
                             </div>
                         </div>
-
                         <h6 style="margin: 30px 20px; font-size: 18px; font-weight: 400">Choose Date</h6>
                         <div class="calendar">
                             <div class="header">
@@ -601,8 +599,6 @@
                             </div>
                             <div class="days"></div>
                         </div>
-                        
-                        
                         <div class="row">
                             <div class="col-md-4" style="margin: 20px; margin-bottom: 20px; width: 25%">
                                 <div class="note">
@@ -631,7 +627,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="d-flex justify-content-between" style="margin: 0px 20px;">
                             <div>
                                 <p>Start Date: <input readonly name="start_date" type="text" placeholder="Start Date" style="border: none; outline:none"></p>
@@ -921,7 +916,7 @@
             document.getElementById('servicePrice').value = servicePrice.toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' VND';
         }
 
-        let time = 300; // 30 phút
+        let time = 300;
         const countdownElement = document.getElementById('timeLeft');
 
         function updateCountdown() {
@@ -938,19 +933,18 @@
 
         function showPopup() {
             const modal = document.getElementById('popupModal');
-            modal.style.display = 'flex'; // Hiển thị modal
+            modal.style.display = 'flex';
 
             // Xử lý sự kiện khi nhấn "OK"
             document.getElementById('closeBtn').addEventListener('click', function () {
-                modal.style.display = 'none'; // Ẩn modal
-                window.location.reload(); // Reload lại trang
+                modal.style.display = 'none'; 
+                window.location.reload(); 
             });
         }
 
         const countdownInterval = setInterval(updateCountdown, 1000);
 
         function loadServices(topicId) {
-        // Gọi AJAX để lấy content và event của topic đã chọn
         fetch('index.php?action=getServicesByTopic', {
             method: 'POST',
             headers: {

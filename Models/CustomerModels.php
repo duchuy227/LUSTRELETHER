@@ -316,11 +316,9 @@
         }
 
         public function createBooking($CreateTime, $TotalDay, $ServiceName, $StartDate, $EndDate, $Expense, $Topic_ID, $Cus_ID, $Influ_ID) {
-            // Chuyển đổi ngày tháng sang định dạng đúng (YYYY-MM-DD)
             $startDateFormatted = DateTime::createFromFormat('j M Y', $StartDate)->format('Y-m-d');
             $endDateFormatted = DateTime::createFromFormat('j M Y', $EndDate)->format('Y-m-d');
         
-            // Chuẩn bị câu lệnh SQL
             $query = 'INSERT INTO Booking (Booking_CreateTime, Booking_TotalDay, Booking_Content, Booking_StartDate, Booking_EndDate, Booking_Status, Booking_Expense, Topic_ID, Cus_ID, Influ_ID) VALUES (:createtime, :totalday, :content, :startdate, :enddate, :status, :expense, :topic_id, :cus_id, :influ_id)';
             $sql = $this->conn->prepare($query);
             $sql->execute(array(
@@ -347,14 +345,12 @@
             $stmt->execute();
             $bookedDates = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-            // Mảng để lưu các ngày đã đặt với định dạng 'YYYY-MM-DD'
             $formattedDates = [];
         
             foreach ($bookedDates as $booking) {
                 $start = new DateTime($booking['Booking_StartDate']);
                 $end = new DateTime($booking['Booking_EndDate']);
         
-                // Lấy tất cả các ngày từ start đến end và thêm vào mảng với định dạng 'YYYY-MM-DD'
                 while ($start <= $end) {
                     $formattedDates[] = $start->format('Y-m-d');
                     $start->modify('+1 day'); // Tăng lên 1 ngày
@@ -365,28 +361,23 @@
         }
 
         public function checkBookingConflict($startDate, $endDate, $influencerId, $booking_id = null) {
-            // Chuyển đổi ngày sang định dạng Y-m-d H:i:s để kiểm tra
             $startDateFormatted = DateTime::createFromFormat('j M Y', $startDate);
             $endDateFormatted = DateTime::createFromFormat('j M Y', $endDate);
         
-            // Kiểm tra nếu $startDateFormatted hoặc $endDateFormatted không hợp lệ
             if (!$startDateFormatted || !$endDateFormatted) {
                 throw new Exception("Invalid date format. Please provide the date in 'Y-m-d H:i:s' format.");
             }
         
-            // Format lại ngày để sử dụng trong câu truy vấn SQL
             $startDateFormatted = $startDateFormatted->format('Y-m-d');
             $endDateFormatted = $endDateFormatted->format('Y-m-d');
         
-            // Truy vấn CSDL để kiểm tra xem có booking nào trùng trong khoảng thời gian này
             $query = 'SELECT * FROM Booking WHERE Influ_ID = :influ_id AND (
                 (Booking_StartDate BETWEEN :start_date AND :end_date) OR 
                 (Booking_EndDate BETWEEN :start_date AND :end_date) OR 
                 (:start_date BETWEEN Booking_StartDate AND Booking_EndDate) OR 
                 (:end_date BETWEEN Booking_StartDate AND Booking_EndDate)
-              )';
+                    )';
             
-            // Nếu có booking_id (khi chỉnh sửa), loại bỏ booking hiện tại của khách hàng
             if ($booking_id) {
                 $query .= ' AND booking_id != :booking_id';
             }
@@ -401,8 +392,7 @@
                 $params[':booking_id'] = $booking_id;
             }
             $sql->execute($params);
-        
-            // Kiểm tra xem có kết quả nào không (nếu có tức là đã có người đặt)
+
             return $sql->rowCount() > 0;
         }
         

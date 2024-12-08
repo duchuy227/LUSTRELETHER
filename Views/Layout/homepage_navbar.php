@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg">
-    <div class="container d-flex justify-content-between align-items-center">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,3 +29,13 @@
         </div>
     </div>
 </nav>
+
+<style>
+        @media (min-width: 1200px) {
+        .navbar-nav {
+            display: flex;
+            justify-content: space-evenly; /* Hoặc space-between */
+            width: 100%; /* Đảm bảo danh sách chiếm toàn bộ chiều ngang */
+        }
+    }
+    </style>

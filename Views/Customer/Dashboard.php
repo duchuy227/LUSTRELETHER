@@ -52,13 +52,17 @@
         background-color: #ffffff;
         height: calc(100vh - 85px);
         width: 300px;
+        max-width: 100%;
         position: fixed; /* Đặt sidebar ở vị trí cố định */
         top: 85px; /* Đặt dưới navbar */
         left: 0; /* Căn ở bên trái */
         padding-top: 20px;
         box-shadow: 10px 4px 6px rgba(0, 0, 0, 0.1);
         z-index: 999; /* Đảm bảo sidebar nằm trên các phần tử khác */
+        transition: transform 0.3s ease-in-out; /* Thêm hiệu ứng chuyển động */
     }
+
+    
     .sidebar a {
         color: #6c757d;
         text-decoration: none;
@@ -108,6 +112,49 @@
     .sidebar a:hover::before {
         left: 0; /* Di chuyển lớp nền vào vị trí */
     }
+
+    /* Ẩn sidebar trên màn hình nhỏ (mặc định) */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none; /* Ẩn sidebar */
+    }
+    .sidebar.active {
+        display: block; /* Hiển thị khi có class "active" */
+        animation: slideIn 0.3s ease; /* Thêm hiệu ứng nếu cần */
+    }
+}
+
+/* Hiệu ứng khi mở sidebar (nếu cần) */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Nút toggle (hiển thị trên màn hình nhỏ) */
+#toggleSidebar {
+    display: none; /* Ẩn trên desktop */
+    position: fixed;
+    top: 95px;
+    right: 15px;
+    z-index: 1000;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hiển thị nút toggle trên màn hình nhỏ */
+@media (max-width: 768px) {
+    #toggleSidebar {
+        display: block;
+    }
+}
 
     
     .profile-container {
@@ -242,7 +289,9 @@
     <div class="container-fluid">
         <div class="row">
             <?php include_once 'sidebar.php'; ?>
+                        
             <div class="col-md-9 offset-md-3">
+            <div id="toggleSidebar">☰</div>
                 <h2>My Profile</h2>
                 <form method="post" enctype="multipart/form-data">
                     <div class="profile-container">
@@ -375,6 +424,6 @@
         });
         });
     </script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
