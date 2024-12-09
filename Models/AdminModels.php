@@ -369,6 +369,22 @@
             $this->conn->commit();
         }
 
+        public function checkUsernameExists($username) {
+            $query = "SELECT COUNT(*) FROM Customer WHERE Cus_Username = :username";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':username', $username);
+            $stmt->execute();
+            $customerCount = $stmt->fetchColumn();
+        
+            $query = "SELECT COUNT(*) FROM Influencer WHERE Influ_Username = :username";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':username', $username);
+            $stmt->execute();
+            $influencerCount = $stmt->fetchColumn();
+        
+            return ($customerCount > 0 || $influencerCount > 0);
+        }
+
         public function getAllCustomer(){
             $query = "SELECT * FROM Customer";
             $sql = $this->conn->query($query);

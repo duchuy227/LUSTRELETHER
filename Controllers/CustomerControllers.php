@@ -160,6 +160,37 @@
                 $topic = $AdminModels->getTopicByID($topic_id);
                 $influencers = $customerModel -> getAllInfluByEachTopic($topic_id);
 
+                if($_SERVER ['REQUEST_METHOD'] == 'POST'){
+                    if(isset( $_POST['wplace_id'])){
+                        $wplace_id = $_POST['wplace_id'];
+                        $influencers =  $customerModel->getAllInfluencerTopicByWorkplace($wplace_id, $topic_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found ";
+                        }
+                    }
+                    if(isset( $_POST['fol_id'])){
+                        $fol_id = $_POST['fol_id'];
+                        $influencers =  $customerModel->getAllInfluencerTopicByFollowers($fol_id, $topic_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found ";
+                        }
+                    }
+                    if(isset( $_POST['type_id'])){
+                        $type_id = $_POST['type_id'];
+                        $influencers =  $customerModel->getAllInfluencerTopicByType($type_id, $topic_id);
+                    }
+
+                    if(isset( $_POST['username'])){
+                        $username =  $_POST['username'];
+                        $influencers = $customerModel->getInfluencerTopicByUsername($username, $topic_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found named: $username ";
+                        }
+                    }
+                } else {
+                    $influencers = $customerModel ->getAllInfluByEachTopic($topic_id);
+                }
+
                 include 'Views/Customer/EachTopic.php';
             }
         }
@@ -185,6 +216,37 @@
                 $event = $AdminModels ->getEventByID($event_id);
                 $influencers = $customerModel ->getInfluencersByEvent($event_id);
 
+                if($_SERVER ['REQUEST_METHOD'] == 'POST'){
+                    if(isset( $_POST['wplace_id'])){
+                        $wplace_id = $_POST['wplace_id'];
+                        $influencers =  $customerModel->getAllInfluencerEventByWorkplace($wplace_id, $event_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found ";
+                        }
+                    }
+                    if(isset( $_POST['fol_id'])){
+                        $fol_id = $_POST['fol_id'];
+                        $influencers =  $customerModel->getAllInfluencerEventByFollowers($fol_id, $event_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found ";
+                        }
+                    }
+                    if(isset( $_POST['type_id'])){
+                        $type_id = $_POST['type_id'];
+                        $influencers =  $customerModel->getAllInfluencerEventByType($type_id, $event_id);
+                    }
+
+                    if(isset( $_POST['username'])){
+                        $username =  $_POST['username'];
+                        $influencers = $customerModel->getInfluencerEventByUsername($username, $event_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found named: $username ";
+                        }
+                    }
+                } else {
+                    $influencers = $customerModel ->getInfluencersByEvent($event_id);
+                }
+
                 include 'Views/Customer/Event.php';
             }
         }
@@ -209,6 +271,37 @@
 
                 $content = $AdminModels ->getContentByID($content_id);
                 $influencers = $customerModel ->getInfluencersByContent($content_id);
+
+                if($_SERVER ['REQUEST_METHOD'] == 'POST'){
+                    if(isset( $_POST['wplace_id'])){
+                        $wplace_id = $_POST['wplace_id'];
+                        $influencers =  $customerModel->getAllInfluencerContentByWorkplace($wplace_id, $content_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found ";
+                        }
+                    }
+                    if(isset( $_POST['fol_id'])){
+                        $fol_id = $_POST['fol_id'];
+                        $influencers =  $customerModel->getAllInfluencerContentByFollowers($fol_id, $content_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found ";
+                        }
+                    }
+                    if(isset( $_POST['type_id'])){
+                        $type_id = $_POST['type_id'];
+                        $influencers =  $customerModel->getAllInfluencerContentByType($type_id, $content_id);
+                    }
+
+                    if(isset( $_POST['username'])){
+                        $username =  $_POST['username'];
+                        $influencers = $customerModel->getInfluencerContentByUsername($username, $content_id);
+                        if (empty($influencers)) {
+                            $message = "No influencers found named: $username ";
+                        }
+                    }
+                } else {
+                    $influencers = $customerModel ->getInfluencersByContent($content_id);
+                }
 
                 include 'Views/Customer/Content.php';
             }

@@ -79,7 +79,7 @@
         border-radius: 20px;
         padding: 5px 15px;
         border: 1px solid #D7D7D7;
-        width: 100%;
+        width: 250px;
         margin-left: 20px;
         font-weight: 500;
         color: #646363;
@@ -155,7 +155,7 @@
     }
 
     .btn {
-        width: 400px;
+        width: 100px;
         background-color: #F0564A;
         color: #fff;
         border-radius: 20px;
@@ -163,6 +163,31 @@
         font-weight: 500;
         margin-right: 20px;
     }
+
+    .pagination {
+        margin-bottom: 20px;    
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        }
+        .pagination button {
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: #F0564A;
+            color: #fff;
+            border: 1px solid #F0564A;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 20px;
+            width: 50px;
+            height: 50px;
+            
+        }
+        .pagination button:hover {
+            background-color: #F0564A;
+        }
     
 </style>
 <body>
@@ -176,58 +201,73 @@
                 </div>
 
                 <div class="col-md-6 d-flex justify-content-end">
+                    <form method="post">
                         <div class="inputBx">
                             <img src="././Views/Img/search.png" alt="" width="30" height="30">
                             <input name="username" type="text" placeholder="Search . . .">
                         </div>
+                    </form>
                 </div>
             </div>
             
             <div class="d-flex mb-4">
-                    <select name="wplace_id" class="dropdown me-3">
-                        <option hidden>Workplace</option>
-                        <?php 
-                            foreach($all_wplace as $wplace){
-                                echo '<option value="'.$wplace['WPlace_ID'].'"';
-                                if ($wplace['WPlace_ID'] == $wplace_id) {
-                                    echo ' selected';
+                    <form method="post">
+                        <select name="wplace_id" class="dropdown me-3">
+                            <option hidden>Workplace</option>
+                            <?php 
+                                foreach($all_wplace as $wplace){
+                                    echo '<option value="'.$wplace['WPlace_ID'].'"';
+                                    if ($wplace['WPlace_ID'] == $wplace_id) {
+                                        echo ' selected';
+                                    }
+                                    echo '>'.$wplace['WPlace_Name'].'</option>';
                                 }
-                                echo '>'.$wplace['WPlace_Name'].'</option>';
-                            }
-                        ?>
-                    </select>
+                            ?>
+                        </select>
+                        <button type="submit" class="btn">Filter</button>
+                    </form>
                     
-                    <select name="fol_id" class="dropdown me-3">
-                        <option hidden>Followers</option>
-                        <?php 
-                            foreach($all_fol as $fol){
-                                echo '<option value="'.$fol['Fol_ID'].'"';
-                                if ($fol['Fol_ID'] == $fol_id) {
-                                    echo ' selected';
+                    <form method="post">
+                        <select name="fol_id" class="dropdown me-3">
+                            <option hidden>Followers</option>
+                            <?php 
+                                foreach($all_fol as $fol){
+                                    echo '<option value="'.$fol['Fol_ID'].'"';
+                                    if ($fol['Fol_ID'] == $fol_id) {
+                                        echo ' selected';
+                                    }
+                                    echo '>'.$fol['Fol_Quantity'].'</option>';
+                                    }
+                            ?>
+                        </select>
+                        <button type="submit" class="btn">Filter</button>
+                    </form>
+                    
+                    <form method="post">
+                        <select name="type_id" class="dropdown me-3">
+                            <option hidden>Influencer</option>
+                            <?php 
+                                foreach($all_type as $types){
+                                    echo '<option value="'.$types['InfluType_ID'].'"';
+                                    if ($types['InfluType_ID'] == $type_id) {
+                                        echo ' selected';
+                                    }
+                                    echo '>'.$types['InfluType_Name'].'</option>';
                                 }
-                                echo '>'.$fol['Fol_Quantity'].'</option>';
-                                }
-                        ?>
-                    </select>
+                            ?>
+                        </select>
 
-                    <select name="type_id" class="dropdown me-3">
-                        <option hidden>Influencer</option>
-                        <?php 
-                            foreach($all_type as $types){
-                                echo '<option value="'.$types['InfluType_ID'].'"';
-                                if ($types['InfluType_ID'] == $type_id) {
-                                    echo ' selected';
-                                }
-                                echo '>'.$types['InfluType_Name'].'</option>';
-                            }
-                        ?>
-                    </select>
-
-                    <button type="submit" class="btn">Filter</button>
+                        <button type="submit" class="btn">Filter</button>
+                    </form>
             </div>
-            <div class="row justify-content-center">
+            <?php if (!empty($message)): ?>
+                <p style="color: red; text-align: center; font-size: 30px; margin-top: 20px; font-weight:600"><?php echo $message; ?></p>
+            <?php endif; ?>
+
+            <?php if (!empty($influencers)): ?>
+            <div class="row justify-content-center" id="influencer-list">
                     <?php foreach ($influencers as $i):  ?>
-                    <div class="col-md-3">
+                    <div class="col-md-3 influencer-item">
                         <div class="card-viral">
                             <a href="index.php?action=customer_influencerDetail&id=<?php echo $i['Influ_ID'] ?>">
                                 <img class="card-img-top" src="<?php echo $i['Influ_Image'] ?>">
@@ -240,13 +280,50 @@
                     </div>
                     <?php endforeach; ?>
             </div>
+            <?php endif; ?>
+            <div class="pagination"></div>
         </div>
     </div>
 
     <?php include '././views/Layout/homepage_footer.php'?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var perPage = 8; // Số influencers mỗi trang
+            var influencers = document.querySelectorAll(".influencer-item"); // Lấy danh sách influencers
+            var totalPages = Math.ceil(influencers.length / perPage); // Tính tổng số trang
+            showPage(1);
 
+            // Tạo các nút phân trang
+            var pagination = document.querySelector(".pagination");
+            for (var i = 1; i <= totalPages; i++) {
+                var button = document.createElement("button");
+                button.textContent = i;
+                button.addEventListener("click", function () {
+                    var page = parseInt(this.textContent); // Lấy số trang từ nút bấm
+                    showPage(page);
+                });
+                pagination.appendChild(button);
+            }
+
+            function showPage(page) {
+                var start = (page - 1) * perPage; // Bắt đầu
+                var end = start + perPage;       // Kết thúc
+
+                influencers.forEach(function (influencer) {
+                    influencer.style.display = "none"; // Ẩn tất cả influencers
+                });
+
+                for (var i = start; i < end && i < influencers.length; i++) {
+                    influencers[i].style.display = "block"; // Hiển thị influencers thuộc trang hiện tại
+                }
+            }
+        });
+
+
+    </script>
 
     
 </body>

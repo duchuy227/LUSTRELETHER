@@ -836,31 +836,36 @@
                     dayCell.style.cursor = "not-allowed";
                 } else {
                     dayCell.addEventListener("click", function () {
-                        const totalDays = parseInt(document.getElementById('totalDays').value);
+                    const totalDays = parseInt(document.getElementById('totalDays').value);
 
-                        if (selectedDates.length > 0) {
-                            const lastSelectedDate = selectedDates[selectedDates.length - 1];
-                            const dayDifference = Math.abs(i - lastSelectedDate);
+                    if (selectedDates.includes(i)) {
+                        // Nếu ngày đã được chọn trước đó, xóa nó ra khỏi danh sách và không kiểm tra điều kiện liên tiếp
+                        selectedDates = selectedDates.filter(date => date !== i);
+                        this.classList.remove("selected");
+                    } else {
+                        if (totalDays === "" || isNaN(totalDays) || totalDays <= 0) {
+                            alert("Vui lòng chọn ngày");
+                        } else if (selectedDates.length < totalDays) {
+                            // Kiểm tra nếu ngày mới chọn là ngày liên tiếp với ngày cuối cùng đã chọn
+                            if (selectedDates.length > 0) {
+                                const lastSelectedDate = selectedDates[selectedDates.length - 1];
+                                const dayDifference = Math.abs(i - lastSelectedDate);
 
-                            if (dayDifference !== 1) {
-                                alert("Bạn chỉ có thể chọn các ngày liên tiếp.");
-                                return;
+                                if (dayDifference !== 1) {
+                                    alert("Bạn chỉ có thể chọn các ngày liên tiếp.");
+                                    return;
+                                }
                             }
-                        }
 
-                        if (selectedDates.includes(i)) {
-                            selectedDates = selectedDates.filter(date => date !== i);
-                            this.classList.remove("selected");
+                            // Thêm ngày vào danh sách và đánh dấu là đã chọn
+                            selectedDates.push(i);
+                            this.classList.add("selected");
                         } else {
-                            if (selectedDates.length < totalDays) {
-                                selectedDates.push(i);
-                                this.classList.add("selected");
-                            } else {
-                                alert(`Bạn chỉ được chọn tối đa ${totalDays} ngày.`);
-                            }
+                            alert("Bạn chỉ được chọn tối đa số ngày bạn đã chọn.");
                         }
-                        updateDateInputs();
-                    });
+                    }
+                    updateDateInputs();
+                });
                 }
 
                 daysContainer.appendChild(dayCell);

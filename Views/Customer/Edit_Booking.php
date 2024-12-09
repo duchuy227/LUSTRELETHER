@@ -813,11 +813,14 @@
 
     function handleDayClick(dayCell, dateString) {
         const totalDays = parseInt(totalDaysInput.value);
+
+        // Kiểm tra nếu có ngày đã chọn và ngày đang click không liên tiếp với các ngày đã chọn
         if (selectedDates.length && !isConsecutive(dateString)) {
             alert("Bạn chỉ có thể chọn các ngày liên tiếp.");
             return;
         }
 
+        // Kiểm tra nếu ngày đã được chọn và người dùng muốn bỏ chọn
         if (selectedDates.includes(dateString)) {
             selectedDates = selectedDates.filter(date => date !== dateString);
             dayCell.classList.remove("selected");
@@ -856,11 +859,13 @@
     }
 
     function isConsecutive(dateString) {
-        if (selectedDates.length === 0) return true;
+        if (selectedDates.length <= 1) return true;  // Cho phép sửa ngày duy nhất mà không cần liên tiếp
 
         const lastDate = new Date(selectedDates[selectedDates.length - 1]);
         const currentDate = new Date(dateString);
-        return Math.abs((currentDate - lastDate) / (1000 * 60 * 60 * 24)) === 1;
+        const dayDifference = Math.abs((currentDate - lastDate) / (1000 * 60 * 60 * 24));
+
+        return dayDifference === 1;
     }
 
     function formatDateISO(date) {

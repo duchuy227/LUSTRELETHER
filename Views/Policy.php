@@ -63,28 +63,32 @@
             <h2 class="privacy-title">Privacy Policy</h2>
             <div class="privacy-content">
                 <div class="scroll-content">
-                    <h3>1. General Terms</h3>
-                    <p>When registering and using our website's services, you agree to comply with the terms and conditions below. These terms apply to both influencer users and customers who need to hire services.</p>
-        
-                    <h3>2. User Rights and Responsibilities</h3>
-                    <p><strong>Influencers:</strong> When participating, you need to provide accurate personal information and update your profile regularly. You are responsible for ensuring that the content shared on your profile does not violate the law, including copyrighted content, hate speech, or inappropriate information.</p>
-                    <p><strong>Customers:</strong> When using the service to hire influencers, you need to comply with the payment and contract regulations. You are not allowed to ask influencers to perform content that violates the law or negatively affects their image.</p>
-        
-                    <h3>3. Service Cancellation Policy</h3>
-                    <p>Influencers have the right to refuse requests if the content is not suitable for their personal brand or contrary to the regulations of the website.</p>
+                    <h3>General Policy</h3>
+                    <p>
+                        Both parties are responsible for protecting each other's personal information and not using it for illegal purposes. The platform has the right to intervene and handle violations of regulations, including warnings, blocking accounts, or transferring to law enforcement agencies if necessary. Using the platform means agreeing to all terms and conditions stated in this policy.
+                    </p>
 
-                    <h3>4. Content Violation</h3>
-                    <p><strong>Inappropriate content: </strong> Posts or activities related to inappropriate content, including vulgar language, inflammatory speech, or sharing harmful information, will be warned or removed from the platform.</p>
-                    <p><strong>Copyright infringement: </strong> Any content that uses copyrighted works (images, videos, music) without permission may be removed immediately without prior notice.</p>
-        
-                    <h3>5. Privacy Policy</h3>
-                    <p>We are committed to protecting users' personal information and only using data for service operation purposes, not sharing with third parties without the user's consent.</p>
+                    <h3>Customer Policy</h3>
+                    <p>
+                        1. Customers are committed to providing accurate and transparent information when booking Influencers, and are responsible for respecting the rights, personal image, and creative content of Influencers. In addition, customers are not allowed to ask Influencers to promote content that violates ethics or harms the community, including unsafe products, false information, or sensitive content.
+                        <br>
+                        <br>
+                        2.  All transactions and contracts between customers and Influencers must comply with current legal regulations. Customers are not allowed to use the platform to perform illegal acts, including but not limited to distributing illegal content, fraud, or copyright infringement. At the same time, payments must be made through the platform's official channels, ensuring transparency and compliance with regulations.
+                        <br>
+                        <br>
+                        3.  Customers are committed to maintaining a civilized and respectful communication environment when interacting with Influencers, not engaging in any acts of harassment, discrimination, or damage to their personal reputation. Reviews and feedback must be based on real experiences, and false information must not be used to cause negative effects.
+                    </p>
 
-                    <h3>6. Payment Regulations</h3>
-                    <p>All payment transactions between customers and influencers must go through the website's system. We are not responsible for any transactions that take place outside the platform.</p>
-
-                    <h3>7. Modifications to Terms</h3>
-                    <p>We reserve the right to change or modify these terms at any time without prior notice. It is the user's responsibility to review and update the latest terms regularly.</p>
+                    <h3>Influencer Policy</h3>
+                    <p>
+                        1.  Influencers are committed to providing personal information and content in a transparent and honest manner, and are responsible for performing work in accordance with the content and commitments agreed with customers. Influencers are not allowed to promote products, services, or information that violate ethics or harm the community.
+                        <br>
+                        <br>
+                        2.  Influencers must ensure that information publicly available on the platform, including images, content, and descriptions, does not violate intellectual property rights or legal regulations. When registering and using the platform, Influencers agree that personal information, including name, image, and field of activity, will be made public for booking purposes. Any disputes with customers will be handled according to the platform's resolution process and in compliance with current laws.
+                        <br>
+                        <br>
+                        3.  Influencers are responsible for maintaining professionalism in their communications and interactions with clients, and for refraining from engaging in offensive, discriminatory, or inappropriate behavior during their interactions. Influencers agree that customer reviews will be made public on their personal profiles to ensure transparency.
+                    </p>
                 </div>
             </div>
         </div>

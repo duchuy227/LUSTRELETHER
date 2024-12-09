@@ -512,29 +512,94 @@
                 $contents =  $AdminModels->showContent();
                 $events =  $AdminModels->showEvent();
 
-                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $Username = $_POST['username'];
-                    $Password  = $_POST['password'];
+                    $Password = $_POST['password'];
                     $Email = $_POST['email'];
-                    $Fullname =  $_POST['fullname'];
+                    $Fullname = $_POST['fullname'];
                     $PhoneNumber = $_POST['phonenumber'];
                     $DOB = $_POST['dob'];
-
+                
+                    // Kiểm tra các trường trống
+                    if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB)) {
+                        $_SESSION['errorMessage'] = 'All fields must be required.';
+                        include 'views/Admin/add_customer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate username
+                    if (!preg_match('/^[A-Z]/', $Username) || !preg_match('/\d/', $Username) || strlen($Username) < 5 || strlen($Username) > 15) {
+                        $_SESSION['errorMessage'] = 'Username must start with a capital letter, contain at least one number, and be between 5 to 15 characters long.';
+                        include 'views/Admin/add_customer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    } elseif ($AdminModels->checkUsernameExists($Username)) {
+                        $_SESSION['errorMessage'] = 'Username already exists. Please enter a different one.';
+                        include 'views/Admin/add_customer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate password
+                    if (!preg_match('/^[A-Z]/', $Password) || strlen($Password) < 8 || strlen($Password) > 20 || !preg_match('/\d/', $Password) || !preg_match('/[a-z]/', $Password) || !preg_match('/[\W_]/', $Password)) {
+                        $_SESSION['errorMessage'] = 'Password must start with a capital letter, be at least 8 to 20 characters long, include at least 1 number, 1 lowercase letter, and 1 special letter.';
+                        include 'views/Admin/add_customer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Full name
+                    if (!preg_match('/^[A-Z]/', $Fullname) || strlen($Fullname) < 5 || strlen($Fullname) > 30) {
+                        $_SESSION['errorMessage'] = 'Full name must start with a capital letter, be at least 5 to 30 characters long.';
+                        include 'views/Admin/add_customer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Date of birth
+                    $dob = new DateTime($DOB);
+                    $currentDate = new DateTime();
+                    $age = $dob->diff($currentDate)->y;
+                    if ($age < 18) {
+                        $_SESSION['errorMessage'] = 'Date of birth must be over 18 years old.';
+                        include 'views/Admin/add_customer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Phone Number
+                    if (!preg_match('/^[0-9]{10}$/', $PhoneNumber)) { // 10 số
+                        $_SESSION['errorMessage'] = 'Phone number must start with a number, contain only digits, and be 10 digits long.';
+                        include 'views/Admin/add_customer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate các checkbox topic, event, content
+                    $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
+                    $contents = isset($_POST['contents']) ? $_POST['contents'] : [];
+                    $events = isset($_POST['events']) ? $_POST['events'] : [];
+                
+                    if (empty($topics)) {
+                        $_SESSION['errorMessage'] = 'At least one topic must be selected.';
+                        include 'views/Admin/add_customer.php';
+                        return;
+                    } elseif (empty($contents)) {
+                        $_SESSION['errorMessage'] = 'At least one content must be selected.';
+                        include 'views/Admin/add_customer.php';
+                        return;
+                    } elseif (empty($events)) {
+                        $_SESSION['errorMessage'] = 'At least one event must be selected.';
+                        include 'views/Admin/add_customer.php';
+                        return;
+                    }
+                
+                    // Nếu không có lỗi, tiếp tục xử lý
                     if (isset($_FILES['cus_image']) && $_FILES['cus_image']['error'] == 0) {
                         $imagePath = 'Views/Img/' . basename($_FILES['cus_image']['name']);
                         if (move_uploaded_file($_FILES['cus_image']['tmp_name'], $imagePath)) {
                             $Cus_Image = $imagePath;
                         }
                     }
-
-                    $events = isset($_POST['events']) ? $_POST['events'] : [];
-                    $contents = isset($_POST['contents']) ? $_POST['contents'] : [];
-                    $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
+                
                     $AdminModels->addCustomer($Username, $Password, $Email, $Fullname, $PhoneNumber, $DOB, $Cus_Image, $topics, $contents, $events);
                     header('Location: index.php?action=admin_customer');
-
-
-                }
+                }                
+                
                 include 'views/Admin/add_customer.php';
             }
         }

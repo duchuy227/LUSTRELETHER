@@ -753,7 +753,168 @@
             // Trả về danh sách influencer
             return $uniqueInfluencers;
         }
+
+        public function getAllInfluencerEventByFollowers($fol_id, $event_id){
+            $query = 'SELECT Distinct Influencer.*, Followers.Fol_Quantity 
+                    FROM Influencer 
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                    INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic_Event ON Influ_Topic.Topic_ID = Topic_Event.Topic_ID
+                    INNER JOIN Event ON Topic_Event.Event_ID = Event.Event_ID 
+                      WHERE Influencer.Fol_ID= :fol_id AND Event.Event_ID = :event_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':fol_id' => $fol_id, ':event_id' => $event_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllInfluencerEventByWorkplace($wplace_id, $event_id){
+            $query = 'SELECT Distinct Influencer.*, Workplace.WPlace_Name, Followers.Fol_Quantity 
+                      FROM Influencer
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID 
+                      INNER JOIN Workplace ON Influencer.WPlace_ID = Workplace.WPlace_ID
+                      INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic_Event ON Influ_Topic.Topic_ID = Topic_Event.Topic_ID
+                    INNER JOIN Event ON Topic_Event.Event_ID = Event.Event_ID 
+                    WHERE Influencer.WPlace_ID = :wplace_id AND Event.Event_ID = :event_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':wplace_id' => $wplace_id, ':event_id' => $event_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }        
         
+        public function getInfluencerEventByUsername($username, $event_id){
+            $query = 'SELECT Distinct Influencer.* ,Influencer_Type.InfluType_Name, Followers.Fol_Quantity 
+                    FROM Influencer
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID 
+                    INNER Join Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID
+                    INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic_Event ON Influ_Topic.Topic_ID = Topic_Event.Topic_ID
+                    INNER JOIN Event ON Topic_Event.Event_ID = Event.Event_ID 
+                    WHERE Influencer.Influ_Nickname LIKE :username AND Event.Event_ID = :event_id;';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':username' => '%' . $username . '%', ':event_id' => $event_id));
+            return $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllInfluencerEventByType($type_id, $event_id){
+            $query = 'SELECT Distinct Influencer.*, Influencer_Type.InfluType_Name, Followers.Fol_Quantity 
+                    FROM Influencer 
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                    INNER JOIN Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID
+                    INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic_Event ON Influ_Topic.Topic_ID = Topic_Event.Topic_ID
+                    INNER JOIN Event ON Topic_Event.Event_ID = Event.Event_ID 
+                    WHERE Influencer.InfluType_ID = :type_id AND Event.Event_ID = :event_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':type_id' => $type_id, ':event_id' => $event_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
+
+        public function getAllInfluencerContentByFollowers($fol_id, $content_id){
+            $query = 'SELECT Distinct Influencer.*, Followers.Fol_Quantity 
+                    FROM Influencer 
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                    INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic_Content ON Influ_Topic.Topic_ID = Topic_Content.Topic_ID
+                    INNER JOIN Content ON Topic_Content.Content_ID = Content.Content_ID 
+                      WHERE Influencer.Fol_ID= :fol_id AND Content.Content_ID = :content_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':fol_id' => $fol_id, ':content_id' => $content_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllInfluencerContentByWorkplace($wplace_id, $content_id){
+            $query = 'SELECT Distinct Influencer.*, Workplace.WPlace_Name, Followers.Fol_Quantity 
+                      FROM Influencer
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID 
+                      INNER JOIN Workplace ON Influencer.WPlace_ID = Workplace.WPlace_ID
+                      INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic_Content ON Influ_Topic.Topic_ID = Topic_Content.Topic_ID
+                    INNER JOIN Content ON Topic_Content.Content_ID = Content.Content_ID 
+                    WHERE Influencer.WPlace_ID = :wplace_id AND Content.Content_ID = :content_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':wplace_id' => $wplace_id, ':content_id' => $content_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }        
+        
+        public function getInfluencerContentByUsername($username, $content_id){
+            $query = 'SELECT Distinct Influencer.* ,Influencer_Type.InfluType_Name, Followers.Fol_Quantity 
+                    FROM Influencer
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID 
+                    INNER Join Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID
+                    INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic_Content ON Influ_Topic.Topic_ID = Topic_Content.Topic_ID
+                    INNER JOIN Content ON Topic_Content.Content_ID = Content.Content_ID 
+                    WHERE Influencer.Influ_Nickname LIKE :username AND Content.Content_ID = :content_id;';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':username' => '%' . $username . '%', ':content_id' => $content_id));
+            return $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllInfluencerContentByType($type_id, $content_id){
+            $query = 'SELECT Distinct Influencer.*, Influencer_Type.InfluType_Name, Followers.Fol_Quantity 
+                    FROM Influencer 
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                    INNER JOIN Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID
+                    INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic_Content ON Influ_Topic.Topic_ID = Topic_Content.Topic_ID
+                    INNER JOIN Content ON Topic_Content.Content_ID = Content.Content_ID 
+                    WHERE Influencer.InfluType_ID = :type_id AND Content.Content_ID = :content_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':type_id' => $type_id, ':content_id' => $content_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllInfluencerTopicByFollowers($fol_id, $topic_id){
+            $query = 'SELECT Distinct Influencer.*, Followers.Fol_Quantity 
+                    FROM Influencer 
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                    INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic ON Influ_Topic.Topic_ID = Topic.Topic_ID
+                    WHERE Influencer.Fol_ID= :fol_id AND Topic.Topic_ID = :topic_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':fol_id' => $fol_id, ':topic_id' => $topic_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllInfluencerTopicByWorkplace($wplace_id, $topic_id){
+            $query = 'SELECT Distinct Influencer.*, Workplace.WPlace_Name, Followers.Fol_Quantity 
+                    FROM Influencer
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID 
+                    INNER JOIN Workplace ON Influencer.WPlace_ID = Workplace.WPlace_ID
+                    INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic ON Influ_Topic.Topic_ID = Topic.Topic_ID 
+                    WHERE Influencer.WPlace_ID = :wplace_id AND Topic.Topic_ID = :topic_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':wplace_id' => $wplace_id, ':topic_id' => $topic_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }        
+        
+        public function getInfluencerTopicByUsername($username, $topic_id){
+            $query = 'SELECT Distinct Influencer.* ,Influencer_Type.InfluType_Name, Followers.Fol_Quantity 
+                    FROM Influencer
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID 
+                    INNER Join Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID
+                    INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic ON Influ_Topic.Topic_ID = Topic.Topic_ID 
+                    WHERE Influencer.Influ_Nickname LIKE :username AND Topic.Topic_ID = :topic_id;';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':username' => '%' . $username . '%', ':topic_id' => $topic_id));
+            return $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllInfluencerTopicByType($type_id, $topic_id){
+            $query = 'SELECT Distinct Influencer.*, Influencer_Type.InfluType_Name, Followers.Fol_Quantity 
+                    FROM Influencer 
+                    INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                    INNER JOIN Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID
+                    INNER JOIN Influ_Topic ON Influencer.Influ_ID = Influ_Topic.Influ_ID
+                    INNER JOIN Topic ON Influ_Topic.Topic_ID = Topic.Topic_ID
+                    WHERE Influencer.InfluType_ID = :type_id AND Topic.Topic_ID = :topic_id';
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':type_id' => $type_id, ':topic_id' => $topic_id));
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
 
     }
 ?>

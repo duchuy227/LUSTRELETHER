@@ -175,6 +175,33 @@
         margin-right: 20px;
         border: none;
     }
+
+    .pagination {
+        margin-bottom: 20px;    
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 150px;
+        }
+        .pagination button {
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: #F0564A;
+            color: #fff;
+            border: 1px solid #F0564A;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 20px;
+            width: 50px;
+            height: 50px;
+            
+        }
+        .pagination button:hover {
+            background-color: #F0564A;
+        }
+
+
     
 </style>
 <body>
@@ -191,7 +218,7 @@
                     <form method="post">
                         <?php foreach ($gender as $g):  ?>
                         <label for="gender<?php echo $g['Gender_ID']; ?>">
-                            <input required class="form-check-input" type="checkbox" id="gender<?php echo $g['Gender_ID']; ?>" name="gender_ids[]"  value="<?php echo $g['Gender_ID']; ?>" <?php echo in_array($g['Gender_ID'], $selected_genders) ? 'checked' : ''; ?>>
+                            <input class="form-check-input" type="checkbox" id="gender<?php echo $g['Gender_ID']; ?>" name="gender_ids[]"  value="<?php echo $g['Gender_ID']; ?>" <?php echo in_array($g['Gender_ID'], $selected_genders) ? 'checked' : ''; ?>>
                             <?php echo $g['Gender_Name']; ?>
                         </label>
                         <?php endforeach; ?>
@@ -207,7 +234,7 @@
                     <form method="post">
                         <?php foreach ($topics as $topic):  ?>
                         <label class="form-check-label" for="topic<?php echo $topic['Topic_ID']; ?>">
-                            <input required class="form-check-input" type="checkbox" id="topic<?php echo $topic['Topic_ID']; ?>" name="topic_ids[]" value="<?php echo $topic['Topic_ID']; ?>" <?php echo in_array($topic['Topic_ID'], $selected_topics) ? 'checked' : ''; ?>>
+                            <input class="form-check-input" type="checkbox" id="topic<?php echo $topic['Topic_ID']; ?>" name="topic_ids[]" value="<?php echo $topic['Topic_ID']; ?>" <?php echo in_array($topic['Topic_ID'], $selected_topics) ? 'checked' : ''; ?>>
                             <?php echo $topic['Topic_Name']; ?>
                         </label>
                         <?php endforeach; ?>
@@ -223,7 +250,7 @@
                         ?>
                         <?php foreach ($events as $event): ?>
                             <label class="form-check-label" for="event<?php echo $event['Event_ID']; ?>">
-                                <input required class="form-check-input" 
+                                <input  class="form-check-input" 
                                     type="checkbox" 
                                     id="event<?php echo $event['Event_ID']; ?>" 
                                     name="event_ids[]" 
@@ -243,7 +270,7 @@
                         ?>
                         <?php foreach ($contents as $content):  ?>
                         <label class="form-check-label" for="content<?php echo $content['Content_ID']; ?>">
-                            <input required class="form-check-input" type="checkbox" id="content<?php echo $content['Content_ID']; ?>" name="content_ids[]" value="<?php echo $content['Content_ID']; ?>" <?php echo in_array($content['Content_ID'], $selected_contents) ? 'checked' : ''; ?>>
+                            <input class="form-check-input" type="checkbox" id="content<?php echo $content['Content_ID']; ?>" name="content_ids[]" value="<?php echo $content['Content_ID']; ?>" <?php echo in_array($content['Content_ID'], $selected_contents) ? 'checked' : ''; ?>>
                             <?php echo $content['Content_Name']; ?>
                         </label>
                         <?php endforeach; ?>
@@ -273,8 +300,10 @@
                             <select name="wplace_id" class="dropdown me-3">
                                 <option hidden>Workplace</option>
                                 <?php 
-                                    foreach ($all_wplace as $t){
-                                        echo '<option value="'.$t['WPlace_ID'].'">'.$t['WPlace_Name'].'</option>';
+                                    $selected_wplace = isset($_POST['wplace_id']) ? $_POST['wplace_id'] : '';
+                                    foreach ($all_wplace as $t) {
+                                        $isSelected = $selected_wplace == $t['WPlace_ID'] ? 'selected' : ''; // Kiểm tra xem có khớp giá trị không
+                                        echo '<option value="'.$t['WPlace_ID'].'" '.$isSelected.'>'.$t['WPlace_Name'].'</option>';
                                     }
                                 ?>
                             </select>
@@ -283,24 +312,30 @@
                         </form>
                         
                         <form method="post">
+    
                             <select name="fol_id" class="dropdown me-3">
                                 <option hidden>Followers</option>
                                 <?php 
-                                    foreach ($all_fol as $t){
-                                        echo '<option value="'.$t['Fol_ID'].'">'.$t['Fol_Quantity'].'</option>';
+                                    $selected_fol = isset($_POST['fol_id']) ? $_POST['fol_id'] : ''; // Lấy giá trị đã chọn từ fol_id
+                                    foreach ($all_fol as $t) {
+                                        $isSelected = $selected_fol == $t['Fol_ID'] ? 'selected' : ''; // Kiểm tra và thêm thuộc tính selected nếu khớp
+                                        echo '<option value="'.$t['Fol_ID'].'" '.$isSelected.'>'.$t['Fol_Quantity'].'</option>';
                                     }
                                 ?>
                             </select>
 
                             <button type="submit" class="btn-booking">Filter</button>
                         </form>
-                        
+
                         <form method="post">
+
                             <select name="type_id" class="dropdown me-3">
-                                <option hidden>Type</option>
+                                <option hidden>Influencer</option>
                                 <?php 
-                                    foreach ($all_type as $t){
-                                    echo '<option value="'.$t['InfluType_ID'].'">'.$t['InfluType_Name'].'</option>';
+                                    $selected_type = isset($_POST['type_id']) ? $_POST['type_id'] : ''; // Lấy giá trị đã chọn từ type_id
+                                    foreach ($all_type as $t) {
+                                        $isSelected = $selected_type == $t['InfluType_ID'] ? 'selected' : ''; // Kiểm tra và thêm thuộc tính selected nếu khớp
+                                        echo '<option value="'.$t['InfluType_ID'].'" '.$isSelected.'>'.$t['InfluType_Name'].'</option>';
                                     }
                                 ?>
                             </select>
@@ -314,9 +349,9 @@
                 <?php endif; ?>
 
                 <?php if (!empty($influencers)): ?>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center" id="influencer-list">
                     <?php foreach ($influencers as $i):  ?>
-                    <div class="col-md-3">
+                    <div class="col-md-3 influencer-item">
                         <div class="card-viral">
                             <a href="index.php?action=customer_influencerDetail&id=<?php echo $i['Influ_ID'] ?>">
                                 <img class="card-img-top" src="<?php echo $i['Influ_Image'] ?>">
@@ -329,16 +364,51 @@
                     </div>
                     <?php endforeach; ?>
                 </div>
-
                 <?php endif; ?>
             </div>
+            <div class="pagination"></div>
         </div>
     </div>
 
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var perPage = 8; // Số influencers mỗi trang
+            var influencers = document.querySelectorAll(".influencer-item"); // Lấy danh sách influencers
+            var totalPages = Math.ceil(influencers.length / perPage); // Tính tổng số trang
+            showPage(1);
 
+            // Tạo các nút phân trang
+            var pagination = document.querySelector(".pagination");
+            for (var i = 1; i <= totalPages; i++) {
+                var button = document.createElement("button");
+                button.textContent = i;
+                button.addEventListener("click", function () {
+                    var page = parseInt(this.textContent); // Lấy số trang từ nút bấm
+                    showPage(page);
+                });
+                pagination.appendChild(button);
+            }
+
+            function showPage(page) {
+                var start = (page - 1) * perPage; // Bắt đầu
+                var end = start + perPage;       // Kết thúc
+
+                influencers.forEach(function (influencer) {
+                    influencer.style.display = "none"; // Ẩn tất cả influencers
+                });
+
+                for (var i = start; i < end && i < influencers.length; i++) {
+                    influencers[i].style.display = "block"; // Hiển thị influencers thuộc trang hiện tại
+                }
+            }
+        });
+
+
+    </script>
     
 </body>
 </html>

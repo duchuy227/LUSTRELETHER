@@ -100,6 +100,7 @@
         color: white;
         border-radius: 20px;
         border: none;
+        margin-bottom: 40px;
     }
 
     .btn-booking:hover {

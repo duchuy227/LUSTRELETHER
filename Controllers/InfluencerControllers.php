@@ -34,7 +34,7 @@
                         // Đăng nhập thất bại, hiển thị lỗi
                         $error = "Your account is rejected";
                     } else {
-                        $error = "Invalid username or password";
+                        $error = "Invalid Information";
                     }
                 }
             }
