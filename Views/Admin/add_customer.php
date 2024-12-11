@@ -284,7 +284,7 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label style="margin-left: 10px;" for="cus_image">Image</label>
-                                <input style="border:none" type="file" class="form-control" id="cus_image" name="cus_image" value="<?php echo isset($_POST['cus_image']) ? $_POST['cus_image'] : ''?>">
+                                <input style="border:none" type="file" class="form-control" id="cus_image" name="cus_image">
                             </div>
                         </div>
 

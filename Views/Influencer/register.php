@@ -247,6 +247,53 @@
         margin-bottom: 20px;
         text-align: center;
     }
+
+    .popup-modal1 {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
+        padding-top: 100px;
+    }
+
+    .popup-content1 {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .popup-content1 img {
+        margin-bottom: 20px;
+    }
+
+    .popup-content1 p {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+
+    #closeBtn1 {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100px;
+        border-radius: 10px;
+    }
+
+    #closeBtn1:hover {
+        background-color: #45a049;
+    }
     
 </style>
 <body>
@@ -256,58 +303,58 @@
             <div class="row">
                 <div class="col-md-6 form-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" class="form-control" placeholder="Username" name="username">
+                    <input type="text" class="form-control" placeholder="Username" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''?>">
                 </div>
                 <div class="col-md-6 form-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" class="form-control" placeholder="Email" name="email">
+                    <input type="email" class="form-control" placeholder="Email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''?>">
                 </div>
                 <div class="col-md-6 form-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" class="form-control" placeholder="Password" name="password">
+                    <input type="password" class="form-control" placeholder="Password" name="password" value="<?php echo isset($_POST['password']) ? $_POST['password'] : ''?>">
                 </div>
                 
                 <div class="col-md-6 form-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" class="form-control" placeholder="Confirm Password" name="confirm_password">
+                    <input type="password" class="form-control" placeholder="Confirm Password" name="confirm_password" value="<?php echo isset($_POST['confirm_password']) ? $_POST['confirm_password'] : ''?>">
                 </div>
-                <?php if (isset($error)) : ?>
-                    <div class="error"><?php echo $error; ?></div>
-                <?php endif; ?>
 
                 <div class="col-md-4 form-group">
                     <i class="fas fa-address-book"></i>
-                    <input type="text" class="form-control" placeholder="Fullname" name="fullname">
+                    <input type="text" class="form-control" placeholder="Fullname" name="fullname" value="<?php echo isset($_POST['fullname']) ? $_POST['fullname'] : ''?>">
                 </div>
                 <div class="col-md-4 form-group">
                     <i class="fas fa-address-card"></i>
-                    <input type="address" class="form-control" placeholder="Address" name="address">
+                    <input type="address" class="form-control" placeholder="Address" name="address" value="<?php echo isset($_POST['address']) ? $_POST['address'] : ''?>">
                 </div>
                 <div class="col-md-4 form-group">
                     <i class="fas fa-signature"></i>
-                    <input type="text" class="form-control" placeholder="Nickname" name="nickname">
+                    <input type="text" class="form-control" placeholder="Nickname" name="nickname" value="<?php echo isset($_POST['nickname']) ? $_POST['nickname'] : ''?>">
                 </div>
                 
                 <div class="col-md-3 form-group">
                     <i class="far fa-calendar"></i>
-                    <input type="date" class="form-control" name="dob">
+                    <input type="date" class="form-control" name="dob" value="<?php echo isset($_POST['dob']) ? $_POST['dob'] : ''?>">
                 </div>
                 <div class="col-md-3 form-group">
                     <i class="fas fa-phone"></i>
-                    <input type="text" class="form-control" placeholder="Phone Number" name="phonenumber">
+                    <input type="text" class="form-control" placeholder="Phone Number" name="phonenumber" value="<?php echo isset($_POST['phonenumber']) ? $_POST['phonenumber'] : ''?>">
                 </div>
                 <div class="col-md-3 form-group">
                     <i class="fas fa-dollar-sign"></i>
-                    <input type="text" class="form-control" placeholder="Price of Service" name="price">
+                    <input type="text" class="form-control" placeholder="Price of Service" name="price" value="<?php echo isset($_POST['price']) ? $_POST['price'] : ''?>">
                 </div>
                 <div class="col-md-3 form-group">
                     <i class="fas fa-hashtag"></i>
-                    <input type="text" class="form-control" placeholder="Hashtag" name="hastag">
+                    <input type="text" class="form-control" placeholder="Hashtag" name="hastag" value="<?php echo isset($_POST['hastag']) ? $_POST['hastag'] : ''?>">
                 </div>
                 
                 <div class="col-md-3 form-group">
                     <i class="fas fa-user-check"></i>
-                    <select class="form-control" name="type_id" required>
+                    <?php 
+                        $type_id = isset($_POST['type_id']) ? $_POST['type_id'] : '';
+                    ?>
+                    <select class="form-control" name="type_id">
                         <option hidden value="">Influencer</option>
                         <?php 
                             foreach($all_type as $types){
@@ -322,7 +369,10 @@
                 </div>
                 <div class="col-md-3 form-group">
                     <i class="fas fa-map-marker-alt"></i>
-                    <select class="form-control" name="wplace_id" required>
+                    <?php 
+                        $wplace_id = isset($_POST['wplace_id']) ? $_POST['wplace_id'] : '';
+                    ?>
+                    <select class="form-control" name="wplace_id">
                         <option hidden value="">Workplace</option>
                         <?php 
                             foreach($all_wplace as $wplace){
@@ -337,7 +387,10 @@
                 </div>
                 <div class="col-md-3 form-group">
                     <i class="fas fa-users"></i>
-                    <select class="form-control" name="fol_id" required>
+                    <?php 
+                        $fol_id = isset($_POST['fol_id']) ? $_POST['fol_id'] : '';
+                    ?>
+                    <select class="form-control" name="fol_id">
                         <option hidden value="">Followers</option>
                         <?php 
                             foreach($all_fol as $fol){
@@ -352,7 +405,10 @@
                 </div>
                 <div class="col-md-3 form-group">
                     <i class="fas fa-venus-mars"></i>
-                    <select class="form-control" name="gender_id" required>
+                    <?php 
+                        $gender_id = isset($_POST['gender_id']) ? $_POST['gender_id'] : '';
+                    ?>
+                    <select class="form-control" name="gender_id">
                         <option hidden value="">Gender</option>
                         <?php 
                             foreach($all_gender as $gender){
@@ -368,22 +424,22 @@
 
                 <div class="col-md-6 form-group">
                     <label style="margin-bottom: -30px;" for="cccd_image">CCCD Image</label>
-                    <input type="file" class="form-control" name="cccd_image" required>
+                    <input type="file" class="form-control" name="cccd_image">
                 </div>
 
                 <div class="col-md-6 form-group">
                     <label style="margin-bottom: -30px;" for="influ_image">Profile Image</label>
-                    <input type="file" class="form-control" name="influ_image" required>
+                    <input type="file" class="form-control" name="influ_image">
                 </div>
 
                 <div class="col-md-12 form-group">
                     <label for="achivement">Achivement</label>
-                    <textarea class="form-control" type="text" name="achivement" cols="25" rows="3" required></textarea>
+                    <textarea class="form-control" type="text" name="achivement" cols="25" rows="3" ><?php echo isset($_POST['achivement']) ? htmlspecialchars(trim($_POST['achivement'])) : ''; ?></textarea>
                     
                 </div>
                 <div class="col-md-12 form-group">
                     <label for="biography">Biography</label>
-                    <textarea class="form-control" type="text" name="biography"  cols="25" rows="3" required></textarea>
+                    <textarea class="form-control" type="text" name="biography"  cols="25" rows="3" ><?php echo isset($_POST['biography']) ? htmlspecialchars($_POST['biography']) : ''; ?></textarea>
                 </div>
                 <br>
                 <div class="options" style="margin-top: 20px;">
@@ -416,11 +472,12 @@
                     <div class="row">
                     <?php 
                     $count = 0; 
+                    $selected_topics = isset($_POST['topics']) ? $_POST['topics'] : [];
                     foreach ($topics as $topic): 
                     ?>
                         <div class="col-md-4 mb-3"> 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="topics[]" id="topic<?php echo $topic['Topic_ID']; ?>" value="<?php echo $topic['Topic_ID']; ?>">
+                                <input class="form-check-input" type="checkbox" name="topics[]" id="topic<?php echo $topic['Topic_ID']; ?>" value="<?php echo $topic['Topic_ID']; ?>" <?php echo in_array($topic['Topic_ID'], $selected_topics) ? 'checked' : ''; ?>>
                                 <label class="form-check-label" for="topic<?php echo $topic['Topic_ID']; ?>" style="display: inline-block; margin-left: 8px; font-size: 16px; color: #333333"> 
                                 <?php echo $topic['Topic_Name']; ?>
                                 </label>
@@ -440,3 +497,32 @@
     </div>
 </body>
 </html>
+
+<div id="popupModal1" class="popup-modal1" style="display: none;">
+        <div class="popup-content1">
+            <img src="././views/Img/u118.png" width="50" height="50">
+            <p><?php echo isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : ''; ?></p>
+            <button id="closeBtn1">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Kiểm tra nếu có thông báo lỗi trong session
+            <?php if (isset($_SESSION['errorMessage'])): ?>
+                // Hiển thị popup khi có thông báo lỗi
+                document.getElementById('popupModal1').style.display = 'block';
+            <?php endif; ?>
+
+            // Đảm bảo sự kiện click chỉ được gán một lần
+            document.getElementById('closeBtn1').addEventListener('click', function() {
+                // Đóng popup
+                document.getElementById('popupModal1').style.display = 'none';
+
+                // Sau khi đóng popup, xóa thông báo lỗi trong session và reload trang
+                <?php 
+                    unset($_SESSION['errorMessage']); // Xóa thông báo lỗi trong session
+                ?>
+            });
+        });
+    </script>

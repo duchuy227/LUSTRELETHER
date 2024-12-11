@@ -74,10 +74,40 @@
         
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $Username = $_POST['username'];
-                    $Password = $_POST['password'];
+                    
                     $Email = $_POST['email'];
                     $Fullname = $_POST['fullname'];
                     $DOB = $_POST['dob'];
+
+                    if (empty($Username) || empty($Email) || empty($Fullname) || empty($DOB)) {
+                        $_SESSION['errorMessage'] = 'All fields must be required.';
+                        include 'views/Admin/admin_editprofile.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate username
+                    if (!preg_match('/^[A-Z]/', $Username) || !preg_match('/\d/', $Username) || strlen($Username) < 5 || strlen($Username) > 15) {
+                        $_SESSION['errorMessage'] = 'Username must start with a capital letter, contain at least one number, and be between 5 to 15 characters long.';
+                        include 'views/Admin/admin_editprofile.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Full name
+                    if (!preg_match('/^[A-Z]/', $Fullname) || strlen($Fullname) < 5 || strlen($Fullname) > 30) {
+                        $_SESSION['errorMessage'] = 'Full name must start with a capital letter, be at least 5 to 30 characters long.';
+                        include 'views/Admin/admin_editprofile.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Date of birth
+                    $dob = new DateTime($DOB);
+                    $currentDate = new DateTime();
+                    $age = $dob->diff($currentDate)->y;
+                    if ($age < 18) {
+                        $_SESSION['errorMessage'] = 'Date of birth must be over 18 years old.';
+                        include 'views/Admin/admin_editprofile.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
         
                     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
                         $imagePath = 'Views/Img/' . basename($_FILES['image']['name']);
@@ -90,7 +120,7 @@
                         $Image = $admin['image'];
                     }
         
-                    $AdminModels->updateAdmin($id, $Username, $Password, $Email, $Fullname, $DOB, $Image);
+                    $AdminModels->updateAdmin($id, $Username, $Email, $Fullname, $DOB, $Image);
         
                     header('Location: index.php?action=admin_profile');
                     exit;
@@ -512,6 +542,8 @@
                 $contents =  $AdminModels->showContent();
                 $events =  $AdminModels->showEvent();
 
+                
+
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $Username = $_POST['username'];
                     $Password = $_POST['password'];
@@ -520,8 +552,12 @@
                     $PhoneNumber = $_POST['phonenumber'];
                     $DOB = $_POST['dob'];
                 
-                    // Kiểm tra các trường trống
-                    if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB)) {
+                    $topicss = isset($_POST['topics']) ? $_POST['topics'] : [];
+                    $contentss = isset($_POST['contents']) ? $_POST['contents'] : [];
+                    $eventss = isset($_POST['events']) ? $_POST['events'] : [];
+
+                        // Kiểm tra các trường trống
+                    if (empty($Username) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($topicss) || empty($contentss) || empty($eventss)) {
                         $_SESSION['errorMessage'] = 'All fields must be required.';
                         include 'views/Admin/add_customer.php';
                         return; // Dừng xử lý nếu có lỗi
@@ -569,25 +605,6 @@
                         return; // Dừng xử lý nếu có lỗi
                     }
                 
-                    // Validate các checkbox topic, event, content
-                    $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
-                    $contents = isset($_POST['contents']) ? $_POST['contents'] : [];
-                    $events = isset($_POST['events']) ? $_POST['events'] : [];
-                
-                    if (empty($topics)) {
-                        $_SESSION['errorMessage'] = 'At least one topic must be selected.';
-                        include 'views/Admin/add_customer.php';
-                        return;
-                    } elseif (empty($contents)) {
-                        $_SESSION['errorMessage'] = 'At least one content must be selected.';
-                        include 'views/Admin/add_customer.php';
-                        return;
-                    } elseif (empty($events)) {
-                        $_SESSION['errorMessage'] = 'At least one event must be selected.';
-                        include 'views/Admin/add_customer.php';
-                        return;
-                    }
-                
                     // Nếu không có lỗi, tiếp tục xử lý
                     if (isset($_FILES['cus_image']) && $_FILES['cus_image']['error'] == 0) {
                         $imagePath = 'Views/Img/' . basename($_FILES['cus_image']['name']);
@@ -595,8 +612,10 @@
                             $Cus_Image = $imagePath;
                         }
                     }
+
+                    $hashedPassword = password_hash($Password, PASSWORD_DEFAULT);
                 
-                    $AdminModels->addCustomer($Username, $Password, $Email, $Fullname, $PhoneNumber, $DOB, $Cus_Image, $topics, $contents, $events);
+                    $AdminModels->addCustomer($Username, $hashedPassword, $Email, $Fullname, $PhoneNumber, $DOB, $Cus_Image, $topicss, $contentss, $eventss);
                     header('Location: index.php?action=admin_customer');
                 }                
                 
@@ -638,8 +657,12 @@
                         $PhoneNumber = $_POST['phonenumber'];
                         $DOB = $_POST['dob'];
 
+                        $topicss = isset($_POST['topics']) ? $_POST['topics'] : [];
+                        $contentss = isset($_POST['contents']) ? $_POST['contents'] : [];
+                        $eventss = isset($_POST['events']) ? $_POST['events'] : [];
+
                         // Kiểm tra các trường trống
-                        if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB)) {
+                        if (empty($Username) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($topicss) || empty($contentss) || empty($eventss)) {
                             $_SESSION['errorMessage'] = 'All fields must be required.';
                             include 'views/Admin/edit_customer.php';
                             return; // Dừng xử lý nếu có lỗi
@@ -687,25 +710,6 @@
                             include 'views/Admin/edit_customer.php';
                             return; // Dừng xử lý nếu có lỗi
                         }
-                    
-                        // Validate các checkbox topic, event, content
-                        $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
-                        $contents = isset($_POST['contents']) ? $_POST['contents'] : [];
-                        $events = isset($_POST['events']) ? $_POST['events'] : [];
-                    
-                        if (empty($topics)) {
-                            $_SESSION['errorMessage'] = 'At least one topic must be selected.';
-                            include 'views/Admin/edit_customer.php';
-                            return;
-                        } elseif (empty($contents)) {
-                            $_SESSION['errorMessage'] = 'At least one content must be selected.';
-                            include 'views/Admin/edit_customer.php';
-                            return;
-                        } elseif (empty($events)) {
-                            $_SESSION['errorMessage'] = 'At least one event must be selected.';
-                            include 'views/Admin/edit_customer.php';
-                            return;
-                        }
 
                         if (isset($_FILES['cus_image']) && $_FILES['cus_image']['error'] == 0) {
                             $imagePath = 'Views/Img/' . basename($_FILES['cus_image']['name']);
@@ -720,8 +724,9 @@
 
                         $selectedEvents = isset($_POST['events']) ? $_POST['events'] : [];
                         $selectedContents = isset($_POST['contents']) ? $_POST['contents'] : [];
-                        $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
-                        $AdminModels->editCustomer($cus_id, $Username, $Password, $Email, $Fullname, $PhoneNumber, $DOB, $Cus_Image, $selectedTopics, $selectedContents, $selectedEvents);
+                        
+                        $hashedPassword = password_hash($Password, PASSWORD_DEFAULT);
+                        $AdminModels->editCustomer($cus_id, $Username, $hashedPassword, $Email, $Fullname, $PhoneNumber, $DOB, $Cus_Image, $selectedTopics, $selectedContents, $selectedEvents);
                         header('Location: index.php?action=admin_customer');
                     }
                 }
@@ -845,8 +850,9 @@
                     $Tiktok = isset($_POST['tiktok_link']) ? $_POST['tiktok_link'] : null;
                     $Instagram = isset($_POST['instagram_link']) ? $_POST['instagram_link'] : null;
 
+                    $topicss = isset($_POST['topics']) ? $_POST['topics'] : [];
                     // Kiểm tra các trường trống
-                    if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($Address) || empty($Nickname) || empty($Hastag) || empty($Price) || empty($Achivement) || empty($Biography) || empty($InfluType_ID) || empty($Workplace_id) || empty($Followers_id) || empty($Gender_id)) {
+                    if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($Address) || empty($Nickname) || empty($Hastag) || empty($Price) || empty($Achivement) || empty($Biography) || empty($InfluType_ID) || empty($Workplace_id) || empty($Followers_id) || empty($Gender_id) || empty($topicss)) {
                         $_SESSION['errorMessage'] = 'All fields must be required.';
                         include 'views/Admin/add_influencer.php';
                         return; // Dừng xử lý nếu có lỗi
@@ -924,16 +930,9 @@
                         $_SESSION['errorMessage'] = 'Hashtag must start with the # character.';
                     }
 
-                
-                    // Validate các checkbox topic, event, content
-                    $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
-                
-                    if (empty($topics)) {
-                        $_SESSION['errorMessage'] = 'At least one topic must be selected.';
-                        include 'views/Admin/add_influencer.php';
-                        return;
-                    }
-                    $AdminModels -> AddInfluencer($Username, $Password, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $Influ_Image, $otherImagePaths, $Achivement, $Biography, $InfluType_ID, $Workplace_id, $Followers_id, $Gender_id,  $Facebook, $Tiktok, $Instagram, $topics);
+                    $hashedPassword = password_hash($Password, PASSWORD_DEFAULT);
+
+                    $AdminModels -> AddInfluencer($Username, $hashedPassword, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $Influ_Image, $otherImagePaths, $Achivement, $Biography, $InfluType_ID, $Workplace_id, $Followers_id, $Gender_id,  $Facebook, $Tiktok, $Instagram, $topicss);
                     header('Location: index.php?action=admin_influencer');
                 }
 
@@ -1045,8 +1044,10 @@
                         $Tiktok = isset($_POST['tiktok_link']) ? $_POST['tiktok_link'] : null;
                         $Instagram = isset($_POST['instagram_link']) ? $_POST['instagram_link'] : null;
 
+                        $topicss = isset($_POST['topics']) ? $_POST['topics'] : [];
+
                         // Kiểm tra các trường trống
-                        if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($Address) || empty($Nickname) || empty($Hastag) || empty($Price) || empty($Achivement) || empty($Biography) || empty($InfluType_ID) || empty($Workplace_id) || empty($Followers_id) || empty($Gender_id)) {
+                        if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($Address) || empty($Nickname) || empty($Hastag) || empty($Price) || empty($Achivement) || empty($Biography) || empty($InfluType_ID) || empty($Workplace_id) || empty($Followers_id) || empty($Gender_id) || empty($topicss)) {
                             $_SESSION['errorMessage'] = 'All fields must be required.';
                             include 'views/Admin/edit_influencer.php';
                             return; // Dừng xử lý nếu có lỗi
@@ -1123,16 +1124,6 @@
                         // Validate Hashtag
                         if (!preg_match('/^#/', $Hastag)) {
                             $_SESSION['errorMessage'] = 'Hashtag must start with the # character.';
-                            include 'views/Admin/edit_influencer.php';
-                            return;
-                        }
-
-                    
-                        // Validate các checkbox topic, event, content
-                        $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
-                    
-                        if (empty($topics)) {
-                            $_SESSION['errorMessage'] = 'At least one topic must be selected.';
                             include 'views/Admin/edit_influencer.php';
                             return;
                         }

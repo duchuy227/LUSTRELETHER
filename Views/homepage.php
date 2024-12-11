@@ -135,94 +135,40 @@
         </div>
 
         <div class="influencer-viral">
-                <h1>Top Favourite Influencers</h1>
-                <div class="row justify-content-center">
+            <h1>Top Favourite Influencers</h1>
+            <div class="row justify-content-center">
+                <?php foreach (array_slice($favo, 0, 4) as $i): ?>
                     <div class="col-md-3 mb-4">
                         <div class="card-viral">
-                            <a href="javascript:void(0)" onclick="openPopup()">
-                                <img class="card-img-top" src="./views/Img/u59_div.png"/>
+                            <a href="index.php?action=customer_influencerDetail&id=<?php echo $i['Influ_ID'] ?>">
+                            <img class="card-img-top" src="<?php echo $i['Influ_Image'] ?>"/>
                             </a>
                             <div class="card-body-viral">
-                                <h5 class="card-title-viral">Ho Viet Huy</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
+                                <h5 class="card-title-viral"><?php echo $i['Influ_Nickname'] ?></h5>
+                                <p class="card-text-viral"><?php echo $i['Fol_Quantity'] ?></p>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img class="card-img-top" src="./views/Img/tuyen.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Pham Danh Tuyen</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img class="card-img-top" src="./views/Img/quan.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Do Hong Quan</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img class="card-img-top" src="./views/Img/chu.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Nguyen Huu Chu</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
+            </div>
         </div>
 
         <div class="influencer-viral">
-                <h1>Viral Influencers</h1>
-                <div class="row justify-content-center">
+            <h1>Viral Influencers</h1>
+            <div class="row justify-content-center">
+                <?php foreach (array_slice($viral, 0, 4) as $i): ?>
                     <div class="col-md-3 mb-4">
                         <div class="card-viral">
-                            <img alt="Tran Thanh" class="card-img-top" src="./views/Img/u103_div.png"/>
+                            <a href="index.php?action=customer_influencerDetail&id=<?php echo $i['Influ_ID'] ?>">
+                            <img class="card-img-top" src="<?php echo $i['Influ_Image'] ?>"/>
+                            </a>
                             <div class="card-body-viral">
-                                <h5 class="card-title-viral">Mysthy</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
+                                <h5 class="card-title-viral"><?php echo $i['Influ_Nickname'] ?></h5>
+                                <p class="card-text-viral"><?php echo $i['Fol_Quantity'] ?></p>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img alt="Tran Thanh" class="card-img-top" src="./views/Img/u106_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Giang Oi</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img alt="Tran Thanh" class="card-img-top" src="./views/Img/u107_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Chau Bui</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="card-viral">
-                            <img alt="Tran Thanh" class="card-img-top" src="./views/Img/u108_div.png"/>
-                            <div class="card-body-viral">
-                                <h5 class="card-title-viral">Linh Ngoc Dam</h5>
-                                <p class="card-text-viral">Booking received: 20</p>
-                            </div>
-                        </div>
-                    </div>
+                <?php endforeach; ?>
                 </div>
             </div>
         </div>

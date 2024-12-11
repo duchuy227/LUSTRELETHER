@@ -45,18 +45,72 @@
                     $Username = $_POST['username'];
                     $Password  = $_POST['password'];
                     $ConfirmPassword =  $_POST['confirm_password'];
-                    if ($Password !== $ConfirmPassword) {
-                        $error = "Password do not match";
-                    }
                     $Email = $_POST['email'];
                     $Fullname =  $_POST['fullname'];
                     $PhoneNumber = $_POST['phonenumber'];
                     $DOB = $_POST['dob'];
 
-                    $events = isset($_POST['events']) ? $_POST['events'] : [];
-                    $contents = isset($_POST['contents']) ? $_POST['contents'] : [];
-                    $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
-                    $customerModel ->CusRegister($Username, $Password, $Email, $Fullname, $PhoneNumber, $DOB, $topics, $contents, $events);
+                    $topicss = isset($_POST['topics']) ? $_POST['topics'] : [];
+                    $contentss = isset($_POST['contents']) ? $_POST['contents'] : [];
+                    $eventss = isset($_POST['events']) ? $_POST['events'] : [];
+
+                        // Kiểm tra các trường trống
+                    if (empty($Username) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($topicss) || empty($contentss) || empty($eventss)) {
+                        $_SESSION['errorMessage'] = 'All fields must be required.';
+                        include 'views/Customer/register.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate username
+                    if (!preg_match('/^[A-Z]/', $Username) || !preg_match('/\d/', $Username) || strlen($Username) < 5 || strlen($Username) > 15) {
+                        $_SESSION['errorMessage'] = 'Username must start with a capital letter, contain at least one number, and be between 5 to 15 characters long.';
+                        include 'views/Customer/register.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    } elseif ($AdminModels->checkUsernameExists($Username)) {
+                        $_SESSION['errorMessage'] = 'Username already exists. Please enter a different one.';
+                        include 'views/Customer/register.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate password
+                    if (!preg_match('/^[A-Z]/', $Password) || strlen($Password) < 8 || strlen($Password) > 20 || !preg_match('/\d/', $Password) || !preg_match('/[a-z]/', $Password) || !preg_match('/[\W_]/', $Password)) {
+                        $_SESSION['errorMessage'] = 'Password must start with a capital letter, be at least 8 to 20 characters long, include at least 1 number, 1 lowercase letter, and 1 special letter.';
+                        include 'views/Customer/register.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    } elseif ($Password !== $ConfirmPassword) {
+                        $_SESSION['errorMessage'] = "Password do not match";
+                        include 'views/Customer/register.php';
+                        return;
+                    }
+                
+                    // Validate Full name
+                    if (!preg_match('/^[A-Z]/', $Fullname) || strlen($Fullname) < 5 || strlen($Fullname) > 30) {
+                        $_SESSION['errorMessage'] = 'Full name must start with a capital letter, be at least 5 to 30 characters long.';
+                        include 'views/Customer/register.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Date of birth
+                    $dob = new DateTime($DOB);
+                    $currentDate = new DateTime();
+                    $age = $dob->diff($currentDate)->y;
+                    if ($age < 18) {
+                        $_SESSION['errorMessage'] = 'Date of birth must be over 18 years old.';
+                        include 'views/Customer/register.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Phone Number
+                    if (!preg_match('/^[0-9]{10}$/', $PhoneNumber)) { // 10 số
+                        $_SESSION['errorMessage'] = 'Phone number must start with a number, contain only digits, and be 10 digits long.';
+                        include 'views/Customer/register.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+
+                    $hashedPassword = password_hash($Password, PASSWORD_DEFAULT);
+
+                    
+                    $customerModel ->CusRegister($Username, $hashedPassword, $Email, $Fullname, $PhoneNumber, $DOB, $topicss, $contentss, $eventss);
                     header('Location: index.php?action=cusLogin');
                     exit();
                 }
@@ -547,17 +601,65 @@
                     $DOB = $_POST['dob'];
                     $imagePath = $customer['Cus_Image'];
 
+                    $topicss = isset($_POST['topics']) ? $_POST['topics'] : [];
+                    $contentss = isset($_POST['contents']) ? $_POST['contents'] : [];
+                    $eventss = isset($_POST['events']) ? $_POST['events'] : [];
+
+                    // Kiểm tra các trường trống
+                    if (empty($Username) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($topicss) || empty($contentss) || empty($eventss)) {
+                        $_SESSION['errorMessage'] = 'All fields must be required.';
+                        include 'views/Customer/Dashboard.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate username
+                    $currentUsername = $customer['Cus_Username'];
+                    if (!preg_match('/^[A-Z]/', $Username) || !preg_match('/\d/', $Username) || strlen($Username) < 5 || strlen($Username) > 15) {
+                        $_SESSION['errorMessage'] = 'Username must start with a capital letter, contain at least one number, and be between 5 to 15 characters long.';
+                        include 'views/Customer/Dashboard.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    } elseif ($AdminModels->checkUsernameExists($_POST['username'], $currentUsername)) {
+                        $_SESSION['errorMessage'] = 'Username already exists. Please enter a different one.';
+                        include 'views/Customer/Dashboard.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Full name
+                    if (!preg_match('/^[A-Z]/', $Fullname) || strlen($Fullname) < 5 || strlen($Fullname) > 30) {
+                        $_SESSION['errorMessage'] = 'Full name must start with a capital letter, be at least 5 to 30 characters long.';
+                        include 'views/Customer/Dashboard.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Date of birth
+                    $dob = new DateTime($DOB);
+                    $currentDate = new DateTime();
+                    $age = $dob->diff($currentDate)->y;
+                    if ($age < 18) {
+                        $_SESSION['errorMessage'] = 'Date of birth must be over 18 years old.';
+                        include 'views/Customer/Dashboard.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Phone Number
+                    if (!preg_match('/^[0-9]{10}$/', $PhoneNumber)) { // 10 số
+                        $_SESSION['errorMessage'] = 'Phone number must start with a number, contain only digits, and be 10 digits long.';
+                        include 'views/Customer/Dashboard.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    
+                
+
                     if (isset($_FILES['cus_image']) && $_FILES['cus_image']['error'] == 0) {
                         $imagePath = 'Views/Img/' . basename($_FILES['cus_image']['name']);
                         move_uploaded_file($_FILES['cus_image']['tmp_name'], $imagePath); 
-                            
-                        
                     }
-                    $selectedTopics = isset($_POST['topics']) ? $_POST['topics'] : [];
 
+                    $selectedTopics = isset($_POST['topics']) ? $_POST['topics'] : [];
                     $selectedEvents = isset($_POST['events']) ? $_POST['events'] : [];
                     $selectedContents = isset($_POST['contents']) ? $_POST['contents'] : [];
-                    $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
+                    
                     $customerModel->updateCusProfile($id, $Username, $Email, $Fullname, $PhoneNumber, $DOB, $imagePath, $selectedTopics, $selectedContents, $selectedEvents);
                     header('Location: index.php?action=customer_dashboard');
                     exit();
@@ -568,33 +670,41 @@
             }
         }
 
-        public function customer_password(){
-            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
+        public function customer_password() {
+            if (isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {
                 $customerModel = new CustomerModels();
-                $customer = $customerModel -> GetCustomerbyID($_SESSION['cus_id']);
-
-                if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $customer = $customerModel->GetCustomerbyID($_SESSION['cus_id']);
+        
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $id = $_SESSION['cus_id'];
                     $currentPassword = $_POST['current_password'] ?? '';
                     $newPassword = $_POST['new_password'] ?? '';
                     $confirmPassword = $_POST['confirm_password'] ?? '';
 
-                    if ($currentPassword !== $customer['Cus_Password']) {
+                    if (!preg_match('/^[A-Z]/', $newPassword) || strlen($newPassword) < 8 || strlen($newPassword) > 20 || !preg_match('/\d/', $newPassword) || !preg_match('/[a-z]/', $newPassword) || !preg_match('/[\W_]/', $newPassword)) {
+                        $message = 'New Password must start with a capital letter, be at least 8 to 20 characters long, include at least 1 number, 1 lowercase letter, and 1 special letter.';
+                        include 'views/Customer/Password.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+        
+                    if (!password_verify($currentPassword, $customer['Cus_Password'])) {
                         $message = "Current password is incorrect.";
                     }
-                    // Kiểm tra xem mật khẩu mới và xác nhận có khớp nhau không
+
                     elseif ($newPassword !== $confirmPassword) {
                         $message = "New password and confirm password do not match.";
                     }
 
                     else {
-                        $isUpdated = $customerModel->changePassword($id, $newPassword);
+                        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                        $isUpdated = $customerModel->changePassword($id, $hashedPassword);
                         $message = "Password changed successfully.";
                     }
                 }
-                include  'views/Customer/Password.php';
+                include 'views/Customer/Password.php';
             }
         }
+        
 
         public function customer_bookinglist(){
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['cus_id'])) {

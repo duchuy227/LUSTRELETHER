@@ -15,33 +15,33 @@
             $query = "SELECT * FROM Influencer 
                       JOIN Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID 
                       WHERE Influencer.Influ_Username = :username 
-                      AND Influencer.Influ_Password = :password 
                       AND Influencer.InfluType_ID = :influType";
             
             $stmt = $this->conn->prepare($query);
             $stmt->execute([
                 ':username' => $Username,
-                ':password' => $Password,
                 ':influType' => $Influ_Type
             ]);
         
             // Kiểm tra kết quả
             if ($stmt->rowCount() > 0) {
                 $influencer = $stmt->fetch(PDO::FETCH_ASSOC);
+                if (password_verify($Password, $influencer['Influ_Password'])) {
 
-                if ($influencer['Influ_Status'] === 'Pending') {
-                    return 'pending';
-                } elseif  ($influencer['Influ_Status'] === 'Rejected') {
-                    return 'rejected';
-                } elseif ($influencer['Influ_Status'] === 'Active') {
-                    // Lưu thông tin vào session
-                    $_SESSION['is_login'] = true;
-                    $_SESSION['influ_id'] = $influencer['Influ_ID'];
-                    $_SESSION['influencer_username'] = $Username;
-                    return true;
+                    if ($influencer['Influ_Status'] === 'Pending') {
+                        return 'pending';
+                    } elseif  ($influencer['Influ_Status'] === 'Rejected') {
+                        return 'rejected';
+                    } elseif ($influencer['Influ_Status'] === 'Active') {
+                        // Lưu thông tin vào session
+                        $_SESSION['is_login'] = true;
+                        $_SESSION['influ_id'] = $influencer['Influ_ID'];
+                        $_SESSION['influencer_username'] = $Username;
+                        return true;
+                    }
+                } else {
+                    return false; // Đăng nhập thất bại
                 }
-            } else {
-                return false; // Đăng nhập thất bại
             }
         }
         

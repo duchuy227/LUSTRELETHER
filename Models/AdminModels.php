@@ -11,19 +11,26 @@
         }
 
         public function adminLogin($Username, $Password){
-            $query = "SELECT *  FROM admin WHERE Ad_Username = :username AND  Ad_Password = :password";
+            $query = "SELECT * FROM admin WHERE Ad_Username = :username";
             $sql =  $this->conn->prepare($query);
-            $sql->execute(array(":username" => $Username, ":password" => $Password));
-
+            $sql->execute(array(":username" => $Username));
+        
             if ($sql->rowCount() > 0) {
                 $admin = $sql->fetch(PDO::FETCH_ASSOC);
-                $_SESSION['is_login'] = true;
-                $_SESSION['ad_id'] = $admin['Ad_ID'];
-                return true;
+        
+                // Kiểm tra mật khẩu
+                if (password_verify($Password, $admin['Ad_Password'])) {
+                    $_SESSION['is_login'] = true;
+                    $_SESSION['ad_id'] = $admin['Ad_ID'];
+                    return true; // Đăng nhập thành công
+                } else {
+                    return false; // Mật khẩu không chính xác
+                }
             } else {
-                return false; // Đăng nhập thất bại
+                return false; // Tên người dùng không tồn tại
             }
         }
+        
 
         public function getAdminAccountbyID($id){
             $query = "SELECT * FROM Admin WHERE Ad_ID = :id";
@@ -38,14 +45,13 @@
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        public function updateAdmin($id,$Username, $Password, $Email, $Fullname, $DOB, $Image){
-            $query = "UPDATE Admin Set Ad_Username = :username, Ad_Password = :password, Ad_Email = :email, Ad_Fullname = :fullname, Ad_DOB = :dob, Ad_Image  = :image WHERE Ad_ID = :id";
+        public function updateAdmin($id,$Username, $Email, $Fullname, $DOB, $Image){
+            $query = "UPDATE Admin Set Ad_Username = :username, Ad_Email = :email, Ad_Fullname = :fullname, Ad_DOB = :dob, Ad_Image  = :image WHERE Ad_ID = :id";
             $sql = $this->conn->prepare($query);
             $sql->execute(array(
                 ':username' => $Username,
-                ':password' => $Password,
                 ':email' => $Email,
-                ':fullname' => $Fullname,  // Đảm bảo không có khoảng trắng
+                ':fullname' => $Fullname,
                 ':dob' => $DOB,
                 ':image' => $Image,
                 ':id' => $id
@@ -633,6 +639,26 @@
 
         public function getAllInfluencer(){
             $query = 'SELECT * FROM Influencer JOIN Influencer_Type ON Influencer.InfluType_ID = Influencer_Type.InfluType_ID';
+            $sql = $this->conn->prepare($query);
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function FavouriteInflu(){
+            $query = 'SELECT Influencer.*, Followers.Fol_Quantity 
+                      FROM Influencer 
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                      WHERE Influencer.Fol_ID = 10';
+            $sql = $this->conn->prepare($query);
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function ViralInflu(){
+            $query = 'SELECT Influencer.*, Followers.Fol_Quantity 
+                      FROM Influencer 
+                      INNER JOIN Followers ON Influencer.Fol_ID = Followers.Fol_ID
+                      WHERE Influencer.Fol_ID = 11';
             $sql = $this->conn->prepare($query);
             $sql->execute();
             return $sql->fetchAll(PDO::FETCH_ASSOC);

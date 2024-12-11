@@ -11,21 +11,27 @@
         }
 
         public function CusLogin($Username, $Password){
-            $query = "SELECT *  FROM Customer WHERE Cus_Username = '$Username' AND  Cus_Password = '$Password'";
+            $query = "SELECT * FROM Customer WHERE Cus_Username = :username";
             $sql =  $this->conn->prepare($query);
-            $sql->execute(array(":username" => $Username, ":password" => $Password));
-            
+            $sql->execute(array(":username" => $Username));
+        
             if ($sql->rowCount() > 0) {
-                $influencer = $sql->fetch(PDO::FETCH_ASSOC);
-                // Lưu thông tin vào session
-                $_SESSION['is_login'] = true;
-                $_SESSION['cus_id'] = $influencer['Cus_ID']; // Lưu Influ_ID vào session
-                $_SESSION['cus_username'] = $Username;
-                return true;
+                $customer = $sql->fetch(PDO::FETCH_ASSOC);
+        
+                // Kiểm tra mật khẩu
+                if (password_verify($Password, $customer['Cus_Password'])) {
+                    $_SESSION['is_login'] = true;
+                    $_SESSION['cus_id'] = $customer['Cus_ID']; // Lưu Influ_ID vào session
+                    $_SESSION['cus_username'] = $Username;
+                    return true; // Đăng nhập thành công
+                } else {
+                    return false; // Mật khẩu không chính xác
+                }
             } else {
-                return false; // Đăng nhập thất bại
+                return false; // Tên người dùng không tồn tại
             }
         }
+        
 
         public function CusRegister($Username, $Password, $Email, $Fullname, $PhoneNumber, $DOB, $Topic, $Content, $Event){
             $this->conn->beginTransaction();

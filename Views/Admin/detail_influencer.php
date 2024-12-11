@@ -313,15 +313,6 @@
 
                                 <div class="row align-items-center mb-2">
                                     <div class="col-md-5 d-flex justify-content-between">
-                                        <span class="me-3">Income</span>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <p class="mb-0 text-truncate"><?php echo $influencers['Influ_Income'] ; ?> VND</p>
-                                    </div>
-                                </div>
-
-                                <div class="row align-items-center mb-2">
-                                    <div class="col-md-5 d-flex justify-content-between">
                                         <span class="me-3">Address</span>
                                     </div>
                                     <div class="col-md-7">
@@ -361,7 +352,7 @@
                                         <span class="me-3">Topic</span>
                                     </div>
                                     <div class="col-md-7">
-                                        <p class="mb-0 text-truncate"><?php echo implode(', ', $influencers['Topics']); ?></p>
+                                        <p class="mb-0 text-truncate" title="<?php echo implode(', ', $influencers['Topics']) ; ?>"><?php echo implode(', ', $influencers['Topics']); ?></p>
                                     </div>
                                 </div>
                             </div>
