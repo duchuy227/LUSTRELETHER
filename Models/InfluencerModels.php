@@ -107,15 +107,14 @@
             return $influencer;
         }
 
-        public function EditProfileInflu($influ_id, $Username, $Password, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $Image, $OtherImage, $Achievement, $Biography, $InfluType_ID, $Wplace_ID, $Fol_ID, $Gender_ID, $Facebook, $Tiktok, $Instagram, $Topic){
+        public function EditProfileInflu($influ_id, $Username, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $Image, $OtherImage, $Achievement, $Biography, $InfluType_ID, $Wplace_ID, $Fol_ID, $Gender_ID, $Facebook, $Tiktok, $Instagram, $Topic){
             $this->conn->beginTransaction();
 
-            $sql = "UPDATE Influencer SET Influ_Username = :username, Influ_Password = :password, Influ_Email = :email, Influ_Fullname = :fullname, Influ_DOB = :dob, Influ_PhoneNumber = :phonenumber, Influ_Address = :address, Influ_Nickname = :nickname, Influ_Hastag = :hastag, Influ_Price = :price, Influ_Image = :image, Influ_OtherImage = :otherimage, Influ_Achivement = :achievement, Influ_Biography = :biography, InfluType_ID = :influTypeID, WPlace_ID = :wplaceID, Fol_ID = :folID, Gender_ID = :genderID WHERE Influ_ID = :influ_id";
+            $sql = "UPDATE Influencer SET Influ_Username = :username, Influ_Email = :email, Influ_Fullname = :fullname, Influ_DOB = :dob, Influ_PhoneNumber = :phonenumber, Influ_Address = :address, Influ_Nickname = :nickname, Influ_Hastag = :hastag, Influ_Price = :price, Influ_Image = :image, Influ_OtherImage = :otherimage, Influ_Achivement = :achievement, Influ_Biography = :biography, InfluType_ID = :influTypeID, WPlace_ID = :wplaceID, Fol_ID = :folID, Gender_ID = :genderID WHERE Influ_ID = :influ_id";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->execute(array(
-                ':username' => $Username, 
-                ':password' => $Password, 
+                ':username' => $Username,  
                 ':email' => $Email, 
                 ':fullname' => $Fullname,
                 ':dob' => $DOB,
@@ -181,6 +180,12 @@
             }
         
             $this->conn->commit();
+        }
+
+        public function changePassword($influ_id, $newPassword){
+            $query = "UPDATE Influencer SET Influ_Password = :password WHERE Influ_ID = :influ_id";
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':password' => $newPassword, ':influ_id' => $influ_id));
         }
 
         public function InfluencerRegister($Username, $Password, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $Image, $CCCD_Image, $Achievement, $Biography, $InfluType_ID, $Wplace_ID, $Fol_ID, $Gender_ID, $Facebook, $Tiktok, $Instagram, $Topic) {

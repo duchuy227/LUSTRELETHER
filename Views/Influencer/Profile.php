@@ -151,8 +151,19 @@
     }
 
     .btn-success {
-        width: 100%; /* Đảm bảo nút chiếm toàn bộ chiều rộng */
-        font-size: 16px; /* Điều chỉnh kích thước font */
+        margin-top: 30px;
+        width: 200px;
+        border-radius: 25px;
+        margin-bottom: 30px;
+        border: none;
+        padding: -30px;
+        font-size: 18px;
+        margin: 0 auto;
+        height: 44px;
+    }
+
+    .btn-spacing {
+        margin-right: 1px; 
     }
 }
 
@@ -425,10 +436,13 @@
                             </div>
                         </div>
 
-
-                        <div class="d-flex justify-content-center mt-4">
+                        <div class="row">
                             <a href="index.php?action=influencer_editprofile">
-                                <button type="button" class="btn btn-success">Edit Profile</button>
+                                <button type="button" class="btn btn-success btn-spacing">Edit Profile</button>
+                            </a>
+
+                            <a href="index.php?action=influencer_password&id=<?php echo $influInfo['Influ_ID']; ?>">
+                                <button type="button" class="btn btn-success">Change Password</button>
                             </a>
                         </div>
                     </div>

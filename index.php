@@ -290,6 +290,12 @@
             $AdminControllers -> admin_changestatus($_GET['id']);
             break;
         
+        case 'admin_password':
+            require_once "Controllers/AdminControllers.php";
+            $AdminControllers =  new AdminControllers();
+            $AdminControllers -> admin_password($_GET['id']);
+            break;
+        
         case 'influencer_dashboard':
             require_once "Controllers/InfluencerControllers.php";
             $InfluControllers = new InfluencerControllers();
@@ -398,7 +404,11 @@
             $InfluControllers -> influencer_sendmail();
             break;
 
-        
+        case 'influencer_password':
+            require_once "Controllers/InfluencerControllers.php";
+            $InfluControllers = new InfluencerControllers();
+            $InfluControllers -> influencer_password($_GET['id']);
+            break;
         
         case 'influencer_faq':
             require_once "Controllers/InfluencerControllers.php";

@@ -101,7 +101,9 @@
                 <div class="row">
                     <div class="col-md-3 mb-4">
                         <div class="card">
+                        <a href="javascript:void(0)" onclick="openPopup()">
                             <img class="card-img-top" src="./views/Img/u42.svg"/>
+                        </a>
                             <div class="card-body">
                                 <h5 class="card-title">Technology</h5>
                             </div>
@@ -109,7 +111,9 @@
                     </div>
                     <div class="col-md-3 mb-4">
                         <div class="card">
+                        <a href="javascript:void(0)" onclick="openPopup()">
                             <img class="card-img-top" src="./views/Img/u43.svg"/>
+                        </a>
                             <div class="card-body">
                                 <h5 class="card-title">Fashion</h5>
                             </div>
@@ -117,7 +121,9 @@
                     </div>
                     <div class="col-md-3 mb-4">
                         <div class="card">
+                        <a href="javascript:void(0)" onclick="openPopup()">
                             <img class="card-img-top" src="./views/Img/u44.svg"/>
+                        </a>
                             <div class="card-body">
                                 <h5 class="card-title">Cuisine</h5>
                             </div>
@@ -125,7 +131,9 @@
                     </div>
                     <div class="col-md-3 mb-4">
                         <div class="card">
+                        <a href="javascript:void(0)" onclick="openPopup()">
                             <img class="card-img-top" src="./views/Img/u45.svg"/>
+                        </a>
                             <div class="card-body">
                                 <h5 class="card-title">Travel</h5>
                             </div>
@@ -140,8 +148,8 @@
                 <?php foreach (array_slice($favo, 0, 4) as $i): ?>
                     <div class="col-md-3 mb-4">
                         <div class="card-viral">
-                            <a href="index.php?action=customer_influencerDetail&id=<?php echo $i['Influ_ID'] ?>">
-                            <img class="card-img-top" src="<?php echo $i['Influ_Image'] ?>"/>
+                            <a href="javascript:void(0)" onclick="openPopup()">
+                                <img class="card-img-top" src="<?php echo $i['Influ_Image'] ?>"/>
                             </a>
                             <div class="card-body-viral">
                                 <h5 class="card-title-viral"><?php echo $i['Influ_Nickname'] ?></h5>
@@ -159,8 +167,8 @@
                 <?php foreach (array_slice($viral, 0, 4) as $i): ?>
                     <div class="col-md-3 mb-4">
                         <div class="card-viral">
-                            <a href="index.php?action=customer_influencerDetail&id=<?php echo $i['Influ_ID'] ?>">
-                            <img class="card-img-top" src="<?php echo $i['Influ_Image'] ?>"/>
+                            <a href="javascript:void(0)" onclick="openPopup()">
+                                <img class="card-img-top" src="<?php echo $i['Influ_Image'] ?>"/>
                             </a>
                             <div class="card-body-viral">
                                 <h5 class="card-title-viral"><?php echo $i['Influ_Nickname'] ?></h5>

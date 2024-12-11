@@ -647,9 +647,6 @@
                         include 'views/Customer/Dashboard.php';
                         return; // Dừng xử lý nếu có lỗi
                     }
-                
-                    
-                
 
                     if (isset($_FILES['cus_image']) && $_FILES['cus_image']['error'] == 0) {
                         $imagePath = 'Views/Img/' . basename($_FILES['cus_image']['name']);

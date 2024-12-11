@@ -69,7 +69,7 @@
 
     .btn-success {
         margin-top: 30px;
-        width: 168px;
+        width: 200px;
         border-radius: 25px;
         margin-bottom: 30px;
         border: none;
@@ -212,6 +212,7 @@
                     <div class="row">
                         <button class="btn btn-success btn-spacing"><a href="index.php?action=admin_dashboard">Dashboard</a></button>
                         <button class="btn btn-success"><a href="index.php?action=admin_editprofile&id=<?php echo $admin['Ad_ID']; ?>">Edit Profile</a></button>
+                        <button class="btn btn-success"><a href="index.php?action=admin_password&id=<?php echo $admin['Ad_ID']; ?>">Change Password</a></button>
                     </div>
                 </div>
                 <br>

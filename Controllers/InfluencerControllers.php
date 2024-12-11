@@ -313,6 +313,43 @@
             }
         }
 
+        public function influencer_password($id){
+            if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['influ_id'])) {
+                $influencerModel =  new influencerModels();
+                
+                $influInfo = $influencerModel -> getInfluencerProfile($_SESSION['influ_id']);
+
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $id = $_SESSION['influ_id'];
+                    $currentPassword = $_POST['current_password'] ?? '';
+                    $newPassword = $_POST['new_password'] ?? '';
+                    $confirmPassword = $_POST['confirm_password'] ?? '';
+
+                    if (!preg_match('/^[A-Z]/', $newPassword) || strlen($newPassword) < 8 || strlen($newPassword) > 20 || !preg_match('/\d/', $newPassword) || !preg_match('/[a-z]/', $newPassword) || !preg_match('/[\W_]/', $newPassword)) {
+                        $message = 'New Password must start with a capital letter, be at least 8 to 20 characters long, include at least 1 number, 1 lowercase letter, and 1 special letter.';
+                        include 'views/Customer/Password.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+        
+                    if (!password_verify($currentPassword, $influInfo['Influ_Password'])) {
+                        $message = "Current password is incorrect.";
+                    }
+
+                    elseif ($newPassword !== $confirmPassword) {
+                        $message = "New password and confirm password do not match.";
+                    }
+
+                    else {
+                        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                        $isUpdated = $influencerModel->changePassword($id, $hashedPassword);
+                        $message = "Password changed successfully.";
+                    }
+                }
+
+                include  'views/Influencer/Password.php';
+            } 
+        }
+
         public function influencer_editprofile(){
             if(isset($_SESSION['is_login']) && $_SESSION['is_login'] === true && isset($_SESSION['influ_id'])) {
                 $influencerModel = new influencerModels();
@@ -343,7 +380,6 @@
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $id = $_SESSION['influ_id'];
                     $Username = $_POST['username'];
-                    $Password = $_POST['password'];
                     $Email = $_POST['email'];
                     $Fullname = $_POST['fullname'];
                     $DOB = $_POST['dob'];
@@ -359,20 +395,33 @@
                         move_uploaded_file($_FILES['influ_image']['tmp_name'], $mainImagePath);
                     }
         
+                    // Xử lý upload các ảnh phụ
                     $otherImagePaths = [];
                     if (isset($_FILES['influ_other_images']) && is_array($_FILES['influ_other_images']['name'])) {
                         $uploadedOtherImages = $_FILES['influ_other_images'];
-                        $totalOtherImages = min(count($uploadedOtherImages['name']), 6);
-        
+                        $totalOtherImages = count($uploadedOtherImages['name']);
+
+                        // Kiểm tra số lượng ảnh tải lên
+                        if ($totalOtherImages > 6) {
+                            $_SESSION['errorMessage'] = 'You can only upload a maximum of 6 images.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return;
+                        }
+
+                        // Giới hạn số lượng ảnh tải lên tối đa là 6
+                        $totalOtherImages = min($totalOtherImages, 6);
+                        
+                        // Xử lý việc tải ảnh
                         for ($i = 0; $i < $totalOtherImages; $i++) {
                             if (isset($uploadedOtherImages['error'][$i]) && $uploadedOtherImages['error'][$i] === UPLOAD_ERR_OK) {
                                 $otherImagePath = 'Views/Influ_Image/' . basename($uploadedOtherImages['name'][$i]);
-                                move_uploaded_file($uploadedOtherImages['tmp_name'][$i], $otherImagePath);
-                                $otherImagePaths[] = $otherImagePath;
+                                if (move_uploaded_file($uploadedOtherImages['tmp_name'][$i], $otherImagePath)) {
+                                    $otherImagePaths[] = $otherImagePath;
+                                }
                             }
                         }
                     } else {
-                        $otherImagePaths = explode(',', $influInfo['Influ_OtherImage']);
+                        $otherImagePaths = explode(',', $influencers['Influ_OtherImage']);
                     }
         
                     $Achivement = $_POST['achivement'];
@@ -384,12 +433,88 @@
                     $Facebook = $_POST['facebook_link'] ?? null;
                     $Tiktok = $_POST['tiktok_link'] ?? null;
                     $Instagram = $_POST['instagram_link'] ?? null;
-        
-                    // Các topic được chọn trong POST request
-                    $selectedTopics = $_POST['topics'] ?? [];
+
+                    $topicss = isset($_POST['topics']) ? $_POST['topics'] : [];
+
+                        // Kiểm tra các trường trống
+                        if (empty($Username) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($Address) || empty($Nickname) || empty($Hastag) || empty($Price) || empty($Achivement) || empty($Biography) || empty($InfluType_ID) || empty($Workplace_id) || empty($Followers_id) || empty($Gender_id) || empty($topicss)) {
+                            $_SESSION['errorMessage'] = 'All fields must be required.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate username
+                        $currentUsername = $influencers['Influ_Username'];
+                        if (!preg_match('/^[A-Z]/', $Username) || !preg_match('/\d/', $Username) || strlen($Username) < 5 || strlen($Username) > 15) {
+                            $_SESSION['errorMessage'] = 'Username must start with a capital letter, contain at least one number, and be between 5 to 15 characters long.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        } elseif ($AdminModels->checkUsernameExists($_POST['username'], $currentUsername)) {
+                            $_SESSION['errorMessage'] = 'Username already exists. Please enter a different one.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+
+                        // Validate Address
+                        if (!preg_match('/^[A-Z]/', $Address) || strlen($Address) < 5 || strlen($Address) > 30){
+                            $_SESSION['errorMessage'] = 'Address must start with a capital letter, be at least 5 to 30 characters long.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return;
+                        }
+                    
+                        // Validate Full name
+                        if (!preg_match('/^[A-Z]/', $Fullname) || strlen($Fullname) < 5 || strlen($Fullname) > 30) {
+                            $_SESSION['errorMessage'] = 'Full name must start with a capital letter, be at least 5 to 30 characters long.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+
+                        // Validate nickname
+                        if ( strlen($Nickname) > 30) {
+                            $_SESSION['errorMessage'] = 'Nickname must be at least 30 characters long.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate Date of birth
+                        $dob = new DateTime($DOB);
+                        $currentDate = new DateTime();
+                        $age = $dob->diff($currentDate)->y;
+                        if ($age < 18) {
+                            $_SESSION['errorMessage'] = 'Date of birth must be over 18 years old.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+
+                        // Validate price
+                        if (!is_numeric($Price)){
+                            $_SESSION['errorMessage'] = 'Price must be a numeric value.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return;
+                        } elseif ((float)$Price > 100000000){
+                            $_SESSION['errorMessage'] = 'Price cannot be large 100 million.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return;
+                        }
+                    
+                        // Validate Phone Number
+                        if (!preg_match('/^[0-9]{10}$/', $PhoneNumber)) { // 10 số
+                            $_SESSION['errorMessage'] = 'Phone number must start with a number, contain only digits, and be 10 digits long.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+
+                        // Validate Hashtag
+                        if (!preg_match('/^#/', $Hastag)) {
+                            $_SESSION['errorMessage'] = 'Hashtag must start with the # character.';
+                            include 'Views/Influencer/edit_profile.php';
+                            return;
+                        }
+            
+                        $selectedTopics = isset($_POST['topics']) ? $_POST['topics'] : [];
         
                     // Cập nhật dữ liệu vào database
-                    $influencerModel->EditProfileInflu($id, $Username, $Password, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $mainImagePath, $otherImagePaths, $Achivement, $Biography, $InfluType_ID, $Workplace_id, $Followers_id, $Gender_id, $Facebook, $Tiktok, $Instagram, $selectedTopics);
+                    $influencerModel->EditProfileInflu($id, $Username, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $mainImagePath, $otherImagePaths, $Achivement, $Biography, $InfluType_ID, $Workplace_id, $Followers_id, $Gender_id, $Facebook, $Tiktok, $Instagram, $selectedTopics);
         
                     header('Location: index.php?action=influencer_profile');
                     exit();

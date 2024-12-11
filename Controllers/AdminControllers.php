@@ -65,6 +65,42 @@
             }
         }
 
+        public function admin_password($id){
+            ob_start();
+            if (isset($_SESSION['is_login']) && $_SESSION['is_login'] === true) {
+                $AdminModels = new AdminModels();
+                $admin = $AdminModels->getAdminAccountbyID($id);
+
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $id = $_SESSION['ad_id'];
+                    $currentPassword = $_POST['current_password'] ?? '';
+                    $newPassword = $_POST['new_password'] ?? '';
+                    $confirmPassword = $_POST['confirm_password'] ?? '';
+
+                    if (!preg_match('/^[A-Z]/', $newPassword) || strlen($newPassword) < 8 || strlen($newPassword) > 20 || !preg_match('/\d/', $newPassword) || !preg_match('/[a-z]/', $newPassword) || !preg_match('/[\W_]/', $newPassword)) {
+                        $message = 'New Password must start with a capital letter, be at least 8 to 20 characters long, include at least 1 number, 1 lowercase letter, and 1 special letter.';
+                        include 'views/Customer/Password.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+        
+                    if (!password_verify($currentPassword, $admin['Ad_Password'])) {
+                        $message = "Current password is incorrect.";
+                    }
+
+                    elseif ($newPassword !== $confirmPassword) {
+                        $message = "New password and confirm password do not match.";
+                    }
+
+                    else {
+                        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                        $isUpdated = $AdminModels->changePassword($id, $hashedPassword);
+                        $message = "Password changed successfully.";
+                    }
+                }
+                include 'views/Admin/Password.php';
+            }
+        }
+
         public function admin_editprofile($id) {
             ob_start();
             if (isset($_SESSION['is_login']) && $_SESSION['is_login'] === true) {
@@ -1130,9 +1166,9 @@
             
                         $selectedTopics = isset($_POST['topics']) ? $_POST['topics'] : [];
 
-            
+                        $hashedPassword = password_hash($Password, PASSWORD_DEFAULT);
                         // Cập nhật dữ liệu vào database
-                        $AdminModels->editInfluencer($id, $Username, $Password, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $mainImagePath, $otherImagePaths, $Achivement, $Biography, $InfluType_ID, $Workplace_id, $Followers_id, $Gender_id, $Facebook, $Tiktok, $Instagram, $selectedTopics);
+                        $AdminModels->editInfluencer($id, $Username, $hashedPassword, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $mainImagePath, $otherImagePaths, $Achivement, $Biography, $InfluType_ID, $Workplace_id, $Followers_id, $Gender_id, $Facebook, $Tiktok, $Instagram, $selectedTopics);
                         
                         header('Location: index.php?action=admin_influencer');
                     }

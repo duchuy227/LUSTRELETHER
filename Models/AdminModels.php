@@ -58,6 +58,12 @@
             ));
         }
 
+        public function changePassword($ad_id, $newPassword){
+            $query = "UPDATE Admin SET Ad_Password = :password WHERE Ad_ID = :ad_id";
+            $sql = $this->conn->prepare($query);
+            $sql->execute(array(':password' => $newPassword, ':ad_id' => $ad_id));
+        }
+
         public function showContent(){
             $query = "SELECT * FROM Content";
             $sql = $this->conn->query($query);
