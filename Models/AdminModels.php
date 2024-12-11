@@ -445,12 +445,12 @@
             return $customer;
         }
         
-        public function editCustomer($cus_id, $Username, $Password, $Email, $Fullname, $PhoneNumber, $DOB, $Image, $Topic, $Content, $Event){
+        public function editCustomer($cus_id, $Username, $Email, $Fullname, $PhoneNumber, $DOB, $Image, $Topic, $Content, $Event){
             $this->conn->beginTransaction();
 
-            $query = "UPDATE Customer SET Cus_Username = :username, Cus_Password = :password, Cus_Email = :email, Cus_Fullname = :fullname, Cus_PhoneNumber = :phonenumber, Cus_DOB = :dob, Cus_Image =  :image WHERE Cus_ID = :cus_id";
+            $query = "UPDATE Customer SET Cus_Username = :username, Cus_Email = :email, Cus_Fullname = :fullname, Cus_PhoneNumber = :phonenumber, Cus_DOB = :dob, Cus_Image =  :image WHERE Cus_ID = :cus_id";
             $sql = $this->conn->prepare($query);
-            $sql->execute(array(':username' => $Username, ':password' => $Password,  ':email' => $Email, ':fullname' => $Fullname, ':phonenumber' =>  $PhoneNumber, ':dob' => $DOB, ':image' => $Image, ':cus_id' => $cus_id));
+            $sql->execute(array(':username' => $Username, ':email' => $Email, ':fullname' => $Fullname, ':phonenumber' =>  $PhoneNumber, ':dob' => $DOB, ':image' => $Image, ':cus_id' => $cus_id));
 
             $deleteTopicQuery = "DELETE FROM Cus_Topic WHERE Cus_ID = :cus_id";
             $sqlDeleteTopic = $this->conn->prepare($deleteTopicQuery);
@@ -839,15 +839,14 @@
             return $influencer;
         }
         
-        public function editInfluencer($influ_id, $Username, $Password, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $Image, $OtherImage, $Achievement, $Biography, $InfluType_ID, $Wplace_ID, $Fol_ID, $Gender_ID, $Facebook, $Tiktok, $Instagram, $Topic){
+        public function editInfluencer($influ_id, $Username, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $Image, $OtherImage, $Achievement, $Biography, $InfluType_ID, $Wplace_ID, $Fol_ID, $Gender_ID, $Facebook, $Tiktok, $Instagram, $Topic){
             $this->conn->beginTransaction();
             
             // Cập nhật bảng Influencer
-            $sql = "UPDATE Influencer SET Influ_Username = :username, Influ_Password = :password, Influ_Email = :email, Influ_Fullname = :fullname, Influ_DOB = :dob, Influ_PhoneNumber = :phonenumber, Influ_Address = :address, Influ_Nickname = :nickname, Influ_Hastag = :hastag, Influ_Price = :price, Influ_Image = :image, Influ_OtherImage = :otherimage, Influ_Achivement = :achievement, Influ_Biography = :biography, InfluType_ID = :influTypeID, WPlace_ID = :wplaceID, Fol_ID = :folID, Gender_ID = :genderID WHERE Influ_ID = :influ_id";
+            $sql = "UPDATE Influencer SET Influ_Username = :username, Influ_Email = :email, Influ_Fullname = :fullname, Influ_DOB = :dob, Influ_PhoneNumber = :phonenumber, Influ_Address = :address, Influ_Nickname = :nickname, Influ_Hastag = :hastag, Influ_Price = :price, Influ_Image = :image, Influ_OtherImage = :otherimage, Influ_Achivement = :achievement, Influ_Biography = :biography, InfluType_ID = :influTypeID, WPlace_ID = :wplaceID, Fol_ID = :folID, Gender_ID = :genderID WHERE Influ_ID = :influ_id";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute(array(
                 ':username' => $Username, 
-                ':password' => $Password, 
                 ':email' => $Email, 
                 ':fullname' => $Fullname,
                 ':dob' => $DOB,

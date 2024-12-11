@@ -687,7 +687,6 @@
 
                     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                         $Username = $_POST['username'];
-                        $Password  = $_POST['password'];
                         $Email = $_POST['email'];
                         $Fullname =  $_POST['fullname'];
                         $PhoneNumber = $_POST['phonenumber'];
@@ -713,13 +712,6 @@
                         } elseif ($AdminModels->checkUsernameExists($_POST['username'], $currentUsername)) {
                             $_SESSION['errorMessage'] = 'Username already exists. Please enter a different one.';
                             include 'views/Admin/add_customer.php';
-                            return; // Dừng xử lý nếu có lỗi
-                        }
-                    
-                        // Validate password
-                        if (!preg_match('/^[A-Z]/', $Password) || strlen($Password) < 8 || strlen($Password) > 20 || !preg_match('/\d/', $Password) || !preg_match('/[a-z]/', $Password) || !preg_match('/[\W_]/', $Password)) {
-                            $_SESSION['errorMessage'] = 'Password must start with a capital letter, be at least 8 to 20 characters long, include at least 1 number, 1 lowercase letter, and 1 special letter.';
-                            include 'views/Admin/edit_customer.php';
                             return; // Dừng xử lý nếu có lỗi
                         }
                     
@@ -761,8 +753,8 @@
                         $selectedEvents = isset($_POST['events']) ? $_POST['events'] : [];
                         $selectedContents = isset($_POST['contents']) ? $_POST['contents'] : [];
                         
-                        $hashedPassword = password_hash($Password, PASSWORD_DEFAULT);
-                        $AdminModels->editCustomer($cus_id, $Username, $hashedPassword, $Email, $Fullname, $PhoneNumber, $DOB, $Cus_Image, $selectedTopics, $selectedContents, $selectedEvents);
+                        
+                        $AdminModels->editCustomer($cus_id, $Username, $Email, $Fullname, $PhoneNumber, $DOB, $Cus_Image, $selectedTopics, $selectedContents, $selectedEvents);
                         header('Location: index.php?action=admin_customer');
                     }
                 }
@@ -1019,9 +1011,7 @@
                         $selectedTopics = $AdminModels ->getTopicsByInfluId($id);
             
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        // Nhận các giá trị từ form
                         $Username  = $_POST['username'];
-                        $Password  = $_POST['password'];
                         $Email  = $_POST['email'];
                         $Fullname   = $_POST['fullname'];
                         $DOB   = $_POST['dob'];
@@ -1083,7 +1073,7 @@
                         $topicss = isset($_POST['topics']) ? $_POST['topics'] : [];
 
                         // Kiểm tra các trường trống
-                        if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($Address) || empty($Nickname) || empty($Hastag) || empty($Price) || empty($Achivement) || empty($Biography) || empty($InfluType_ID) || empty($Workplace_id) || empty($Followers_id) || empty($Gender_id) || empty($topicss)) {
+                        if (empty($Username) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($Address) || empty($Nickname) || empty($Hastag) || empty($Price) || empty($Achivement) || empty($Biography) || empty($InfluType_ID) || empty($Workplace_id) || empty($Followers_id) || empty($Gender_id) || empty($topicss)) {
                             $_SESSION['errorMessage'] = 'All fields must be required.';
                             include 'views/Admin/edit_influencer.php';
                             return; // Dừng xử lý nếu có lỗi
@@ -1097,13 +1087,6 @@
                             return; // Dừng xử lý nếu có lỗi
                         } elseif ($AdminModels->checkUsernameExists($_POST['username'], $currentUsername)) {
                             $_SESSION['errorMessage'] = 'Username already exists. Please enter a different one.';
-                            include 'views/Admin/edit_influencer.php';
-                            return; // Dừng xử lý nếu có lỗi
-                        }
-                    
-                        // Validate password
-                        if (!preg_match('/^[A-Z]/', $Password) || strlen($Password) < 8 || strlen($Password) > 20 || !preg_match('/\d/', $Password) || !preg_match('/[a-z]/', $Password) || !preg_match('/[\W_]/', $Password)) {
-                            $_SESSION['errorMessage'] = 'Password must start with a capital letter, be at least 8 to 20 characters long, include at least 1 number, 1 lowercase letter, and 1 special letter.';
                             include 'views/Admin/edit_influencer.php';
                             return; // Dừng xử lý nếu có lỗi
                         }
@@ -1166,9 +1149,8 @@
             
                         $selectedTopics = isset($_POST['topics']) ? $_POST['topics'] : [];
 
-                        $hashedPassword = password_hash($Password, PASSWORD_DEFAULT);
                         // Cập nhật dữ liệu vào database
-                        $AdminModels->editInfluencer($id, $Username, $hashedPassword, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $mainImagePath, $otherImagePaths, $Achivement, $Biography, $InfluType_ID, $Workplace_id, $Followers_id, $Gender_id, $Facebook, $Tiktok, $Instagram, $selectedTopics);
+                        $AdminModels->editInfluencer($id, $Username, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $mainImagePath, $otherImagePaths, $Achivement, $Biography, $InfluType_ID, $Workplace_id, $Followers_id, $Gender_id, $Facebook, $Tiktok, $Instagram, $selectedTopics);
                         
                         header('Location: index.php?action=admin_influencer');
                     }

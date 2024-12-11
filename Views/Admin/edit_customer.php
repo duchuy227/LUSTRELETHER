@@ -246,21 +246,9 @@
                 <div class="profile">
                     <form action="index.php?action=admin_editcustomer&id=<?php echo $customers['Cus_ID']; ?>" method="post" enctype="multipart/form-data">
                         <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12">
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control" id="username" name="username" required value="<?php echo  $customers['Cus_Username']; ?>">
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="password">Password</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" id="password" name="password" value="<?php echo  $customers['Cus_Password']; ?>" readonly>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text" id="togglePassword">
-                                            <i class="fa fa-eye"></i>
-                                        </span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="form-row">

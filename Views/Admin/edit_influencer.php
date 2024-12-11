@@ -258,23 +258,12 @@
                 <div class="profile">
                     <form action="index.php?action=admin_editinfluencer&id=<?php echo $influencers['Influ_ID']; ?>" method="post" enctype="multipart/form-data">
                         <div class="form-row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control" id="username" name="username" value="<?php echo $influencers['Influ_Username']; ?>" required>
                             </div>
 
-                            <div class="form-group col-md-4">
-                                <label for="password">Password</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" id="password" name="password" value="<?php echo $influencers['Influ_Password']; ?>" readonly>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text" id="togglePassword">
-                                            <i class="fa fa-eye"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label for="email">Email</label>
                                 <input type="text" class="form-control" id="email" name="email" value="<?php echo $influencers['Influ_Email']; ?>" required>
                             </div>
@@ -544,23 +533,6 @@
             themeToggler.querySelector('span:nth-child(1').classList.toggle('active')
             themeToggler.querySelector('span:nth-child(2').classList.toggle('active')
         })
-    </script>
-
-    <script>
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const passwordInput = document.getElementById('password');
-            const icon = this.querySelector('i');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash'); // Thay đổi biểu tượng thành "eye-slash"
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye'); // Trở lại biểu tượng "eye"
-            }
-        });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
