@@ -175,7 +175,53 @@
         .social-network-row .form-control {
             flex-grow: 1;
         }
+    
+    .popup-modal1 {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
+        padding-top: 100px;
+    }
 
+    .popup-content1 {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .popup-content1 img {
+        margin-bottom: 20px;
+    }
+
+    .popup-content1 p {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+
+    #closeBtn1 {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100px;
+        border-radius: 10px;
+    }
+
+    #closeBtn1:hover {
+        background-color: #45a049;
+    }
 
 </style>
 <body>
@@ -214,13 +260,13 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="username">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
+                                <input type="text" class="form-control" id="username" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''?>">
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="password">Password</label>
                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="password" name="password">
+                                    <input type="password" class="form-control" id="password" name="password" value="<?php echo isset($_POST['password']) ? $_POST['password'] : ''?>">
                                     <div class="input-group-append">
                                         <span class="input-group-text" id="togglePassword">
                                             <i class="fa fa-eye"></i>
@@ -230,48 +276,51 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="email">Email</label>
-                                <input type="text" class="form-control" id="email" name="email" required>
+                                <input type="email" class="form-control" id="email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''?>">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" name="address" required>
+                                <input type="text" class="form-control" id="address" name="address" value="<?php echo isset($_POST['address']) ? $_POST['address'] : ''?>">
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="fullname">Fullname</label>
-                                <input type="text" class="form-control" id="fullname" name="fullname" required>
+                                <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo isset($_POST['fullname']) ? $_POST['fullname'] : ''?>">
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="nickname">Nickname</label>
-                                <input type="text" class="form-control" id="nickname" name="nickname" required>
+                                <input type="text" class="form-control" id="nickname" name="nickname" value="<?php echo isset($_POST['nickname']) ? $_POST['nickname'] : ''?>">
                             </div>
                         </div>
                         <div class="form-row" style="margin-top: 20px;">
                             <div class="form-group col-md-3">
                                 <label for="dob">Date of Birth</label>
-                                <input type="date" class="form-control" id="dob" name="dob" required>
+                                <input type="date" class="form-control" id="dob" name="dob" value="<?php echo isset($_POST['dob']) ? $_POST['dob'] : ''?>">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="price">Price of service</label>
-                                <input type="text" class="form-control" id="price" name="price" required>
+                                <input type="text" class="form-control" id="price" name="price" value="<?php echo isset($_POST['price']) ? $_POST['price'] : ''?>">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="phonenumber">Phone Number</label>
-                                <input type="text" class="form-control" id="phonenumber" name="phonenumber" required>
+                                <input type="text" class="form-control" id="phonenumber" name="phonenumber" value="<?php echo isset($_POST['phonenumber']) ? $_POST['phonenumber'] : ''?>">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="hastag">Hastag</label>
-                                <input type="text" class="form-control" id="hastag" name="hastag" required>
+                                <input type="text" class="form-control" id="hastag" name="hastag" value="<?php echo isset($_POST['hastag']) ? $_POST['hastag'] : ''?>">
                             </div>
                         </div>
 
                         <div class="form-row" style="margin-top: 20px;">
                             <div class="form-group col-md-3">
                                 <label for="type_id">Type of Influencer</label>
-                                <select name="type_id" class="form-control" required>
+                                <?php 
+                                    $type_id = isset($_POST['type_id']) ? $_POST['type_id'] : '';
+                                ?>
+                                <select name="type_id" class="form-control">
                                     <option value="">Choose Type</option>
                                     <?php 
                                         foreach($all_type as $types){
@@ -286,7 +335,10 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="wplace_id">Workplace</label>
-                                <select name="wplace_id" class="form-control" required>
+                                <?php 
+                                    $wplace_id = isset($_POST['wplace_id']) ? $_POST['wplace_id'] : '';
+                                ?>
+                                <select name="wplace_id" class="form-control" >
                                     <option value="">Choose Workplace</option>
                                     <?php 
                                         foreach($all_wplace as $wplace){
@@ -301,7 +353,10 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="gender_id">Gender</label>
-                                <select name="gender_id" class="form-control" required>
+                                <?php 
+                                    $gender_id = isset($_POST['gender_id']) ? $_POST['gender_id'] : '';
+                                ?>
+                                <select name="gender_id" class="form-control" >
                                     <option value="">Choose Gender</option>
                                     <?php 
                                         foreach($all_gender as $gender){
@@ -316,7 +371,10 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="fol_id">Followers</label>
-                                <select name="fol_id" class="form-control" required>
+                                <?php 
+                                    $fol_id = isset($_POST['fol_id']) ? $_POST['fol_id'] : '';
+                                ?>
+                                <select name="fol_id" class="form-control" >
                                     <option value="">Choose</option>
                                     <?php 
                                         foreach($all_fol as $fol){
@@ -345,15 +403,16 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                            <label for="achivement">Achievement</label>
-                            <textarea name="achivement" class="form-control" id="editor1"  cols="25" rows="5" required></textarea>
+                                <label for="achivement">Achievement</label>
+                                <textarea name="achivement" class="form-control" id="editor1" cols="25" rows="5"><?php echo isset($_POST['achivement']) ? htmlspecialchars(trim($_POST['achivement'])) : ''; ?></textarea>
                             </div>
                         </div>
+
 
                         <div class="form-row">
                             <div class="form-group col-md-12">
                             <label for="biography">Biography</label>
-                            <textarea name="biography" class="form-control" id="editor2"  cols="25" rows="5" required></textarea>
+                            <textarea name="biography" class="form-control" id="editor2"  cols="25" rows="5"><?php echo isset($_POST['biography']) ? htmlspecialchars($_POST['biography']) : ''; ?></textarea>
                             </div>
                         </div>
 
@@ -363,15 +422,15 @@
                                 <div class="form-group">
                                     <div class="social-network-row">
                                         <label for="facebook" class="col-form-label">Facebook</label>
-                                        <input type="text" name="facebook_link" class="form-control" placeholder="Enter your Facebook link">
+                                        <input type="text" name="facebook_link" class="form-control" placeholder="Enter your Facebook link" value="<?php echo isset($_POST['facebook_link']) ? $_POST['facebook_link'] : ''?>">
                                     </div>
                                     <div class="social-network-row">
                                         <label for="tiktok" class="col-form-label">Tiktok</label>
-                                        <input type="text" name="tiktok_link" class="form-control" placeholder="Enter your Tiktok link">
+                                        <input type="text" name="tiktok_link" class="form-control" placeholder="Enter your Tiktok link" value="<?php echo isset($_POST['tiktok_link']) ? $_POST['tiktok_link'] : ''?>">
                                     </div>
                                     <div class="social-network-row">
                                         <label for="instagram" class="col-form-label">Instagram</label>
-                                        <input type="text" name="instagram_link" class="form-control" placeholder="Enter your Instagram link">
+                                        <input type="text" name="instagram_link" class="form-control" placeholder="Enter your Instagram link" value="<?php echo isset($_POST['instagram_link']) ? $_POST['instagram_link'] : ''?>">
                                     </div>
                                 </div>
                             </div>
@@ -384,11 +443,20 @@
                             <div class="row" style="margin: 0;">
                                 <?php 
                                 $count = 0; 
+                                $selected_topics = isset($_POST['topics']) ? $_POST['topics'] : [];
                                 foreach ($topics as $topic): 
                                     ?>
                                     <div class="col-md-4 mb-3"> <!-- Thêm class mb-3 cho mỗi cột -->
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="topics[]" id="topic<?php echo $topic['Topic_ID']; ?>" value="<?php echo $topic['Topic_ID']; ?>">
+                                            <input 
+                                            class="form-check-input"
+                                            type="checkbox" 
+                                            name="topics[]" 
+                                            id="topic<?php echo $topic['Topic_ID']; ?>" 
+                                            value="<?php echo $topic['Topic_ID']; ?>"
+                                            <?php echo in_array($topic['Topic_ID'], $selected_topics) ? 'checked' : ''; ?>
+                                            >
+                                            
                                             <label class="form-check-label" for="topic<?php echo $topic['Topic_ID']; ?>" style="display: inline-block; margin-left: 8px; font-size: 16px; color: #333333"> 
                                                 <?php echo $topic['Topic_Name']; ?>
                                             </label>
@@ -399,7 +467,6 @@
                                 endforeach; ?>
                             </div>
                         </div>
-
                         <button type="submit" class="btn btn-success">Submit</button>
                     </form>
                 </div>
@@ -407,6 +474,35 @@
             </div>
         </main>
     </div>
+
+    <div id="popupModal1" class="popup-modal1" style="display: none;">
+        <div class="popup-content1">
+            <img src="././views/Img/u118.png" width="50" height="50">
+            <p><?php echo isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : ''; ?></p>
+            <button id="closeBtn1">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Kiểm tra nếu có thông báo lỗi trong session
+            <?php if (isset($_SESSION['errorMessage'])): ?>
+                // Hiển thị popup khi có thông báo lỗi
+                document.getElementById('popupModal1').style.display = 'block';
+            <?php endif; ?>
+
+            // Đảm bảo sự kiện click chỉ được gán một lần
+            document.getElementById('closeBtn1').addEventListener('click', function() {
+                // Đóng popup
+                document.getElementById('popupModal1').style.display = 'none';
+
+                // Sau khi đóng popup, xóa thông báo lỗi trong session và reload trang
+                <?php 
+                    unset($_SESSION['errorMessage']); // Xóa thông báo lỗi trong session
+                ?>
+            });
+        });
+    </script>
 
     <script>
         const  sideMenu = document.querySelector('aside');

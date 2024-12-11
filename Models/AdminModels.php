@@ -369,7 +369,10 @@
             $this->conn->commit();
         }
 
-        public function checkUsernameExists($username) {
+        public function checkUsernameExists($username, $currentUsername = NULL) {
+            if ($username === $currentUsername) {
+                return false;
+            }
             $query = "SELECT COUNT(*) FROM Customer WHERE Cus_Username = :username";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':username', $username);

@@ -638,6 +638,75 @@
                         $PhoneNumber = $_POST['phonenumber'];
                         $DOB = $_POST['dob'];
 
+                        // Kiểm tra các trường trống
+                        if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB)) {
+                            $_SESSION['errorMessage'] = 'All fields must be required.';
+                            include 'views/Admin/edit_customer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate username
+                        $currentUsername = $customers['Cus_Username'];
+                        if (!preg_match('/^[A-Z]/', $Username) || !preg_match('/\d/', $Username) || strlen($Username) < 5 || strlen($Username) > 15) {
+                            $_SESSION['errorMessage'] = 'Username must start with a capital letter, contain at least one number, and be between 5 to 15 characters long.';
+                            include 'views/Admin/edit_customer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        } elseif ($AdminModels->checkUsernameExists($_POST['username'], $currentUsername)) {
+                            $_SESSION['errorMessage'] = 'Username already exists. Please enter a different one.';
+                            include 'views/Admin/add_customer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate password
+                        if (!preg_match('/^[A-Z]/', $Password) || strlen($Password) < 8 || strlen($Password) > 20 || !preg_match('/\d/', $Password) || !preg_match('/[a-z]/', $Password) || !preg_match('/[\W_]/', $Password)) {
+                            $_SESSION['errorMessage'] = 'Password must start with a capital letter, be at least 8 to 20 characters long, include at least 1 number, 1 lowercase letter, and 1 special letter.';
+                            include 'views/Admin/edit_customer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate Full name
+                        if (!preg_match('/^[A-Z]/', $Fullname) || strlen($Fullname) < 5 || strlen($Fullname) > 30) {
+                            $_SESSION['errorMessage'] = 'Full name must start with a capital letter, be at least 5 to 30 characters long.';
+                            include 'views/Admin/edit_customer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate Date of birth
+                        $dob = new DateTime($DOB);
+                        $currentDate = new DateTime();
+                        $age = $dob->diff($currentDate)->y;
+                        if ($age < 18) {
+                            $_SESSION['errorMessage'] = 'Date of birth must be over 18 years old.';
+                            include 'views/Admin/edit_customer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate Phone Number
+                        if (!preg_match('/^[0-9]{10}$/', $PhoneNumber)) { // 10 số
+                            $_SESSION['errorMessage'] = 'Phone number must start with a number, contain only digits, and be 10 digits long.';
+                            include 'views/Admin/edit_customer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate các checkbox topic, event, content
+                        $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
+                        $contents = isset($_POST['contents']) ? $_POST['contents'] : [];
+                        $events = isset($_POST['events']) ? $_POST['events'] : [];
+                    
+                        if (empty($topics)) {
+                            $_SESSION['errorMessage'] = 'At least one topic must be selected.';
+                            include 'views/Admin/edit_customer.php';
+                            return;
+                        } elseif (empty($contents)) {
+                            $_SESSION['errorMessage'] = 'At least one content must be selected.';
+                            include 'views/Admin/edit_customer.php';
+                            return;
+                        } elseif (empty($events)) {
+                            $_SESSION['errorMessage'] = 'At least one event must be selected.';
+                            include 'views/Admin/edit_customer.php';
+                            return;
+                        }
+
                         if (isset($_FILES['cus_image']) && $_FILES['cus_image']['error'] == 0) {
                             $imagePath = 'Views/Img/' . basename($_FILES['cus_image']['name']);
                             if (move_uploaded_file($_FILES['cus_image']['tmp_name'], $imagePath)) {
@@ -742,8 +811,19 @@
                     $otherImagePaths = [];
                     if (isset($_FILES['influ_other_images']) && is_array($_FILES['influ_other_images']['name'])) {
                         $uploadedOtherImages = $_FILES['influ_other_images'];
-                        $totalOtherImages = min(count($uploadedOtherImages['name']), 6);
+                        $totalOtherImages = count($uploadedOtherImages['name']);
+
+                        // Kiểm tra số lượng ảnh tải lên
+                        if ($totalOtherImages > 6) {
+                            $_SESSION['errorMessage'] = 'You can only upload a maximum of 6 images.';
+                            include 'views/Admin/add_influencer.php'; // Hoặc chuyển hướng tới trang hiện tại
+                            return;
+                        }
+
+                        // Giới hạn số lượng ảnh tải lên tối đa là 6
+                        $totalOtherImages = min($totalOtherImages, 6);
                         
+                        // Xử lý việc tải ảnh
                         for ($i = 0; $i < $totalOtherImages; $i++) {
                             if (isset($uploadedOtherImages['error'][$i]) && $uploadedOtherImages['error'][$i] === UPLOAD_ERR_OK) {
                                 $otherImagePath = 'Views/Influ_Image/' . basename($uploadedOtherImages['name'][$i]);
@@ -753,6 +833,7 @@
                             }
                         }
                     }
+
 
                     $Achivement =  $_POST['achivement'];
                     $Biography =   $_POST['biography'];
@@ -764,8 +845,94 @@
                     $Tiktok = isset($_POST['tiktok_link']) ? $_POST['tiktok_link'] : null;
                     $Instagram = isset($_POST['instagram_link']) ? $_POST['instagram_link'] : null;
 
-                    $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
+                    // Kiểm tra các trường trống
+                    if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($Address) || empty($Nickname) || empty($Hastag) || empty($Price) || empty($Achivement) || empty($Biography) || empty($InfluType_ID) || empty($Workplace_id) || empty($Followers_id) || empty($Gender_id)) {
+                        $_SESSION['errorMessage'] = 'All fields must be required.';
+                        include 'views/Admin/add_influencer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate username
+                    if (!preg_match('/^[A-Z]/', $Username) || !preg_match('/\d/', $Username) || strlen($Username) < 5 || strlen($Username) > 15) {
+                        $_SESSION['errorMessage'] = 'Username must start with a capital letter, contain at least one number, and be between 5 to 15 characters long.';
+                        include 'views/Admin/add_influencer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    } elseif ($AdminModels->checkUsernameExists($Username)) {
+                        $_SESSION['errorMessage'] = 'Username already exists. Please enter a different one.';
+                        include 'views/Admin/add_influencer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate password
+                    if (!preg_match('/^[A-Z]/', $Password) || strlen($Password) < 8 || strlen($Password) > 20 || !preg_match('/\d/', $Password) || !preg_match('/[a-z]/', $Password) || !preg_match('/[\W_]/', $Password)) {
+                        $_SESSION['errorMessage'] = 'Password must start with a capital letter, be at least 8 to 20 characters long, include at least 1 number, 1 lowercase letter, and 1 special letter.';
+                        include 'views/Admin/add_influencer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
 
+                    // Validate Address
+                    if (!preg_match('/^[A-Z]/', $Address) || strlen($Address) < 5 || strlen($Address) > 30){
+                        $_SESSION['errorMessage'] = 'Address must start with a capital letter, be at least 5 to 30 characters long.';
+                        include 'views/Admin/add_influencer.php';
+                        return;
+                    }
+                
+                    // Validate Full name
+                    if (!preg_match('/^[A-Z]/', $Fullname) || strlen($Fullname) < 5 || strlen($Fullname) > 30) {
+                        $_SESSION['errorMessage'] = 'Full name must start with a capital letter, be at least 5 to 30 characters long.';
+                        include 'views/Admin/add_influencer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+
+                    // Validate nickname
+                    if (strlen($Nickname) > 30) {
+                        $_SESSION['errorMessage'] = 'Nickname must be at least 30 characters long.';
+                        include 'views/Admin/add_influencer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+                
+                    // Validate Date of birth
+                    $dob = new DateTime($DOB);
+                    $currentDate = new DateTime();
+                    $age = $dob->diff($currentDate)->y;
+                    if ($age < 18) {
+                        $_SESSION['errorMessage'] = 'Date of birth must be over 18 years old.';
+                        include 'views/Admin/add_influencer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+
+                    // Validate price
+                    if (!is_numeric($Price)){
+                        $_SESSION['errorMessage'] = 'Price must be a numeric value.';
+                        include 'views/Admin/add_influencer.php';
+                        return;
+                    } elseif ((float)$Price > 100000000){
+                        $_SESSION['errorMessage'] = 'Price cannot be large 100 million.';
+                        include 'views/Admin/add_influencer.php';
+                        return;
+                    }
+                
+                    // Validate Phone Number
+                    if (!preg_match('/^[0-9]{10}$/', $PhoneNumber)) { // 10 số
+                        $_SESSION['errorMessage'] = 'Phone number must start with a number, contain only digits, and be 10 digits long.';
+                        include 'views/Admin/add_influencer.php';
+                        return; // Dừng xử lý nếu có lỗi
+                    }
+
+                    // Validate Hashtag
+                    if (!preg_match('/^#/', $Hastag)) {
+                        $_SESSION['errorMessage'] = 'Hashtag must start with the # character.';
+                    }
+
+                
+                    // Validate các checkbox topic, event, content
+                    $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
+                
+                    if (empty($topics)) {
+                        $_SESSION['errorMessage'] = 'At least one topic must be selected.';
+                        include 'views/Admin/add_influencer.php';
+                        return;
+                    }
                     $AdminModels -> AddInfluencer($Username, $Password, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $Influ_Image, $otherImagePaths, $Achivement, $Biography, $InfluType_ID, $Workplace_id, $Followers_id, $Gender_id,  $Facebook, $Tiktok, $Instagram, $topics);
                     header('Location: index.php?action=admin_influencer');
                 }
@@ -842,8 +1009,19 @@
                         $otherImagePaths = [];
                         if (isset($_FILES['influ_other_images']) && is_array($_FILES['influ_other_images']['name'])) {
                             $uploadedOtherImages = $_FILES['influ_other_images'];
-                            $totalOtherImages = min(count($uploadedOtherImages['name']), 6);
-            
+                            $totalOtherImages = count($uploadedOtherImages['name']);
+
+                            // Kiểm tra số lượng ảnh tải lên
+                            if ($totalOtherImages > 6) {
+                                $_SESSION['errorMessage'] = 'You can only upload a maximum of 6 images.';
+                                include 'views/Admin/edit_influencer.php'; // Hoặc chuyển hướng tới trang hiện tại
+                                return;
+                            }
+
+                            // Giới hạn số lượng ảnh tải lên tối đa là 6
+                            $totalOtherImages = min($totalOtherImages, 6);
+                            
+                            // Xử lý việc tải ảnh
                             for ($i = 0; $i < $totalOtherImages; $i++) {
                                 if (isset($uploadedOtherImages['error'][$i]) && $uploadedOtherImages['error'][$i] === UPLOAD_ERR_OK) {
                                     $otherImagePath = 'Views/Influ_Image/' . basename($uploadedOtherImages['name'][$i]);
@@ -866,8 +1044,101 @@
                         $Facebook = isset($_POST['facebook_link']) ? $_POST['facebook_link'] : null;
                         $Tiktok = isset($_POST['tiktok_link']) ? $_POST['tiktok_link'] : null;
                         $Instagram = isset($_POST['instagram_link']) ? $_POST['instagram_link'] : null;
+
+                        // Kiểm tra các trường trống
+                        if (empty($Username) || empty($Password) || empty($Email) || empty($Fullname) || empty($PhoneNumber) || empty($DOB) || empty($Address) || empty($Nickname) || empty($Hastag) || empty($Price) || empty($Achivement) || empty($Biography) || empty($InfluType_ID) || empty($Workplace_id) || empty($Followers_id) || empty($Gender_id)) {
+                            $_SESSION['errorMessage'] = 'All fields must be required.';
+                            include 'views/Admin/edit_influencer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate username
+                        $currentUsername = $influencers['Influ_Username'];
+                        if (!preg_match('/^[A-Z]/', $Username) || !preg_match('/\d/', $Username) || strlen($Username) < 5 || strlen($Username) > 15) {
+                            $_SESSION['errorMessage'] = 'Username must start with a capital letter, contain at least one number, and be between 5 to 15 characters long.';
+                            include 'views/Admin/edit_influencer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        } elseif ($AdminModels->checkUsernameExists($_POST['username'], $currentUsername)) {
+                            $_SESSION['errorMessage'] = 'Username already exists. Please enter a different one.';
+                            include 'views/Admin/edit_influencer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate password
+                        if (!preg_match('/^[A-Z]/', $Password) || strlen($Password) < 8 || strlen($Password) > 20 || !preg_match('/\d/', $Password) || !preg_match('/[a-z]/', $Password) || !preg_match('/[\W_]/', $Password)) {
+                            $_SESSION['errorMessage'] = 'Password must start with a capital letter, be at least 8 to 20 characters long, include at least 1 number, 1 lowercase letter, and 1 special letter.';
+                            include 'views/Admin/edit_influencer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+
+                        // Validate Address
+                        if (!preg_match('/^[A-Z]/', $Address) || strlen($Address) < 5 || strlen($Address) > 30){
+                            $_SESSION['errorMessage'] = 'Address must start with a capital letter, be at least 5 to 30 characters long.';
+                            include 'views/Admin/edit_influencer.php';
+                            return;
+                        }
+                    
+                        // Validate Full name
+                        if (!preg_match('/^[A-Z]/', $Fullname) || strlen($Fullname) < 5 || strlen($Fullname) > 30) {
+                            $_SESSION['errorMessage'] = 'Full name must start with a capital letter, be at least 5 to 30 characters long.';
+                            include 'views/Admin/edit_influencer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+
+                        // Validate nickname
+                        if ( strlen($Nickname) > 30) {
+                            $_SESSION['errorMessage'] = 'Nickname must be at least 30 characters long.';
+                            include 'views/Admin/edit_influencer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+                    
+                        // Validate Date of birth
+                        $dob = new DateTime($DOB);
+                        $currentDate = new DateTime();
+                        $age = $dob->diff($currentDate)->y;
+                        if ($age < 18) {
+                            $_SESSION['errorMessage'] = 'Date of birth must be over 18 years old.';
+                            include 'views/Admin/edit_influencer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+
+                        // Validate price
+                        if (!is_numeric($Price)){
+                            $_SESSION['errorMessage'] = 'Price must be a numeric value.';
+                            include 'views/Admin/edit_influencer.php';
+                            return;
+                        } elseif ((float)$Price > 100000000){
+                            $_SESSION['errorMessage'] = 'Price cannot be large 100 million.';
+                            include 'views/Admin/edit_influencer.php';
+                            return;
+                        }
+                    
+                        // Validate Phone Number
+                        if (!preg_match('/^[0-9]{10}$/', $PhoneNumber)) { // 10 số
+                            $_SESSION['errorMessage'] = 'Phone number must start with a number, contain only digits, and be 10 digits long.';
+                            include 'views/Admin/edit_influencer.php';
+                            return; // Dừng xử lý nếu có lỗi
+                        }
+
+                        // Validate Hashtag
+                        if (!preg_match('/^#/', $Hastag)) {
+                            $_SESSION['errorMessage'] = 'Hashtag must start with the # character.';
+                            include 'views/Admin/edit_influencer.php';
+                            return;
+                        }
+
+                    
+                        // Validate các checkbox topic, event, content
+                        $topics = isset($_POST['topics']) ? $_POST['topics'] : [];
+                    
+                        if (empty($topics)) {
+                            $_SESSION['errorMessage'] = 'At least one topic must be selected.';
+                            include 'views/Admin/edit_influencer.php';
+                            return;
+                        }
             
                         $selectedTopics = isset($_POST['topics']) ? $_POST['topics'] : [];
+
             
                         // Cập nhật dữ liệu vào database
                         $AdminModels->editInfluencer($id, $Username, $Password, $Email, $Fullname, $DOB, $PhoneNumber, $Address, $Nickname, $Hastag, $Price, $mainImagePath, $otherImagePaths, $Achivement, $Biography, $InfluType_ID, $Workplace_id, $Followers_id, $Gender_id, $Facebook, $Tiktok, $Instagram, $selectedTopics);

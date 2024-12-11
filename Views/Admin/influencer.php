@@ -332,7 +332,7 @@
                     <form method="post">
                         <div class="inputBx">
                             <img src="././Views/Img/search.png" alt="" width="30" height="30">
-                            <input name="username" type="text" placeholder="Search . . .">
+                            <input required name="username" type="text" placeholder="Search . . .">
                         </div>
                     </form>
                 </div>
@@ -475,7 +475,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var perPage = 5;
+            var perPage = 10;
             var topics = document.querySelectorAll(".table .hello tr"); 
             var totalPages = Math.ceil(topics.length / perPage); 
             showPage(1);

@@ -163,6 +163,53 @@
         margin-right: 0; /* Xóa margin bên phải */
     }
 
+    .popup-modal1 {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
+        padding-top: 100px;
+    }
+
+    .popup-content1 {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .popup-content1 img {
+        margin-bottom: 20px;
+    }
+
+    .popup-content1 p {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+
+    #closeBtn1 {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100px;
+        border-radius: 10px;
+    }
+
+    #closeBtn1:hover {
+        background-color: #45a049;
+    }
+
 
 </style>
 <body>
@@ -321,6 +368,35 @@
             </div>
         </main>
     </div>
+
+    <div id="popupModal1" class="popup-modal1" style="display: none;">
+        <div class="popup-content1">
+            <img src="././views/Img/u118.png" width="50" height="50">
+            <p><?php echo isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : ''; ?></p>
+            <button id="closeBtn1">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Kiểm tra nếu có thông báo lỗi trong session
+            <?php if (isset($_SESSION['errorMessage'])): ?>
+                // Hiển thị popup khi có thông báo lỗi
+                document.getElementById('popupModal1').style.display = 'block';
+            <?php endif; ?>
+
+            // Đảm bảo sự kiện click chỉ được gán một lần
+            document.getElementById('closeBtn1').addEventListener('click', function() {
+                // Đóng popup
+                document.getElementById('popupModal1').style.display = 'none';
+
+                // Sau khi đóng popup, xóa thông báo lỗi trong session và reload trang
+                <?php 
+                    unset($_SESSION['errorMessage']); // Xóa thông báo lỗi trong session
+                ?>
+            });
+        });
+    </script>
 
     <script>
         const  sideMenu = document.querySelector('aside');

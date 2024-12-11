@@ -168,7 +168,7 @@
                         </a>
                         <div class="card-body-viral">
                             <h5 class="card-title-viral"><?php echo $i['Influ_Nickname'] ?></h5>
-                            <p class="card-text-viral"><?php echo $i['Influ_Address'] ?></p>
+                            <p class="card-text-viral"><?php echo $i['Fol_Quantity'] ?></p>
                         </div>
                     </div>
                 </div>
@@ -196,7 +196,7 @@
                             </a>
                             <div class="card-body-viral">
                                 <h5 class="card-title-viral"><?php echo $i['Influ_Nickname'] ?></h5>
-                                <p class="card-text-viral"><?php echo $i['Influ_Address'] ?></p>
+                                <p class="card-text-viral"><?php echo $i['Fol_Quantity'] ?></p>
                             </div>
                         </div>
                     </div>

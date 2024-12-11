@@ -193,7 +193,7 @@
                 Inner JOIN  Followers f ON i.Fol_ID = f.Fol_ID
                 JOIN Influ_Topic it ON i.Influ_ID = it.Influ_ID
                 JOIN Topic_Event te ON it.Topic_ID = te.Topic_ID
-                WHERE te.Event_ID = :event_id;
+                WHERE te.Event_ID = :event_id AND f.Fol_ID = 9;
             ";
         
             $stmt = $this->conn->prepare($query);
@@ -223,7 +223,7 @@
                 Inner JOIN  Followers f ON i.Fol_ID = f.Fol_ID
                 JOIN Influ_Topic it ON i.Influ_ID = it.Influ_ID
                 JOIN Topic_Content tc ON it.Topic_ID = tc.Topic_ID
-                WHERE tc.Content_ID = :content_id;
+                WHERE tc.Content_ID = :content_id AND f.Fol_ID = 9;
             ";
         
             $stmt = $this->conn->prepare($query);
