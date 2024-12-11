@@ -146,11 +146,11 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="">Title</label>
-                                                <input type="text" class="form-control" id="title" name="title">
+                                                <input required type="text" class="form-control" id="title" name="title">
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="">Hastag</label>
-                                                <input type="text" class="form-control" id="title" name="hastag">
+                                                <input required type="text" class="form-control" id="title" name="hastag">
                                             </div>
                                         </div>
                                         <br>
@@ -168,7 +168,7 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="">Content</label>
-                                                <textarea name="content" class="form-control" rows="5"></textarea>
+                                                <textarea required name="content" class="form-control" rows="5"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-row">

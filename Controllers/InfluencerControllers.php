@@ -550,6 +550,8 @@
                     if (!$isPaid) {
                         // Nếu chưa thanh toán, hiển thị thông báo lỗi
                         $_SESSION['error_message'] = "Customer has not paid for this booking, please remind them.";
+                        $Content = $booking['Booking_Content'];
+                        $this->mailPayment($Content);
                     } else {
                         // Nếu đã thanh toán, cho phép thay đổi trạng thái
                         $status = $_POST['status'];
@@ -559,6 +561,85 @@
                     }
                 }
                 include 'views/Influencer/changetimeline.php';
+            }
+        }
+
+        public function mailPayment($Content){
+            $mail = new PHPMailer(true);
+            try {
+                $mail->SMTPDebug = 0;
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com'; 
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'leduchuy22072002@gmail.com';
+                $mail->Password   = 'utkziciechiujjxy';
+                $mail->Port       = 587;
+                $mail->setFrom('leduchuy22072002@gmail.com');
+                $mail->addAddress('huyldgbh200353@fpt.edu.vn');
+                $mail->isHTML(true);
+                $mail->Subject = 'New Booking';
+                $htmlContent = '
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>New Booking</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f4;
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+                            .container {
+                                max-width: 600px;
+                                margin: 20px auto;
+                                background-color: #fff;
+                                padding: 20px;
+                                border-radius: 8px;
+                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                            }
+                            h1 {
+                                color: #8B008B;
+                                text-align: center;
+                            }
+                            p {
+                                color: #333;
+                                font-size: 18px;
+                                line-height: 1.6;
+                                margin-bottom: 20px;
+                            }
+
+                            span {
+                                color:  #14BA05;
+                                font-size: 20px;
+                                margin-bottom: 20px;
+                                font-weight: bold;
+                            }   
+                            .rejected {
+                                color: #009966;
+                                font-size: 20px;
+                                font-weight: bold;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h1>New Booking</h1>
+                            <span>Dear Influencer,</span>
+                            <p>Your booking ' . htmlspecialchars($Content) . ' is not paid yet, please pay soon.</p>
+                            <br>
+                            <p>Hope you can see the email and payment booking soon.</p>
+                        </div>
+                    </body>
+                    </html>
+                ';
+                $mail->Body = $htmlContent;
+                $mail->send();
+            } catch (Exception $e) {
+        
             }
         }
         
@@ -607,12 +688,93 @@
                 
                         // Cập nhật Inv_ID trong bảng Booking
                         $influencerModel->UpdateBookingWithInvoiceId($booking_id, $inv_id);
+                        $Content = $booking['Booking_Content'];
+                        $this->mailBookingtoCus($Content);
                     }
 
                     header('Location: index.php?action=influencer_timeline');
                     exit();
                 }
                 include  'views/Influencer/ChangeStatus_Booking.php';
+            }
+        }
+
+        public function mailBookingtoCus($Content){
+            $mail = new PHPMailer(true);
+            try {
+                $mail->SMTPDebug = 0;
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com'; 
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'leduchuy22072002@gmail.com';
+                $mail->Password   = 'utkziciechiujjxy';
+                $mail->Port       = 587;
+                $mail->setFrom('leduchuy22072002@gmail.com');
+                $mail->addAddress('huyldgbh200353@fpt.edu.vn');
+                $mail->isHTML(true);
+                $mail->Subject = 'Booking Status';
+                $htmlContent = '
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Booking Status</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f4;
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+                            .container {
+                                max-width: 600px;
+                                margin: 20px auto;
+                                background-color: #fff;
+                                padding: 20px;
+                                border-radius: 8px;
+                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                            }
+                            h1 {
+                                color: #8B008B;
+                                text-align: center;
+                            }
+                            p {
+                                color: #333;
+                                font-size: 18px;
+                                line-height: 1.6;
+                                margin-bottom: 20px;
+                            }
+
+                            span {
+                                color:  #14BA05;
+                                font-size: 20px;
+                                margin-bottom: 20px;
+                                font-weight: bold;
+                            }   
+                            .rejected {
+                                color: #009966;
+                                font-size: 20px;
+                                font-weight: bold;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h1>Booking Status</h1>
+                            <span>Dear Customer,</span>
+                            <p>I have agreed with your booking please pay for this booking is ' . htmlspecialchars($Content) . '</p>
+                            <br>
+                            <p>Hope you can see email and pay booking.</p>
+                        </div>
+                    </body>
+                    </html>
+                ';
+                $mail->Body = $htmlContent;
+                $mail->send();
+            } catch (Exception $e) {
+        
             }
         }
 

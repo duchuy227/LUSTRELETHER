@@ -560,7 +560,7 @@
                     $Username  = $_POST['username'];
                     $customers  = $AdminModels->GetCustomerbyName($Username);
                     if (empty($customers)) {
-                        $message = "No influencers found named: $Username ";
+                        $message = "No customer found named: $Username ";
                     }
                 } else {
                     $customers = $AdminModels->getAllCustomer();

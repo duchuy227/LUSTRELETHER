@@ -308,7 +308,7 @@
                                 <th style="font-size: 18px; font-weight: 400;">Total Amount</th>
                                 <th style="font-size: 18px; font-weight: 400;">Vat Amount</th>
                                 <th style="font-size: 18px; font-weight: 400;">Status</th>
-                                <th scope="col">&nbsp;</th>
+                                
                             </tr>
                         </thead>
                         <tbody class="">
@@ -331,11 +331,6 @@
                                             } 
                                         ?>; font-weight: 500" scope="row">
                                     <?php echo $i['Inv_Status']; ?>
-                                </td>
-                                <td style="font-size: 16px; font-weight: 300; text-align: left" scope="row">
-                                    <a>
-                                        <img src="././Views/Img/u223.png" width="30" height="30">
-                                    </a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

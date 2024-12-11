@@ -270,37 +270,6 @@
                 $event = $AdminModels ->getEventByID($event_id);
                 $influencers = $customerModel ->getInfluencersByEvent($event_id);
 
-                if($_SERVER ['REQUEST_METHOD'] == 'POST'){
-                    if(isset( $_POST['wplace_id'])){
-                        $wplace_id = $_POST['wplace_id'];
-                        $influencers =  $customerModel->getAllInfluencerEventByWorkplace($wplace_id, $event_id);
-                        if (empty($influencers)) {
-                            $message = "No influencers found ";
-                        }
-                    }
-                    if(isset( $_POST['fol_id'])){
-                        $fol_id = $_POST['fol_id'];
-                        $influencers =  $customerModel->getAllInfluencerEventByFollowers($fol_id, $event_id);
-                        if (empty($influencers)) {
-                            $message = "No influencers found ";
-                        }
-                    }
-                    if(isset( $_POST['type_id'])){
-                        $type_id = $_POST['type_id'];
-                        $influencers =  $customerModel->getAllInfluencerEventByType($type_id, $event_id);
-                    }
-
-                    if(isset( $_POST['username'])){
-                        $username =  $_POST['username'];
-                        $influencers = $customerModel->getInfluencerEventByUsername($username, $event_id);
-                        if (empty($influencers)) {
-                            $message = "No influencers found named: $username ";
-                        }
-                    }
-                } else {
-                    $influencers = $customerModel ->getInfluencersByEvent($event_id);
-                }
-
                 include 'Views/Customer/Event.php';
             }
         }
@@ -325,37 +294,6 @@
 
                 $content = $AdminModels ->getContentByID($content_id);
                 $influencers = $customerModel ->getInfluencersByContent($content_id);
-
-                if($_SERVER ['REQUEST_METHOD'] == 'POST'){
-                    if(isset( $_POST['wplace_id'])){
-                        $wplace_id = $_POST['wplace_id'];
-                        $influencers =  $customerModel->getAllInfluencerContentByWorkplace($wplace_id, $content_id);
-                        if (empty($influencers)) {
-                            $message = "No influencers found ";
-                        }
-                    }
-                    if(isset( $_POST['fol_id'])){
-                        $fol_id = $_POST['fol_id'];
-                        $influencers =  $customerModel->getAllInfluencerContentByFollowers($fol_id, $content_id);
-                        if (empty($influencers)) {
-                            $message = "No influencers found ";
-                        }
-                    }
-                    if(isset( $_POST['type_id'])){
-                        $type_id = $_POST['type_id'];
-                        $influencers =  $customerModel->getAllInfluencerContentByType($type_id, $content_id);
-                    }
-
-                    if(isset( $_POST['username'])){
-                        $username =  $_POST['username'];
-                        $influencers = $customerModel->getInfluencerContentByUsername($username, $content_id);
-                        if (empty($influencers)) {
-                            $message = "No influencers found named: $username ";
-                        }
-                    }
-                } else {
-                    $influencers = $customerModel ->getInfluencersByContent($content_id);
-                }
 
                 include 'Views/Customer/Content.php';
             }
@@ -540,6 +478,7 @@
                             $InfluencerPrice = $customerModel->getInfluencerPrice($Influ_ID);
                             $Expense = $InfluencerPrice * $TotalDay;
                             $customerModel->createBooking($CreateTime, $TotalDay, $Content, $StartDate, $EndDate, $Expense, $Topic_ID,  $Cus_ID, $Influ_ID);
+                            $this->mailBookingtoInflu($Content);
                             header("Location: index.php?action=customer_bookinglist");
                             exit();
                         }
@@ -561,6 +500,85 @@
                     'contents' => $contents,
                     'events' => $events
                 ]);
+            }
+        }
+
+        public function mailBookingtoInflu($Content){
+            $mail = new PHPMailer(true);
+            try {
+                $mail->SMTPDebug = 0;
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com'; 
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'leduchuy22072002@gmail.com';
+                $mail->Password   = 'utkziciechiujjxy';
+                $mail->Port       = 587;
+                $mail->setFrom('leduchuy22072002@gmail.com');
+                $mail->addAddress('huyldgbh200353@fpt.edu.vn');
+                $mail->isHTML(true);
+                $mail->Subject = 'New Booking';
+                $htmlContent = '
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>New Booking</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f4;
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+                            .container {
+                                max-width: 600px;
+                                margin: 20px auto;
+                                background-color: #fff;
+                                padding: 20px;
+                                border-radius: 8px;
+                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                            }
+                            h1 {
+                                color: #8B008B;
+                                text-align: center;
+                            }
+                            p {
+                                color: #333;
+                                font-size: 18px;
+                                line-height: 1.6;
+                                margin-bottom: 20px;
+                            }
+
+                            span {
+                                color:  #14BA05;
+                                font-size: 20px;
+                                margin-bottom: 20px;
+                                font-weight: bold;
+                            }   
+                            .rejected {
+                                color: #009966;
+                                font-size: 20px;
+                                font-weight: bold;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h1>New Booking</h1>
+                            <span>Dear Influencer,</span>
+                            <p>I have sent a booking request with the service is ' . htmlspecialchars($Content) . ' to you</p>
+                            <br>
+                            <p>Hope you can see the booking and approve it for me.</p>
+                        </div>
+                    </body>
+                    </html>
+                ';
+                $mail->Body = $htmlContent;
+                $mail->send();
+            } catch (Exception $e) {
+        
             }
         }
 
@@ -899,6 +917,7 @@
 
                     if($save !== null) {
                         $customerModel->UpdateInvoiceVnpayID($save, $inv_id);
+                        $this->mailPaymentToInflu();
                         $invoiceDetails = $customerModel->getTransactionDetailsByInvoiceID($inv_id, $_SESSION['cus_id']);
                         $invoiceTotalAmount = $invoiceDetails['Inv_VATamount'];
 
@@ -922,6 +941,85 @@
                 }
 
                 include 'Views/Customer/PaymentSuccess.php';
+            }
+        }
+
+        public function mailPaymentToInflu(){
+            $mail = new PHPMailer(true);
+            try {
+                $mail->SMTPDebug = 0;
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com'; 
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'leduchuy22072002@gmail.com';
+                $mail->Password   = 'utkziciechiujjxy';
+                $mail->Port       = 587;
+                $mail->setFrom('leduchuy22072002@gmail.com');
+                $mail->addAddress('huyldgbh200353@fpt.edu.vn');
+                $mail->isHTML(true);
+                $mail->Subject = 'Payment';
+                $htmlContent = '
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Payment</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f4;
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                            }
+                            .container {
+                                max-width: 600px;
+                                margin: 20px auto;
+                                background-color: #fff;
+                                padding: 20px;
+                                border-radius: 8px;
+                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                            }
+                            h1 {
+                                color: #8B008B;
+                                text-align: center;
+                            }
+                            p {
+                                color: #333;
+                                font-size: 18px;
+                                line-height: 1.6;
+                                margin-bottom: 20px;
+                            }
+
+                            span {
+                                color:  #14BA05;
+                                font-size: 20px;
+                                margin-bottom: 20px;
+                                font-weight: bold;
+                            }   
+                            .rejected {
+                                color: #009966;
+                                font-size: 20px;
+                                font-weight: bold;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h1>Payment</h1>
+                            <span>Dear Influencer,</span>
+                            <p>I have paid for the booking please check</p>
+                            <br>
+                            <p>Hope you can see the email soon.</p>
+                        </div>
+                    </body>
+                    </html>
+                ';
+                $mail->Body = $htmlContent;
+                $mail->send();
+            } catch (Exception $e) {
+        
             }
         }
 
@@ -1025,6 +1123,7 @@
 
                     if($saveMomo !== null) {
                         $customerModel->UpdateInvoiceMomoID($saveMomo, $inv_id);
+                        $this->mailPaymentToInflu();
                         $invoiceDetails = $customerModel->getTransactionDetailsByInvoiceID($inv_id, $_SESSION['cus_id']);
                         $invoiceTotalAmount = $invoiceDetails['Inv_VATamount'];
 
